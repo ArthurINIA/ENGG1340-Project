@@ -8,7 +8,7 @@ void processAction(string cmd)
 …
     // interface 4
 }
-
+// GRACE HERE
 for (int round = 0; round < 50; round++)
 {
     for (int curCountry : countryList)
