@@ -1,0 +1,61 @@
+Incremental game
+
+    random event
+    background story
+    single/multiplayer
+    limit rounds
+
+
+country simulation:
+
+    Four interface:
+        1. Show data
+        2. internal actions
+        3. external actions + 2D map (direction key, show status, attack, alliance...)
+        4. round result
+
+    Features:
+        1. different characteristic(four countries)
+        2. random event
+
+
+Resources:
+    1. population
+    2. food
+    3. fuel
+    4. metal
+    additional:
+        1. commercial
+        2. farmers
+
+Resource standard:
+    population around 10000-70000, round add 500-1000
+    food:population 1:1, food:military 1.5-2:1, initial food average 350 units, farm generate 500 units
+    initial 100 units, each land 3 mines/2 extractors max
+    recriuting office no limits, 750 units max per round
+    factory round add 10 tanks, 300 metals/oil for 10 tanks, 500 population, need 120 metal
+    mines round add 50 units, initial 100 units, each land 3 mines, need 70 metal
+    oil round add 50 units, initial 100 units, each land 2 extractors, need 70 metal
+    military laboratary upgrade need 30% metal, oil, per upgrade +5%
+    house need 20 metal/oil, initial+5 house, 1 house 1000 population limit
+    entertainment need 200 metal 50 oil
+
+City index:
+    1. livelihood -> good/bad probability, employment rate
+    2. military -> war index, relate to diplomacy, diversity of soldiers
+    3. diplomacy -> peace/war/alliance probability
+
+Buildings:
+    1. factory -> tanks/planes livelihood
+    2. recruiting office -> military force
+    3. farm -> food
+    4. mines -> metal
+    5. oil extractor -> fossil fuel
+    6. house -> population/livelihood (upgrade)
+    7. cassino/museum/park -> livelihood
+    8. military laboratary -> military
+    additional:
+        1. embassy
+        2. oil refinery
+
+Variable names:
