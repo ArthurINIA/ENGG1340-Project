@@ -1,3 +1,9 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+void pick_random_event();
+
 void processAction(string cmd)
 {
 
@@ -8,6 +14,11 @@ void processAction(string cmd)
 …
     // interface 4
 }
+
+void round_result();
+
+void end_game();
+
 // GRACE HERE
 for (int round = 0; round < 50; round++)
 {
