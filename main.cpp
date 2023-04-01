@@ -1,44 +1,41 @@
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
+#include "all_interface.h"
 using namespace std;
 
 void pick_random_event();
 
 void processAction(string cmd)
 {
-
-    // interface 1
-    // interface 2
-    …
-        //interface 3
-…
-    // interface 4
+    show_data();
+    internal_actions();
+    external_actions();
+    round_result();
 }
-
-void round_result();
-
-void end_game();
 
 // GRACE HERE
-for (int round = 0; round < 50; round++)
+int main()
 {
-    for (int curCountry : countryList)
+    for (int round = 0; round < 50; round++)
     {
-        pick_random_event();
-
-        // let player make decision;
-        while (getline(cin, cmd))
+        for (int curCountry : countryList)
         {
-            if (cmd == “end”)
-            {
-                // may need to print sth
-                break;
-            }
-            processAction(cmd);
-        }
+            pick_random_event();
 
-        round_result();
+            // let player make decision;
+            while (getline(cin, cmd))
+            {
+                if (cmd == “end”)
+                {
+                    // may need to print sth
+                    break;
+                }
+                processAction(cmd);
+            }
+
+            round_result();
+        }
     }
+    end_game();
 }
-end_game();
 // testing for github update
