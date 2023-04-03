@@ -1,39 +1,76 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include "main.h"
 #include "all_interface.h"
 using namespace std;
 
 //list of functions
-void printIntro();
-void pick_random_event();
-void processAction(string cmd);
-void end_game();
+//debug message printer
+void testing(){
+
+}
+vector<string> split(string raw_line){
+//split the string by space and return a vecetor of strings
+    vector<string> rt;
+    string cur = "";
+    for(char i: raw_line){
+        if(i != ' ')
+            cur += i;
+        else{
+            //if space, add the current string to the return vector, then clear the current string;
+            rt.push_back(cur);
+            cur = "";
+        }
+    }
+    //boundary case of the last string
+    if(cur != "") rt.push_back(cur);
+    return rt;
+}
 
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 
-int main()
-{
+int main(){
     printIntro();
-    for (int round = 0; round < 50; round++)
-    {
-        for (string curCountry : countryList)
-        {
+    for (int round = 0; round < 50; round++){
+        for (string curCountry : countryList){
             pick_random_event();
 
             if(curCountry == "Player"){
-                // let player make decision;
-                string cmd;
-                while (getline(cin, cmd))
-                {
-                    if (cmd == "end")
-                    {
-                        // may need to print sth
+                //read command line from player
+                string raw_cmd;
+                while (getline(cin, raw_cmd)){
+                    vector<string> cmd = split(raw_cmd);
+                    if(cmd[0] == "to"){
+                        if(cmd[1] == "i1" || cmd[1] == "admin-panel")
+                            run_interface_1(cmd);
+                        else if(cmd[1] == "i2" || cmd[1] == "internal")
+                            run_interface_2(cmd);
+                        else if(cmd[1] == "i3" || cmd[1] == "world-map")
+                            run_interface_3(cmd);
+                        else if(cmd[1] == "i4" || cmd[1] == "world-news")
+                            run_interface_4(cmd);
+                        else
+                            cout << "This interface does not exist!" << endl;
+                    }
+                    else if(cmd[0] == "end"){
+                        cout << "Today has come to an end." << endl;
                         break;
                     }
-                    processAction(cmd);
+                    else if(cmd[0] == "quit"){
+                        //save game
+                        cout << "Game Saved" << endl;
+                        //close game
+                        exit(0);
+                    }
+                    else if(cmd[0] == "help"){
+                        //manual
+                    }
+                    else{
+                        cout << "Invalid Operation!" << endl;
+                    }
                 }
             }
-            
             round_result();
         }
     }
@@ -68,9 +105,15 @@ void pick_random_event(){
 
 void processAction(string cmd)
 {
+    /*
     show_data();
     internal_actions();
     external_actions();
+    */
+}
+
+void round_result(){
+
 }
 
 void end_game(){
