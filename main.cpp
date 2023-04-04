@@ -3,6 +3,7 @@
 #include <vector>
 #include "main.h"
 #include "all_interface.h"
+#include "struct.h"
 using namespace std;
 
 struct resouces
@@ -11,7 +12,7 @@ struct resouces
     int food = 350;
     int fuel = 100;
     int metal = 100;
-} player;
+};
 
 // list of functions
 // debug message printer
