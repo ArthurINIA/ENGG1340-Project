@@ -1,18 +1,20 @@
 #include "all_interface.h"
 #include "main.h"
+#include "struct.h"
 #include <iostream>
 #include <string>
 #include <vector>
-#include "struct.h"
 using namespace std;
+
+extern resources player;
 
 void show_internal_info()
 {
     cout << "+-------------------------------------------------------------------------------------+" << endl;
-    cout << "|"
+    cout << "|";
 }
 
-void run_interface_2(vector<string> &cmd, int &population)
+void run_interface_2(vector<string> &cmd)
 {
     string internal_2_cmd;
     while (getline(cin, internal_2_cmd))
@@ -24,10 +26,10 @@ void run_interface_2(vector<string> &cmd, int &population)
             show_internal_info();
             if (split_cmd[1] == "built")
             {
-                if (population > 10000)
+                if (player.population > 10000)
                 {
                     // do something
-                    cout << population; // testing
+                    cout << player.population; // testing
                 }
             }
             else if (split_cmd[1] == "buildable")
