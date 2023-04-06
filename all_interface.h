@@ -8,7 +8,7 @@
 #include <vector>
 
 void run_interface_1(std::vector<std::string> &cmd);
-void run_interface_2(std::vector<std::string> &cmd, int &population);
+void run_interface_2(std::vector<std::string> &cmd);
 void run_interface_3(std::vector<std::string> &cmd);
 void run_interface_4(std::vector<std::string> &cmd);
 

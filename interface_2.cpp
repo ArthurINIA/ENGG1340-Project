@@ -1,33 +1,36 @@
 #include "all_interface.h"
 #include "main.h"
+#include "struct.h"
 #include <iostream>
 #include <string>
 #include <vector>
-#include "struct.h"
 using namespace std;
+
+extern resources player;
+extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 void show_internal_info()
 {
     cout << "+-------------------------------------------------------------------------------------+" << endl;
-    cout << "|"
+    cout << "|";
 }
 
-void run_interface_2(vector<string> &cmd, int &population)
+void run_interface_2(vector<string> &cmd)
 {
     string internal_2_cmd;
     while (getline(cin, internal_2_cmd))
     {
+        // show default information/ interface2
+        show_internal_info();
         vector<string> split_cmd = split(internal_2_cmd);
         if (split_cmd[0] == "show")
         {
-            // show default information/ interface2
-            show_internal_info();
             if (split_cmd[1] == "built")
             {
-                if (population > 10000)
+                if (player.population > 10000)
                 {
                     // do something
-                    cout << population; // testing
+                    cout << player.population; // testing
                 }
             }
             else if (split_cmd[1] == "buildable")

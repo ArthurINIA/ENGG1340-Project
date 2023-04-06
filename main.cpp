@@ -6,13 +6,8 @@
 #include "struct.h"
 using namespace std;
 
-struct resouces
-{
-    int population = 10000;
-    int food = 350;
-    int fuel = 100;
-    int metal = 100;
-};
+resources player;
+buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 // list of functions
 // debug message printer
@@ -46,6 +41,10 @@ string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 int main()
 {
     printIntro();
+    player.food = 350;
+    player.fuel = 100;
+    player.metal = 100;
+    player.population = 70000;
     for (int round = 0; round < 50; round++)
     {
         for (string curCountry : countryList)
@@ -64,7 +63,7 @@ int main()
                         if (cmd[1] == "i1" || cmd[1] == "admin-panel")
                             run_interface_1(cmd);
                         else if (cmd[1] == "i2" || cmd[1] == "internal")
-                            run_interface_2(cmd, player.population);
+                            run_interface_2(cmd);
                         else if (cmd[1] == "i3" || cmd[1] == "world-map")
                             run_interface_3(cmd);
                         else if (cmd[1] == "i4" || cmd[1] == "world-news")
