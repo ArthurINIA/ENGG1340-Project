@@ -7,6 +7,7 @@
 using namespace std;
 
 extern resources player;
+extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 void show_internal_info()
 {
@@ -19,11 +20,11 @@ void run_interface_2(vector<string> &cmd)
     string internal_2_cmd;
     while (getline(cin, internal_2_cmd))
     {
+        // show default information/ interface2
+        show_internal_info();
         vector<string> split_cmd = split(internal_2_cmd);
         if (split_cmd[0] == "show")
         {
-            // show default information/ interface2
-            show_internal_info();
             if (split_cmd[1] == "built")
             {
                 if (player.population > 10000)

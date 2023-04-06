@@ -7,6 +7,7 @@
 using namespace std;
 
 resources player;
+buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 // list of functions
 // debug message printer
