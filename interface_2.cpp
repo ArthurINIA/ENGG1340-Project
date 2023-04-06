@@ -9,7 +9,7 @@ using namespace std;
 extern resources player;
 extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
-void show_internal_info()
+void show_internal_heading()
 {
     cout << "+-------------------------------------------------------------------------------------+" << endl;
     cout << "|";
@@ -17,56 +17,50 @@ void show_internal_info()
 
 void run_interface_2(vector<string> &cmd)
 {
-    string internal_2_cmd;
-    while (getline(cin, internal_2_cmd))
+    // show default information/ interface2
+    show_internal_heading();
+    if(cmd[0] == "to"){
+        cout << "interface 2" << endl; // testing
+    }
+    else if (cmd[0] == "show")
     {
-        // show default information/ interface2
-        show_internal_info();
-        vector<string> split_cmd = split(internal_2_cmd);
-        if (split_cmd[0] == "show")
+        if (cmd[1] == "built")
         {
-            if (split_cmd[1] == "built")
+            if (player.population > 10000)
             {
-                if (player.population > 10000)
-                {
-                    // do something
-                    cout << player.population; // testing
-                }
-            }
-            else if (split_cmd[1] == "buildable")
-            {
-                // show available buildings
-                cout << "success1" << endl; // testing
-            }
-            else if (split_cmd[1] == "info")
-            {
-                if (split_cmd[2] == " ")
-                {
-                    // show info
-                    cout << "success2" << endl; // testing
-                }
-            }
-            else
-            {
-                cout << "Invalid command" << endl;
+                // do something
+                cout << player.population; // testing
             }
         }
-        else if (split_cmd[0] == "build")
+        else if (cmd[1] == "buildable")
         {
-            if (split_cmd[2] == " ")
-            {
-                cout << "success3" << endl; // testing
-                // bulding count + split_cmd[1]
-            }
+            // show available buildings
+            cout << "success1" << endl; // testing
         }
-        else if (split_cmd[0] == "return")
+        else if (cmd[1] == "info")
         {
-            cout << "return to main" << endl;
+            if (cmd[2] == " ")
+            {
+                // show info
+                cout << "success2" << endl; // testing
+            }
         }
         else
         {
             cout << "Invalid command" << endl;
         }
     }
-    cout << "interface 2" << endl; // testing
+    else if (cmd[0] == "build")
+    {
+        if (cmd[2] == " ")
+        {
+            cout << "success3" << endl; // testing
+            // bulding count + cmd[1]
+        }
+    }
+    else
+    {
+        cout << "Invalid command" << endl;
+    }
+    
 }

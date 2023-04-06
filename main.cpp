@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 #include "main.h"
 #include "all_interface.h"
 #include "struct.h"
@@ -41,10 +42,12 @@ string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 int main()
 {
     printIntro();
+    int cur_interface = 1;
     player.food = 350;
     player.fuel = 100;
     player.metal = 100;
     player.population = 70000;
+    //resources player(350, 100, 100, 70000);
     for (int round = 0; round < 50; round++)
     {
         for (string curCountry : countryList)
@@ -60,14 +63,22 @@ int main()
                     vector<string> cmd = split(raw_cmd);
                     if (cmd[0] == "to")
                     {
-                        if (cmd[1] == "i1" || cmd[1] == "admin-panel")
+                        if (cmd[1] == "i1" || cmd[1] == "admin-panel"){
+                            cur_interface = 1;
                             run_interface_1(cmd);
-                        else if (cmd[1] == "i2" || cmd[1] == "internal")
+                        }
+                        else if (cmd[1] == "i2" || cmd[1] == "internal"){
+                            cur_interface = 2;
                             run_interface_2(cmd);
-                        else if (cmd[1] == "i3" || cmd[1] == "world-map")
+                        }
+                        else if (cmd[1] == "i3" || cmd[1] == "world-map"){
+                            cur_interface = 3;
                             run_interface_3(cmd);
-                        else if (cmd[1] == "i4" || cmd[1] == "world-news")
+                        }
+                        else if (cmd[1] == "i4" || cmd[1] == "world-news"){
+                            cur_interface = 4;
                             run_interface_4(cmd);
+                        }
                         else
                             cout << "This interface does not exist!" << endl;
                     }
