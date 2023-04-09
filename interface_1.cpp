@@ -1,7 +1,7 @@
 #include "all_interface.h"
 using namespace std;
 
-void run_interface_1(std::vector<std::string> &cmd){
+void run_interface_1(vector<string> &cmd){
     //print admin panel
     cout << "interface 1" << endl; //testing
 }

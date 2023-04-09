@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 #include "main.h"
 #include "all_interface.h"
 #include "struct.h"
@@ -9,42 +10,18 @@ using namespace std;
 resources player;
 buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
-// list of functions
-// debug message printer
-void testing()
-{
-}
-vector<string> split(string raw_line)
-{
-    // split the string by space and return a vecetor of strings
-    vector<string> rt;
-    string cur = "";
-    for (char i : raw_line)
-    {
-        if (i != ' ')
-            cur += i;
-        else
-        {
-            // if space, add the current string to the return vector, then clear the current string;
-            rt.push_back(cur);
-            cur = "";
-        }
-    }
-    // boundary case of the last string
-    if (cur != "")
-        rt.push_back(cur);
-    return rt;
-}
-
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
+set<string> valid_interface_option({"show", "build", "status", "attack", "protect"});
 
 int main()
 {
     printIntro();
+    int cur_interface = 1;
     player.food = 350;
     player.fuel = 100;
     player.metal = 100;
     player.population = 70000;
+    //resources player(350, 100, 100, 70000);
     for (int round = 0; round < 50; round++)
     {
         for (string curCountry : countryList)
@@ -60,16 +37,27 @@ int main()
                     vector<string> cmd = split(raw_cmd);
                     if (cmd[0] == "to")
                     {
-                        if (cmd[1] == "i1" || cmd[1] == "admin-panel")
+                        if (cmd[1] == "i1" || cmd[1] == "admin-panel"){
+                            cur_interface = 1;
                             run_interface_1(cmd);
-                        else if (cmd[1] == "i2" || cmd[1] == "internal")
+                        }
+                        else if (cmd[1] == "i2" || cmd[1] == "internal"){
+                            cur_interface = 2;
                             run_interface_2(cmd);
-                        else if (cmd[1] == "i3" || cmd[1] == "world-map")
+                        }
+                        else if (cmd[1] == "i3" || cmd[1] == "world-map"){
+                            cur_interface = 3;
                             run_interface_3(cmd);
-                        else if (cmd[1] == "i4" || cmd[1] == "world-news")
+                        }
+                        else if (cmd[1] == "i4" || cmd[1] == "world-news"){
+                            cur_interface = 4;
                             run_interface_4(cmd);
+                        }
                         else
                             cout << "This interface does not exist!" << endl;
+                    }
+                    else if (valid_interface_option.count(cmd[0])){
+                        go_interface(cur_interface, cmd);
                     }
                     else if (cmd[0] == "end")
                     {
@@ -99,6 +87,43 @@ int main()
     end_game();
 }
 
+// list of functions
+
+// utility functions
+// debug message printer
+void testing()
+{
+}
+vector<string> split(string raw_line)
+{
+    // split the string by space and return a vecetor of strings
+    vector<string> rt;
+    string cur = "";
+    for (char i : raw_line)
+    {
+        if (i != ' ')
+            cur += i;
+        else
+        {
+            // if space, add the current string to the return vector, then clear the current string;
+            rt.push_back(cur);
+            cur = "";
+        }
+    }
+    // boundary case of the last string
+    if (cur != "")
+        rt.push_back(cur);
+    return rt;
+}
+
+void go_interface(int id, vector<string> &cmd){
+    if(id == 1) run_interface_1(cmd);
+    else if(id == 2) run_interface_2(cmd);
+    else if(id == 3) run_interface_3(cmd);
+    else if(id == 4) run_interface_4(cmd);
+}
+
+//game procedure functions
 void printIntro()
 {
     string introStory[] = {
@@ -109,15 +134,6 @@ void printIntro()
 
 void pick_random_event()
 {
-}
-
-void processAction(string cmd)
-{
-    /*
-    show_data();
-    internal_actions();
-    external_actions();
-    */
 }
 
 void round_result()
