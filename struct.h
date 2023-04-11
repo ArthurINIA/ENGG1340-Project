@@ -12,6 +12,8 @@ struct resources
 struct buildings
 {
     string name;
-    int requirement;
+    string requirement;
+    string description;
     string effect;
+    int quantity;
 };
