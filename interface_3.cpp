@@ -36,7 +36,6 @@ int event(){
     if (randomevent == 1){
         diplomaticval += 20;
     }
-    if 
 }
 
 void printmap(){
@@ -54,8 +53,25 @@ void instruction(){
 
 void run_interface_3(vector<string> &cmd){
     cout << "interface 3" << endl; //testing
-    if(cmd.size() == 2){
-        //print interface 3 default look
+    cout << "Please enter show / attack / peace :";
+    cin >> input ;
+    if (input == "show"){
+        printmap();
+    }else if (input == "attack"){
+        int attnum = 0;
+        printmap();
+        cout << "Enter the number of the land you would like to attack: ";
+        cin >> attnum;
+        while (attnum<2 || attnum> 15){
+            cout << "Enter the number of the land you would like to attack: ";
+            cin >> attnum;
+        }
+    }else if (input == "peace"){
+        event();
+    }else{
+        cout << "Invalid command." << endl;
+        return;
     }
+    
     
 }
