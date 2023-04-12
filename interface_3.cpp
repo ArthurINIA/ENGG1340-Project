@@ -8,6 +8,7 @@ extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, ca
 
 
 string eventl[20];
+string input;
 int eventlist_content(){
     eventl[0] = "Help from other country"; // increase diplomaticval 
     eventl[1] = "Nothing happen";
@@ -36,8 +37,12 @@ int event(){
     if (randomevent == 1){
         diplomaticval += 20;
     }
+    if 
 }
-
+struct map{
+    int num;
+    int requiredpower;
+};
 void printmap(){
     
 }
@@ -52,11 +57,10 @@ int instruction(){
 }
 
 
-
 void run_interface_3(vector<string> &cmd){
     cout << "interface 3" << endl; //testing
     instruction();
-    cout << "Please enter show / attack / peace :";
+    cout << "Please enter show / attack / peace (no need spacing):";
     cin >> input ;
     if (input == "show"){
         printmap();
@@ -69,6 +73,27 @@ void run_interface_3(vector<string> &cmd){
             cout << "Enter the number of the land you would like to attack: ";
             cin >> attnum;
         }
+        if (millitaryval >= requiredpower){
+            // get the land
+            millitaryval /=2;
+        }else{
+            int chosenum;
+            cout << "Your millitary level is lower then the land you want to attack"<< endl;
+            cout << "You can enter a number (1-3) to get a stragegy to see if you can win in the war." << endl;
+            cout << " Wrong entering see as fail the war." << endl;
+            cout << "Please enter (1-3) ";
+            cin >> chosenum;
+            int ran = rand()%4 +1;
+            if (chosenum == ran){
+                cout << "You win the war tragicly." << endl;
+                //get the land
+                millitaryval /= 5;
+            }else{
+                cout << "You lose in the war. " << endl;
+                millitaryval = 0;
+            }
+        }
+
     }else if (input == "peace"){
         diplomaticval +=5;
         event();
