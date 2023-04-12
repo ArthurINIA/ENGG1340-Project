@@ -42,17 +42,20 @@ void printmap(){
     
 }
 
-void instruction(){
+int instruction(){
     cout << "+-------------------------------------------------------------------------------------+" << endl;
     cout << "In this interface you can choose to or not to attack the unoccupied land or other countries." << endl;
     cout << "REMINDER! YOU WILL NOT KNOW THE REQUIRED MILLITARY VALUES THAT MAKE YOU OCCUPIED SUCCESSFULLY" << endl;
+    cout << "If you don't have enough millitary value, you will lose ALL value you try to attack!" << endl;
     cout << "THINK WISELY BEFORE ATTACK" << endl;
+    return 0;
 }
 
 
 
 void run_interface_3(vector<string> &cmd){
     cout << "interface 3" << endl; //testing
+    instruction();
     cout << "Please enter show / attack / peace :";
     cin >> input ;
     if (input == "show"){
