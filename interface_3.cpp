@@ -70,6 +70,7 @@ void run_interface_3(vector<string> &cmd){
             cin >> attnum;
         }
     }else if (input == "peace"){
+        diplomaticval +=5;
         event();
     }else{
         cout << "Invalid command." << endl;
