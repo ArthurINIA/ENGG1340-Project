@@ -3,7 +3,7 @@
 #include <time.h>
 #include <string>
 using namespace std;
-extern resources player, millitaryval, diplomaticval;
+extern resources player, millitaryval, diplomaticval, agriculture, economy, energy, manpower;
 extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 
@@ -11,7 +11,7 @@ string eventl[20];
 string input;
 int eventlist_content(){
     eventl[0] = "Help from other country"; // increase diplomaticval 
-    eventl[1] = "Nothing happen";
+    eventl[1] = "Nothing happen"; 
     eventl[2] = "Wave of unemployment"; // farm, factory decrease
     eventl[3] = "Nothing happen";
     eventl[4] = "Food crisis"; // farm decrease
@@ -34,10 +34,50 @@ int eventlist_content(){
 }
 int event(){
     int randomevent = rand() % 20;
-    if (randomevent == 1){
+    cout << eventl[randomevent] << endl;
+    if (randomevent == 0){
         diplomaticval += 20;
     }
-    if 
+    if (randomevent == 2){
+        agriculture -=200;
+        economy -= 300;
+    }
+    if (randomevent == 4){
+        agriculture -= 700;
+    }
+    if (randomevent == 6){
+        millitaryval -= 1000;
+    }
+    if (randomevent == 8){
+        manpower -= 100000;
+    }
+    if (randomevent == 9){
+        oil_refinery -= 1;
+    }
+    if (randomevent == 10){
+        diplomaticval += 100;
+    }
+    if (randomevent == 11){
+        economy *= 1.1;
+    }
+    if (randomevent == 13){
+        diplomaticval += 80;
+    }
+    if (randomevent == 14){
+        millitaryval *= 1.2;
+    }
+    if (randomevent == 17){
+        agriculture *= 1.3;
+        economy *= 1.1;
+    }
+    if (randomevent == 18){
+        manpower *= 0.5;
+    }
+    if (randomevent == 19){
+        millitaryval *= 1.2;
+        manpower *= 0.9;
+    }
+
 }
 struct map{
     int num;
@@ -48,11 +88,12 @@ void printmap(){
 }
 
 int instruction(){
-    cout << "+-------------------------------------------------------------------------------------+" << endl;
+    cout << "+--------------------------------------------------------------------------------------------+" << endl;
     cout << "In this interface you can choose to or not to attack the unoccupied land or other countries." << endl;
     cout << "REMINDER! YOU WILL NOT KNOW THE REQUIRED MILLITARY VALUES THAT MAKE YOU OCCUPIED SUCCESSFULLY" << endl;
     cout << "If you don't have enough millitary value, you will lose ALL value you try to attack!" << endl;
     cout << "THINK WISELY BEFORE ATTACK" << endl;
+    cout << "+--------------------------------------------------------------------------------------------+" << endl;
     return 0;
 }
 
@@ -91,6 +132,8 @@ void run_interface_3(vector<string> &cmd){
             }else{
                 cout << "You lose in the war. " << endl;
                 millitaryval = 0;
+                economy *= 0.7;
+                agriculture *= 0.7;
             }
         }
 
