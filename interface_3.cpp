@@ -187,7 +187,7 @@ void run_interface_3(vector<string> &cmd){
         }
 
     }else if (input == "peace"){
-        diplomaticval += 50;
+        diplomaticval += 50; // thinking should I split them into 1, 2, 3 and random add in every peace round
         event();
         if(maplist[1].allianceval > 800){
             alliance(1);
