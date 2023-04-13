@@ -83,6 +83,10 @@ struct map{
     int num;
     int requiredpower;
 };
+
+bool check_if_occupied(){
+    return true;
+}
 void printmap(){
     
 }
@@ -115,7 +119,7 @@ void run_interface_3(vector<string> &cmd){
         printmap();
         cout << "Enter the number of the land you would like to attack: ";
         cin >> attnum;
-        while (attnum<2 || attnum> 15){
+        while ((attnum<2 || attnum> 15) && check_if_occupied == true){
             cout << "Enter the number of the land you would like to attack: ";
             cin >> attnum;
         }
@@ -136,7 +140,7 @@ void run_interface_3(vector<string> &cmd){
                 millitaryval /= 5;
             }else{
                 cout << "You lose in the war. " << endl;
-                millitaryval = 0;
+                millitaryval *= 0.1;
                 economy *= 0.7;
                 agriculture *= 0.7;
             }
