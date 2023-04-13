@@ -77,7 +77,7 @@ int event(){
         millitaryval *= 1.2;
         manpower *= 0.9;
     }
-
+    return 0;
 }
 
 struct map{
