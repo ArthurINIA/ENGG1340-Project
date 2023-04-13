@@ -79,9 +79,10 @@ int event(){
     }
 
 }
+
 struct map{
-    int num;
-    int requiredpower;
+    int num; // num of the land (1-15)
+    int requiredpower; // the required agri, mill, econ power
 };
 
 bool check_if_occupied(){
@@ -119,7 +120,7 @@ void run_interface_3(vector<string> &cmd){
         printmap();
         cout << "Enter the number of the land you would like to attack: ";
         cin >> attnum;
-        while ((attnum<2 || attnum> 15) && check_if_occupied == true){
+        while (attnum<2 || attnum> 15 || check_if_occupied() == true){
             cout << "Enter the number of the land you would like to attack: ";
             cin >> attnum;
         }
