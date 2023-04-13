@@ -103,6 +103,11 @@ void run_interface_3(vector<string> &cmd){
     instruction();
     cout << "Please enter show / attack / peace (no need spacing):";
     cin >> input ;
+    while (input != "show" || input != "attack" || input != "peace"){
+        cout << "Invalid command." << endl;
+        cout << "Please enter show / attack / peace (no need spacing):";
+        cin >> input ;
+    }
     if (input == "show"){
         printmap();
     }else if (input == "attack"){
@@ -141,7 +146,6 @@ void run_interface_3(vector<string> &cmd){
         diplomaticval +=5;
         event();
     }else{
-        cout << "Invalid command." << endl;
         return;
     }
     
