@@ -89,7 +89,8 @@ bool check_if_occupied(){
     return true;
 }
 void printmap(){
-    
+    // is the player has 4 options on the initial land ? then how to give the num of the land if the map will change ?
+    // and we didnot discuss on the initial value of the 4 option right?
 }
 
 int instruction(){
