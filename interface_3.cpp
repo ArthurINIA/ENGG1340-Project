@@ -8,7 +8,7 @@ extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, ca
 
 
 string eventl[20];
-string input;
+string input, yon;
 int eventlist_content(){
     eventl[0] = "Help from other country"; // increase diplomaticval 
     eventl[1] = "Nothing happen"; 
@@ -83,7 +83,10 @@ int event(){
 struct map{
     int num; // num of the land (1-15)
     int requiredpower; // the required agri, mill, econ power
+    int allianceval;
 };
+
+map maplist[15];
 
 bool check_if_occupied(){
     return true;
@@ -91,6 +94,40 @@ bool check_if_occupied(){
 void printmap(){
     // is the player has 4 options on the initial land ? then how to give the num of the land if the map will change ?
     // and we didnot discuss on the initial value of the 4 option right?
+}
+
+int alliance(int d){
+    cout << "You have a close relationship with country" << maplist[d].num << endl;
+    cout << "Would you want to alliance with her ? (Y/N) (No need spacing): ";
+    cin >> yon;
+    while (yon != "Y" || yon != "N"){
+        cout << "Invalid command." << endl;
+        cout << "You have a close relationship with country" << maplist[d].num << endl;
+        cout << "Would you want to alliance with her ? (Y/N) (No need spacing): ";
+        cin >> yon;
+    }
+    if (yon == "Y"){
+        int randnum = rand()% 3;
+        if (randnum != 0){
+            cout << "success" << endl;
+            if (d==1){
+                //benefits and change sth in the map struct
+                //show the alliance in interface 4
+            }
+            if (d==2){
+                //benefits ...
+                //show the alliance in interface 4
+            }
+            if (d==3){
+                //benefits
+                //show the alliance in interface 4
+            }
+        }else{
+            cout << "fail" << endl;
+        }
+    }
+
+
 }
 
 int instruction(){
@@ -102,6 +139,7 @@ int instruction(){
     cout << "+--------------------------------------------------------------------------------------------+" << endl;
     return 0;
 }
+
 
 
 void run_interface_3(vector<string> &cmd){
@@ -149,8 +187,17 @@ void run_interface_3(vector<string> &cmd){
         }
 
     }else if (input == "peace"){
-        diplomaticval +=5;
+        diplomaticval += 50;
         event();
+        if(maplist[1].allianceval > 800){
+            alliance(1);
+        }
+        if(maplist[1].allianceval > 1000){
+            alliance(2);
+        }
+        if(maplist[1].allianceval > 2000){
+            alliance(3);
+        }
     }else{
         return;
     }
