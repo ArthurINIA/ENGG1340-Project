@@ -3,7 +3,8 @@
 #include <time.h>
 #include <string>
 using namespace std;
-extern resources player, millitaryval, diplomaticval, agriculture, economy, energy, manpower;
+extern setting maplist[16], playerland;
+extern resources player, millitaryval,  agriculture, economy, energy, manpower;
 extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 
@@ -36,7 +37,17 @@ int event(){
     int randomevent = rand() % 20;
     cout << eventl[randomevent] << endl;
     if (randomevent == 0){
-        diplomaticval += 20;
+        int eventpick = rand()%3;
+        if (eventpick == 0){
+            maplist[0].allianceval += 50;
+        }
+        if (eventpick == 1){
+            maplist[3].allianceval += 50;
+        }
+        if (eventpick == 2){
+            maplist[15].allianceval += 50;
+        }
+        
     }
     if (randomevent == 2){
         agriculture -=200;
@@ -55,13 +66,31 @@ int event(){
         oil_refinery -= 1;
     }
     if (randomevent == 10){
-        diplomaticval += 100;
+        int eventpick = rand()%3;
+        if (eventpick == 0){
+            maplist[0].allianceval += 100;
+        }
+        if (eventpick == 1){
+            maplist[3].allianceval += 100;
+        }
+        if (eventpick == 2){
+            maplist[15].allianceval += 100;
+        }
     }
     if (randomevent == 11){
         economy *= 1.1;
     }
     if (randomevent == 13){
-        diplomaticval += 80;
+        int eventpick = rand()%3;
+        if (eventpick == 0){
+            maplist[0].allianceval += 80;
+        }
+        if (eventpick == 1){
+            maplist[3].allianceval += 80;
+        }
+        if (eventpick == 2){
+            maplist[15].allianceval += 80;
+        }
     }
     if (randomevent == 14){
         millitaryval *= 1.2;
@@ -82,18 +111,35 @@ int event(){
 
 struct map{
     int num; // num of the land (1-15)
-    int requiredpower; // the required agri, mill, econ power
-    int allianceval;
+    int requiredpower; // the required mill power
+    int allianceval; // gaining 
 };
 
-map maplist[15];
+map maplist[16]= {{1,50000,0},{2,50000,0},{3,50000,0},{4,50000,0},{5,50000,0},{6,50000,0},{7,50000,0},{8,50000,0},{9,50000,0},{10,50000,0},{11,50000,0},{12,50000,0},{13,50000,0},{14,50000,0},{15,50000,0},{16,50000,0}};
+
 
 bool check_if_occupied(){
     return true;
 }
-void printmap(){
+int printmap(){
     // is the player has 4 options on the initial land ? then how to give the num of the land if the map will change ?
     // and we didnot discuss on the initial value of the 4 option right?
+    int k = 0;
+    cout << "+--------------------------------------------------------------------------------------------+" << endl;
+    cout << "+----------------------------------------------MAP-------------------------------------------+" << endl;
+    for (int i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            if (k <10){
+                cout << "    " << maplist[k].num;
+            }else{
+                cout << "   " << maplist[k].num;
+            }
+            k++;
+        }
+        cout << endl;
+    }
+    cout << "+--------------------------------------------------------------------------------------------+" << endl;
+    return 0;
 }
 
 int alliance(int d){
@@ -110,11 +156,11 @@ int alliance(int d){
         int randnum = rand()% 3;
         if (randnum != 0){
             cout << "success" << endl;
-            if (d==1){
+            if (d==0){
                 //benefits and change sth in the map struct
                 //show the alliance in interface 4
             }
-            if (d==2){
+            if (d==15){
                 //benefits ...
                 //show the alliance in interface 4
             }
@@ -159,7 +205,7 @@ void run_interface_3(vector<string> &cmd){
         printmap();
         cout << "Enter the number of the land you would like to attack: ";
         cin >> attnum;
-        while (attnum<2 || attnum> 15 || check_if_occupied() == true){
+        while (attnum<2 || attnum> 16 || check_if_occupied() == true){
             cout << "Enter the number of the land you would like to attack: ";
             cin >> attnum;
         }
@@ -187,15 +233,19 @@ void run_interface_3(vector<string> &cmd){
         }
 
     }else if (input == "peace"){
-        diplomaticval += 50; // thinking should I split them into 1, 2, 3 and random add in every peace round
+        maplist[0].allianceval += rand()%51;
+        maplist[3].allianceval += rand()%51;
+        maplist[15].allianceval += rand()%51;
+        cout << "You have earned diplomatic values. " << endl;
+        cout << "The new values are " << maplist[0].num << " :" << maplist[0].allianceval << " " << maplist[3].num << " :" << maplist[3].allianceval << " " << maplist[15].num << " :" << maplist[15].allianceval << " " << maplist[0].allianceval << endl;
         event();
-        if(maplist[1].allianceval > 800){
-            alliance(1);
+        if(maplist[0].allianceval > 800){
+            alliance(0);
         }
-        if(maplist[1].allianceval > 1000){
-            alliance(2);
+        if(maplist[15].allianceval > 1000){
+            alliance(15);
         }
-        if(maplist[1].allianceval > 2000){
+        if(maplist[3].allianceval > 2000){
             alliance(3);
         }
     }else{
