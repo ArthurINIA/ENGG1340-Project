@@ -4,7 +4,6 @@
 using namespace std;
 
 map<string, Building> building;
-Building* oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 
 void init_interface_2(){
