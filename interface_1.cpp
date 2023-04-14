@@ -7,7 +7,7 @@ void run_interface_1(vector<string> &cmd){
     cout << "food: " << player.food << endl; //testing
     cout << "fuel: " << player.fuel << endl; //testing
     cout << "metal: " << player.metal << endl; //testing
-    cout << "population: " << player.population << endl; //testing
+    cout << "population: " << player.ppl << endl; //testing
 }
 
 //testing code

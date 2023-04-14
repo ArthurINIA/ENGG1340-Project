@@ -2,8 +2,10 @@
 #define ALL_INTERFACE_H
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <set>
 #include <map>
 
@@ -22,8 +24,8 @@ void round_result();
 //classes
 class Resources{
     public:
-    int food = 350, fuel = 100, metal = 100, population = 10000;
-    Resources() : food(0), fuel(0), metal(0), population(0) {}
+    int food = 350, fuel = 100, metal = 100, ppl = 10000;
+    Resources() : food(0), fuel(0), metal(0), ppl(0) {}
     void init(int v1, int v2, int v3, int v4);
     Resources& operator+=(const Resources &b);
     Resources& operator-=(const Resources &b);
@@ -32,7 +34,7 @@ class Building
 {
     public:
     std::string name, requirement, description, effect;
-    int quantity;
+    int build_limit = 50, qty_owned = 0;
     Resources cost, production;
     //void init(std::string s1, std::string s2, std::string s3);
 };

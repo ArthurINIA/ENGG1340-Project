@@ -75,21 +75,21 @@ int main()
 // list of functions
 // class functions
 Resources& Resources::operator+=(const Resources &b) {
-    this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->population += b.population;
+    this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->ppl += b.ppl;
     return *this;
 }
 Resources& Resources::operator-=(const Resources &b) {
-    this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->population -= b.population;
+    this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->ppl -= b.ppl;
     return *this;
 }
 void Resources::init(int v1, int v2, int v3, int v4){
-    food = v1, fuel = v2, metal = v3, population = v4;
+    food = v1, fuel = v2, metal = v3, ppl = v4;
 }
 std::ostream &operator<<(std::ostream &os, Resources const &x){
     return os << "food = " << x.food << "\t"
         << "fuel = " << x.fuel << "\n"
         << "metal = " << x.metal << "\t"
-        << "population = " << x.population << endl;
+        << "ppl = " << x.ppl << endl;
 }
 std::ostream &operator<<(std::ostream &os, Building const &x){
     return os << "Building :\t" << x.name << "\n"
