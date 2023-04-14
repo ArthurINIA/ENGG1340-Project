@@ -1,15 +1,7 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <set>
-#include <map>
 #include "main.h"
 #include "all_interface.h"
 #include "struct.h"
 using namespace std;
-
-resources player;
-buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 set<string> valid_interface_option({"show", "build", "status", "attack", "protect"});
@@ -20,15 +12,14 @@ map<string, int> interface_id = {
     {"i4", 4}, {"news", 4}
 };
 
+Resources player, AI[4];
+
 int main()
 {
     printIntro();
     int cur_interface = 1;
-    player.food = 350;
-    player.fuel = 100;
-    player.metal = 100;
-    player.population = 70000;
-    //resources player(350, 100, 100, 70000);
+    player.init(350, 100, 100, 70000);
+    init_interface_2();
     for (int round = 0; round < 50; round++)
     {
         for (string curCountry : countryList)
@@ -82,7 +73,33 @@ int main()
 }
 
 // list of functions
-
+// class functions
+Resources& Resources::operator+=(const Resources &b) {
+    this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->population += b.population;
+    return *this;
+}
+Resources& Resources::operator-=(const Resources &b) {
+    this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->population -= b.population;
+    return *this;
+}
+void Resources::init(int v1, int v2, int v3, int v4){
+    food = v1, fuel = v2, metal = v3, population = v4;
+}
+std::ostream &operator<<(std::ostream &os, Resources const &x){
+    return os << "food = " << x.food << "\t"
+        << "fuel = " << x.fuel << "\n"
+        << "metal = " << x.metal << "\t"
+        << "population = " << x.population << endl;
+}
+std::ostream &operator<<(std::ostream &os, Building const &x){
+    return os << "Building :\t" << x.name << "\n"
+        << "requirement :\t" << x.requirement << "\n"
+        << "description :\t" << x.description << "\n"
+        << "effect: \t" << x.effect << "\n"
+        << "cost--------------------------\n" << x.cost 
+        << "production--------------------\n" << x.production
+        << "------------------------------" << endl;
+}
 // utility functions
 // debug message printer
 void testing()
@@ -110,14 +127,19 @@ vector<string> split(string raw_line)
     return rt;
 }
 
-void go_interface(int id, vector<string> &cmd){
-    if(id == 1) run_interface_1(cmd);
-    else if(id == 2) run_interface_2(cmd);
-    else if(id == 3) run_interface_3(cmd);
-    else if(id == 4) run_interface_4(cmd);
+void go_interface(int id, vector<string> &cmd)
+{
+    if (id == 1)
+        run_interface_1(cmd);
+    else if (id == 2)
+        run_interface_2(cmd);
+    else if (id == 3)
+        run_interface_3(cmd);
+    else if (id == 4)
+        run_interface_4(cmd);
 }
 
-//game procedure functions
+// game procedure functions
 void printIntro()
 {
     string introStory[] = {
