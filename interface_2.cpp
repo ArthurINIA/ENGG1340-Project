@@ -1,13 +1,24 @@
 #include "all_interface.h"
 #include "main.h"
 #include "struct.h"
-#include <iostream>
-#include <string>
-#include <vector>
 using namespace std;
 
-extern resources player;
-extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
+map<string, Building> building;
+Building* oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
+
+
+void init_interface_2(){
+    //cout << "Your country resources:\n" << player; //success
+    building["oil-refinery"] = Building();
+    //cout << "oil-refinery " << building.count("oil-refinery") << endl; // success
+    building["oil-refinery"].name = "oil-refinery";
+    building["oil-refinery"].requirement = "70 metal";
+    building["oil-refinery"].cost.init(0, 0, 70, 0);
+    building["oil-refinery"].description = "add 50 units of fuel per round, maximum 2 per land";
+    building["oil-refinery"].production.init(0, 50, 0, 0);
+    building["oil-refinery"].effect = "50 fuel";
+    //cout << building["oil-refinery"]; //success
+}
 
 void show_internal_heading()
 {

@@ -1,31 +1,25 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <set>
 #include "main.h"
 #include "all_interface.h"
 #include "struct.h"
 using namespace std;
 
-resources player;
-buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
-/*oil_refinery.reuqirement = "70 metal";
-oil_refinery.name = "oil refinery";
-oil_refinery.description = "add 50 units of fuel per round, maximum 2 per land";
-oil_refinery.effect = "50 fuel";*/
-
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 set<string> valid_interface_option({"show", "build", "status", "attack", "protect"});
+map<string, int> interface_id = {
+    {"i1", 1}, {"admin", 1}, 
+    {"i2", 2}, {"internal", 2},
+    {"i3", 3}, {"external", 3},
+    {"i4", 4}, {"news", 4}
+};
+
+Resources player, AI[4];
 
 int main()
 {
     printIntro();
     int cur_interface = 1;
-    player.food = 350;
-    player.fuel = 100;
-    player.metal = 100;
-    player.population = 70000;
-    // resources player(350, 100, 100, 70000);
+    player.init(350, 100, 100, 70000);
+    init_interface_2();
     for (int round = 0; round < 50; round++)
     {
         for (string curCountry : countryList)
@@ -34,38 +28,20 @@ int main()
 
             if (curCountry == "Player")
             {
-                // read command line from player
-                string raw_cmd;
+                string raw_cmd; // read command line from player
                 while (getline(cin, raw_cmd))
                 {
                     vector<string> cmd = split(raw_cmd);
                     if (cmd[0] == "to")
                     {
-                        if (cmd[1] == "i1" || cmd[1] == "admin-panel")
-                        {
-                            cur_interface = 1;
-                            run_interface_1(cmd);
-                        }
-                        else if (cmd[1] == "i2" || cmd[1] == "internal")
-                        {
-                            cur_interface = 2;
-                            run_interface_2(cmd);
-                        }
-                        else if (cmd[1] == "i3" || cmd[1] == "world-map")
-                        {
-                            cur_interface = 3;
-                            run_interface_3(cmd);
-                        }
-                        else if (cmd[1] == "i4" || cmd[1] == "world-news")
-                        {
-                            cur_interface = 4;
-                            run_interface_4(cmd);
+                        if(interface_id.count(cmd[1])){
+                            cur_interface = interface_id[cmd[1]];
+                            go_interface(cur_interface, cmd);
                         }
                         else
                             cout << "This interface does not exist!" << endl;
                     }
-                    else if (valid_interface_option.count(cmd[0]))
-                    {
+                    else if (valid_interface_option.count(cmd[0])){
                         go_interface(cur_interface, cmd);
                     }
                     else if (cmd[0] == "end")
@@ -97,7 +73,33 @@ int main()
 }
 
 // list of functions
-
+// class functions
+Resources& Resources::operator+=(const Resources &b) {
+    this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->population += b.population;
+    return *this;
+}
+Resources& Resources::operator-=(const Resources &b) {
+    this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->population -= b.population;
+    return *this;
+}
+void Resources::init(int v1, int v2, int v3, int v4){
+    food = v1, fuel = v2, metal = v3, population = v4;
+}
+std::ostream &operator<<(std::ostream &os, Resources const &x){
+    return os << "food = " << x.food << "\t"
+        << "fuel = " << x.fuel << "\n"
+        << "metal = " << x.metal << "\t"
+        << "population = " << x.population << endl;
+}
+std::ostream &operator<<(std::ostream &os, Building const &x){
+    return os << "Building :\t" << x.name << "\n"
+        << "requirement :\t" << x.requirement << "\n"
+        << "description :\t" << x.description << "\n"
+        << "effect: \t" << x.effect << "\n"
+        << "cost--------------------------\n" << x.cost 
+        << "production--------------------\n" << x.production
+        << "------------------------------" << endl;
+}
 // utility functions
 // debug message printer
 void testing()

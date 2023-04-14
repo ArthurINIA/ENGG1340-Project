@@ -1,11 +1,13 @@
-// d2boh.h
-
 #ifndef ALL_INTERFACE_H
 #define ALL_INTERFACE_H
 
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
+#include <map>
+
+void init_interface_2();
 
 void run_interface_1(std::vector<std::string> &cmd);
 void run_interface_2(std::vector<std::string> &cmd);
@@ -16,6 +18,30 @@ void show_data();
 void internal_actions();
 void external_actions();
 void round_result();
+
+//classes
+class Resources{
+    public:
+    int food = 350, fuel = 100, metal = 100, population = 10000;
+    Resources() : food(0), fuel(0), metal(0), population(0) {}
+    void init(int v1, int v2, int v3, int v4);
+    Resources& operator+=(const Resources &b);
+    Resources& operator-=(const Resources &b);
+};
+class Building
+{
+    public:
+    std::string name, requirement, description, effect;
+    int quantity;
+    Resources cost, production;
+    //void init(std::string s1, std::string s2, std::string s3);
+};
+std::ostream &operator<<(std::ostream &os, Resources const &x);
+std::ostream &operator<<(std::ostream &os, Building const &x);
+//class objects that share between interfaces
+extern Resources player, AI[4];
+//extern Building oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
+extern std::map<std::string, Building> building;
 
 // testing code
 void printNum(std::string s);
