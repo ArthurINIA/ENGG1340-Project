@@ -3,9 +3,9 @@
 #ifndef ALL_INTERFACE_H
 #define ALL_INTERFACE_H
 
-#include<iostream>
-#include<string>
-#include<vector>
+#include <iostream>
+#include <string>
+#include <vector>
 
 void run_interface_1(std::vector<std::string> &cmd);
 void run_interface_2(std::vector<std::string> &cmd);
@@ -17,7 +17,7 @@ void internal_actions();
 void external_actions();
 void round_result();
 
-//testing code
+// testing code
 void printNum(std::string s);
 
 #endif
