@@ -1,7 +1,10 @@
 #include "all_interface.h"
 #include <iostream>
 #include <string>
+#include <iomanip>
 using namespace std;
+
+extern resources player;
 
 void run_interface_1(vector<string> &cmd){
     //print admin panel
@@ -18,16 +21,16 @@ int printUI1(){
     cout << "|                               Interface 1                                   |" << endl;
     cout << "|-----------------------------------------------------------------------------|" << endl;
     cout << "|*Resource 01: Food                                                          *|" << endl;
-    cout << "|*Total (units):                                                             *|" << endl;
+    cout << "|*Total (units): " << setprecision(5) << Resources.food << "                                                            *|" << endl;
     cout << "|*****************************************************************************|" << endl;
     cout << "|*Resource 02: Fuel                                                          *|" << endl;
-    cout << "|*Total (units):                                                             *|" << endl;
+    cout << "|*Total (units): " << setprecision(5) << Resources.fuel << "                                                            *|" << endl;
     cout << "|*****************************************************************************|" << endl;
     cout << "|*Resource 03: Metal                                                         *|" << endl;
-    cout << "|*Total (units):                                                             *|" << endl;
+    cout << "|*Total (units): " << setprecision(5) << Resources.metal << "                                                            *|" << endl;
     cout << "|*****************************************************************************|" << endl;
     cout << "|*Resource 04: Population                                                    *|" << endl;
-    cout << "|*Total (units):                                                             *|" << endl;
+    cout << "|*Total (units): " << setprecision(5) << Resources.ppl << "                                                            *|" << endl;
     cout << "|*****************************************************************************|" << endl;
     cout << "|*City index 01: Diplomacy                                                   *|" << endl;
     cout << "|*Rate:                                                                      *|" << endl;
