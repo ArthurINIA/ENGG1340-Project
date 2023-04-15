@@ -6,19 +6,16 @@ using namespace std;
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 set<string> valid_interface_option({"show", "build", "status", "attack", "protect"});
 map<string, int> interface_id = {
-    {"i1", 1}, {"admin", 1}, 
-    {"i2", 2}, {"internal", 2},
-    {"i3", 3}, {"external", 3},
-    {"i4", 4}, {"news", 4}
-};
+    {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}};
 
 Resources player, AI[4];
+extern Resources player, AI[4];
 
 int main()
 {
     printIntro();
     int cur_interface = 1;
-    player.init(350, 100, 100, 70000);
+    player.init(350, 100, 100, 70000, 0, 0, 0, 0);
     init_interface_2();
     for (int round = 0; round < 50; round++)
     {
@@ -31,17 +28,20 @@ int main()
                 string raw_cmd; // read command line from player
                 while (getline(cin, raw_cmd))
                 {
+                    cout << player.food << " " << player.fuel << " " << player.metal << " " << player.population << endl;
                     vector<string> cmd = split(raw_cmd);
                     if (cmd[0] == "to")
                     {
-                        if(interface_id.count(cmd[1])){
+                        if (interface_id.count(cmd[1]))
+                        {
                             cur_interface = interface_id[cmd[1]];
                             go_interface(cur_interface, cmd);
                         }
                         else
                             cout << "This interface does not exist!" << endl;
                     }
-                    else if (valid_interface_option.count(cmd[0])){
+                    else if (valid_interface_option.count(cmd[0]))
+                    {
                         go_interface(cur_interface, cmd);
                     }
                     else if (cmd[0] == "end")
@@ -74,31 +74,38 @@ int main()
 
 // list of functions
 // class functions
-Resources& Resources::operator+=(const Resources &b) {
-    this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->ppl += b.ppl;
+Resources &Resources::operator+=(const Resources &b)
+{
+    this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->population += b.population;
     return *this;
 }
-Resources& Resources::operator-=(const Resources &b) {
-    this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->ppl -= b.ppl;
+Resources &Resources::operator-=(const Resources &b)
+{
+    this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->population -= b.population;
     return *this;
 }
-void Resources::init(int v1, int v2, int v3, int v4){
-    food = v1, fuel = v2, metal = v3, ppl = v4;
+void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
+{
+    food = v1, fuel = v2, metal = v3, population = v4, tanks = v5, soldiers = v6, military_factor = v7, max_population = v8;
 }
-std::ostream &operator<<(std::ostream &os, Resources const &x){
+std::ostream &operator<<(std::ostream &os, Resources const &x)
+{
     return os << "food = " << x.food << "\t"
-        << "fuel = " << x.fuel << "\n"
-        << "metal = " << x.metal << "\t"
-        << "ppl = " << x.ppl << endl;
+              << "fuel = " << x.fuel << "\n"
+              << "metal = " << x.metal << "\t"
+              << "ppl = " << x.population << endl;
 }
-std::ostream &operator<<(std::ostream &os, Building const &x){
+std::ostream &operator<<(std::ostream &os, Building const &x)
+{
     return os << "Building :\t" << x.name << "\n"
-        << "requirement :\t" << x.requirement << "\n"
-        << "description :\t" << x.description << "\n"
-        << "effect: \t" << x.effect << "\n"
-        << "cost--------------------------\n" << x.cost 
-        << "production--------------------\n" << x.production
-        << "------------------------------" << endl;
+              << "requirement :\t" << x.requirement << "\n"
+              << "description :\t" << x.description << "\n"
+              << "effect: \t" << x.effect << "\n"
+              << "cost--------------------------\n"
+              << x.cost
+              << "production--------------------\n"
+              << x.production
+              << "------------------------------" << endl;
 }
 // utility functions
 // debug message printer
