@@ -85,7 +85,8 @@ void init_interface_2()
 }
 
 void show_internal_heading()
-{
+{   
+    system("clear"); 
     cout << "+-------------------------------------------------------------------------------------+" << endl;
     // cout << "|";
 }
@@ -117,7 +118,7 @@ void run_interface_2(vector<string> &cmd)
                 if (building.count(cmd[2]))
                 {
                     // show info
-                    cout << "success2" << endl; // testing
+                    cout << building[cmd[2]];
                 }
                 else
                 {
@@ -159,6 +160,7 @@ void run_interface_2(vector<string> &cmd)
 void list_buildable()
 {
     map<string, Building>::iterator it;
+    ///*
     for (it = building.begin(); it != building.end(); it++)
     {
         set<int> x;
@@ -176,4 +178,18 @@ void list_buildable()
         if (!x.empty())
             cout << setw(16) << it->first << " : Right now you can buy at most " << *x.begin() << endl;
     }
+    //*/
+    /*
+    for(it = building.begin(); it != building.end(); it++){ 
+        set<int> x;
+        if(it->second.build_limit) x.insert(it->second.build_limit);
+        Resources cur = it->second.cost;
+        if(buffer.food && cur.food && buffer.food >= cur.food) x.insert(buffer.food / cur.food);
+        if(buffer.fuel && cur.fuel && buffer.fuel >= cur.fuel) x.insert(buffer.fuel / cur.fuel);
+        if(buffer.metal && cur.metal && buffer.metal >= cur.metal) x.insert(buffer.metal / cur.metal);
+        if(buffer.ppl && cur.ppl && buffer.ppl >= cur.ppl) x.insert(buffer.ppl / cur.ppl);
+        if(!x.empty()) 
+            cout << setw(16) << it->first << " : Right now you can buy at most " << *x.begin() << endl;  
+    }
+    */
 }

@@ -3,6 +3,7 @@ using namespace std;
 
 void run_interface_1(vector<string> &cmd)
 {
+    system("clear"); 
     // print admin panel
     cout << "interface 1" << endl;                       // testing
     cout << "food: " << player.food << endl;             // testing

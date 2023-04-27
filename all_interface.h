@@ -2,6 +2,7 @@
 #define ALL_INTERFACE_H
 
 #include <iostream>
+#include <cstdlib>
 #include <iomanip>
 #include <string>
 #include <vector>
