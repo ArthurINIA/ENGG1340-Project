@@ -8,8 +8,7 @@ set<string> valid_interface_option({"show", "build", "status", "attack", "protec
 map<string, int> interface_id = {
     {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}};
 
-Resources player, AI[4];
-extern Resources player, AI[4];
+Resources player, AI[4], buffer;
 
 int main()
 {
@@ -28,7 +27,7 @@ int main()
                 string raw_cmd; // read command line from player
                 while (getline(cin, raw_cmd))
                 {
-                    cout << player.food << " " << player.fuel << " " << player.metal << " " << player.population << endl;
+                    // cout << player.food << " " << player.fuel << " " << player.metal << " " << player.population << endl;
                     vector<string> cmd = split(raw_cmd);
                     if (cmd[0] == "to")
                     {
@@ -38,7 +37,9 @@ int main()
                             go_interface(cur_interface, cmd);
                         }
                         else
+                        {
                             cout << "This interface does not exist!" << endl;
+                        }
                     }
                     else if (valid_interface_option.count(cmd[0]))
                     {

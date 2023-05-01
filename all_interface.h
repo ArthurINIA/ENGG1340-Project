@@ -26,7 +26,7 @@ void round_result();
 class Resources
 {
 public:
-    int food = 350, fuel = 100, metal = 100, population = 10000, tanks = 0, soldiers = 0, max_population = 0;
+    int food = 350, fuel = 100, metal = 100, population = 10000, tanks = 0, soldiers = 0, max_population = 0, livelihood = 50, military = 50, diplomacy = 50;
     double military_factor = 0;
     Resources() : food(0), fuel(0), metal(0), population(0), tanks(0), soldiers(0), military_factor(0), max_population(0) {}
     void init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8);
@@ -37,14 +37,14 @@ class Building
 {
 public:
     std::string name, requirement, description, effect;
-    int build_limit = 50, qty_owned = 0;
+    int build_limit = 50, qty_owned = 8;
     Resources cost, production;
     // void init(std::string s1, std::string s2, std::string s3);
 };
 std::ostream &operator<<(std::ostream &os, Resources const &x);
 std::ostream &operator<<(std::ostream &os, Building const &x);
 // class objects that share between interfaces
-extern Resources player, AI[4];
+extern Resources player, AI[4], buffer;
 // extern Building oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 extern std::map<std::string, Building> building;
 
