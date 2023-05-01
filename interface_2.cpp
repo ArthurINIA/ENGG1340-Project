@@ -14,7 +14,7 @@ map<string, Building> building;
 
 bool check_res(Resources res)
 {
-    cout << player.food << " " << res.food << " " << player.fuel << " " << res.fuel << " " << player.metal << " " << res.metal << " " << player.population << " " << res.population;
+    // cout << player.food << " " << res.food << " " << player.fuel << " " << res.fuel << " " << player.metal << " " << res.metal << " " << player.population << " " << res.population;
     if (player.food > res.food && player.fuel > res.fuel && player.metal > res.metal && player.population > res.population)
     {
         cout << "true";
@@ -30,7 +30,7 @@ bool check_res(Resources res)
 void init_interface_2()
 {
     // cout << "Your country resources:\n" << player; //success
-    building["oil refinery"] = Building();
+    // building["oil refinery"] = Building();
     // cout << "oil-refinery " << building.count("oil-refinery") << endl; // success
     //  food fuel metal population
     building["oil-refinery"].name = "oil-refinery";
@@ -174,7 +174,7 @@ void run_interface_2(vector<string> &cmd)
                     vector<string> info_vec;
                     info_vec.push_back("Name: " + building[cmd[2]].name);
                     info_vec.push_back("Requirement: " + building[cmd[2]].requirement);
-                    info_vec.push_back("Cost: " + to_string(building[cmd[2]].cost.food) + " food, " + to_string(building[cmd[2]].cost.fuel) + " fuels, " + to_string(building[cmd[2]].cost.population) + " population");
+                    info_vec.push_back("Cost: " + to_string(building[cmd[2]].cost.food) + " food, " + to_string(building[cmd[2]].cost.fuel) + " fuels, " + to_string(building[cmd[2]].cost.metal) + " metal, " + to_string(building[cmd[2]].cost.population) + " population");
                     info_vec.push_back("Description: " + building[cmd[2]].description);
                     info_vec.push_back("Production: " + to_string(building[cmd[2]].production.food) + " food, " + to_string(building[cmd[2]].production.fuel) + " fuels, " + to_string(building[cmd[2]].production.population) + " population");
                     info_vec.push_back(to_string(building[cmd[2]].production.tanks) + " tanks, " + to_string(building[cmd[2]].production.soldiers) + " soldiers, " + to_string(building[cmd[2]].production.military_factor) + " military factor, " + to_string(building[cmd[2]].production.max_population) + " max population");
@@ -208,12 +208,11 @@ void run_interface_2(vector<string> &cmd)
             if (building[cmd[2]].build_limit > building[cmd[2]].qty_owned + stoi(cmd[1]) && check_res(building[cmd[2]].cost))
             {
                 building[cmd[2]].qty_owned += stoi(cmd[1]);
-                Sample.qty_owned += stoi(cmd[1]);
                 vector<string> build_vec;
-                player.food -= building[cmd[2]].cost.food;
-                player.fuel -= building[cmd[2]].cost.fuel;
-                player.metal -= building[cmd[2]].cost.metal;
-                player.population -= building[cmd[2]].cost.population;
+                player.food -= building[cmd[2]].cost.food * stoi(cmd[1]);
+                player.fuel -= building[cmd[2]].cost.fuel * stoi(cmd[1]);
+                player.metal -= building[cmd[2]].cost.metal * stoi(cmd[1]);
+                player.population -= building[cmd[2]].cost.population * stoi(cmd[1]);
                 build_vec.push_back(cmd[1] + " " + cmd[2] + " are built successfully.");
                 show_internal(build_vec);
             }
@@ -225,7 +224,8 @@ void run_interface_2(vector<string> &cmd)
         }
         else
         {
-            cout << "Unsuccessful Command" << endl;
+            vector<string> invalid_vec = {"Unsuccess command."};
+            show_internal(invalid_vec);
         }
     }
     else
@@ -240,21 +240,23 @@ vector<string> list_buildable()
     vector<string> show;
     for (it = building.begin(); it != building.end(); it++)
     {
-        set<int> x;
-        if (it->second.build_limit)
-            x.insert(it->second.build_limit);
+        int build_count = it->second.build_limit;
         Resources cur = it->second.cost;
-        if (player.food && cur.food && player.food >= cur.food)
-            x.insert(player.food / cur.food);
-        if (player.fuel && cur.fuel && player.fuel >= cur.fuel)
-            x.insert(player.fuel / cur.fuel);
-        if (player.metal && cur.metal && player.metal >= cur.metal)
-            x.insert(player.metal / cur.metal);
-        if (player.population && cur.population && player.population >= cur.population)
-            x.insert(player.population / cur.population);
-        if (!x.empty())
-            show.push_back(it->first + " : Right now you can buy at most " + to_string(*x.begin()));
+
+        if (cur.food)
+            build_count = min(build_count, player.food / cur.food);
+
+        if (cur.fuel)
+            build_count = min(build_count, player.fuel / cur.fuel);
+
+        if (cur.metal)
+            build_count = min(build_count, player.metal / cur.metal);
+
+        if (cur.population)
+            build_count = min(build_count, player.population / cur.population);
+
+        show.push_back(it->first + " : Right now you can buy at most " + to_string(build_count));
     }
-    // cout << show;
+
     return show;
 }

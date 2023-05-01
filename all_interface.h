@@ -26,7 +26,7 @@ void round_result();
 class Resources
 {
 public:
-    int food = 350, fuel = 100, metal = 100, population = 10000, tanks = 0, soldiers = 0, max_population = 0;
+    int food = 350, fuel = 100, metal = 100, population = 10000, tanks = 0, soldiers = 0, max_population = 0, livelihood = 50, military = 50, diplomacy = 50;
     double military_factor = 0;
     Resources() : food(0), fuel(0), metal(0), population(0), tanks(0), soldiers(0), military_factor(0), max_population(0) {}
     void init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8);
