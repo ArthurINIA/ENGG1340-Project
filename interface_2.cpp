@@ -1,9 +1,15 @@
 #include "all_interface.h"
 #include "main.h"
 #include "struct.h"
+#include "UI.h"
+#include <string>
 using namespace std;
 
 map<string, Building> building;
+
+/*string struct_to_string(Resources res){
+    string result = to_string()
+}*/
 
 void init_interface_2()
 {
@@ -84,40 +90,77 @@ void init_interface_2()
     building["casino"].qty_owned = 0;
 }
 
-void show_internal_heading()
+void show_internal(vector<string> content)
 {
-    cout << "+-------------------------------------------------------------------------------------+" << endl;
-    // cout << "|";
+    // cout << "+-------------------------------------------------------------------------------------+" << endl;
+    //  cout << "|";
+    UI gameScreen;
+    string s;
+    string str1 = "Food: " + to_string(player.food), str2 = "Fuel: " + to_string(player.fuel), str3 = "Metal: " + to_string(player.metal), str4 = "Population: " + to_string(player.population);
+    // cout << content << endl;
+    vector<string> vec1 = {str1}, vec2 = {str2}, vec3 = {str3}, vec4 = {str4};
+    gameScreen.divide(1, 1, 120, 5, "resource-bar");
+    gameScreen.divide(1, 1, 40, 5, "interface-name");
+    gameScreen.divide(40, 1, 60, 5, "resource-1");
+    gameScreen.divide(60, 1, 80, 5, "resource-2");
+    gameScreen.divide(80, 1, 100, 5, "resource-3");
+    gameScreen.divide(100, 1, 120, 5, "resource-4");
+    gameScreen.divide(1, 5, 40, 29, "manual");
+    gameScreen.divide(40, 5, 120, 29, "game-content");
+
+    gameScreen.drawAll("interface-name", "center", {"Interface 2: Internal Action"});
+    gameScreen.drawAll("resource-1", "center", vec1);
+    gameScreen.drawAll("resource-2", "center", vec2);
+    gameScreen.drawAll("resource-3", "center", vec3);
+    gameScreen.drawAll("resource-4", "center", vec4);
+    gameScreen.drawAll("game-content", "center", content);
+    gameScreen.drawLineStart("manual");
+    gameScreen.drawLine("center", "user manual");
+    gameScreen.drawLine("center", "sdfsdfsdf");
+    gameScreen.drawLineStop();
+    gameScreen.print();
 }
 
-void list_buildable();
+vector<string> list_buildable();
 
 void run_interface_2(vector<string> &cmd)
 {
+    vector<string> content;
     // show default information/ interface2
-    show_internal_heading();
-    if (cmd[0] == "to")
+    if (cmd[0] == "to" && (cmd[1] == "i2" || cmd[1] == "internal") && cmd.size() == 2)
     {
-        cout << "interface 2" << endl; // testing
+        show_internal(content);
     }
-    else if (cmd[0] == "show")
+    if (cmd[2] == "show")
     {
-        if (cmd[1] == "built")
+        if (cmd[3] == "built")
         {
-            // show all quantity of building
-        }
-        else if (cmd[1] == "buildable")
-        {
-            list_buildable(); // show available buildings
-        }
-        else if (cmd[1] == "info")
-        {
-            if (cmd.size() > 2)
+            vector<string> built_vec;
+            for (map<string, Building>::iterator it = building.begin(); it != building.end(); ++it)
             {
-                if (building.count(cmd[2]))
+                built_vec.push_back(it->first + ": Owned " + to_string(it->second.qty_owned));
+            }
+            content = built_vec;
+            show_internal(content);
+        }
+        else if (cmd[3] == "buildable")
+        {
+            content = list_buildable(); // show available buildings
+            show_internal(content);
+        }
+        else if (cmd[3] == "info")
+        {
+            if (cmd.size() > 4)
+            {
+                if (building.count(cmd[4]) > 0)
                 {
-                    // show info
-                    cout << "success2" << endl; // testing
+                    vector<string> info_vec;
+                    info_vec.push_back("Name: " + building[cmd[4]].name);
+                    info_vec.push_back("Requirement: " + building[cmd[4]].requirement);
+                    info_vec.push_back("Cost: " + to_string(building[cmd[4]].cost));
+                    info_vec.push_back("Description: " + building[cmd[4]].description);
+                    info_vec.push_back("Production: " + to_string(building[cmd[4]].production));
+                    show_internal(content);
                 }
                 else
                 {
@@ -156,9 +199,10 @@ void run_interface_2(vector<string> &cmd)
     }
 }
 
-void list_buildable()
+vector<string> list_buildable()
 {
     map<string, Building>::iterator it;
+    vector<string> show;
     for (it = building.begin(); it != building.end(); it++)
     {
         set<int> x;
@@ -174,6 +218,8 @@ void list_buildable()
         if (player.population && cur.population && player.population >= cur.population)
             x.insert(player.population / cur.population);
         if (!x.empty())
-            cout << setw(16) << it->first << " : Right now you can buy at most " << *x.begin() << endl;
+            show.push_back(it->first + " : Right now you can buy at most " + to_string(*x.begin()));
     }
+    // cout << show;
+    return show;
 }

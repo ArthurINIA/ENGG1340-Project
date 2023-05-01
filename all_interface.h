@@ -44,7 +44,7 @@ public:
 std::ostream &operator<<(std::ostream &os, Resources const &x);
 std::ostream &operator<<(std::ostream &os, Building const &x);
 // class objects that share between interfaces
-extern Resources player, AI[4];
+extern Resources player, AI[4], buffer;
 // extern Building oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 extern std::map<std::string, Building> building;
 
