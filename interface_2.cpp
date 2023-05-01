@@ -3,13 +3,29 @@
 #include "struct.h"
 #include "UI.h"
 #include <string>
+#include <algorithm>
 using namespace std;
 
 map<string, Building> building;
-
-/*string struct_to_string(Resources res){
-    string result = to_string()
+/*string struct_to_string(Resources res)
+{
+    string result = "Food: " + to_string(res.food) + "Fuel: " + to_string(res.fuel) + "Metal: " + to_string(res.metal) + "Population: " + to_string(res.population);
 }*/
+
+bool check_res(Resources res)
+{
+    cout << player.food << " " << res.food << " " << player.fuel << " " << res.fuel << " " << player.metal << " " << res.metal << " " << player.population << " " << res.population;
+    if (player.food > res.food && player.fuel > res.fuel && player.metal > res.metal && player.population > res.population)
+    {
+        cout << "true";
+        return true;
+    }
+    else
+    {
+        cout << "false";
+        return false;
+    }
+}
 
 void init_interface_2()
 {
@@ -17,13 +33,13 @@ void init_interface_2()
     building["oil refinery"] = Building();
     // cout << "oil-refinery " << building.count("oil-refinery") << endl; // success
     //  food fuel metal population
-    building["oil refinery"].name = "oil-refinery";
-    building["oil refinery"].requirement = "70 metal";
-    building["oil refinery"].cost.init(0, 0, 70, 0, 0, 0, 0, 0);
-    building["oil refinery"].description = "add 50 units of fuel per round, maximum 2 per land";
-    building["oil refinery"].production.init(0, 50, 0, 0, 0, 0, 0, 0);
-    building["oil refinery"].effect = "50 fuel";
-    building["oil refinery"].qty_owned = 2;
+    building["oil-refinery"].name = "oil-refinery";
+    building["oil-refinery"].requirement = "70 metal";
+    building["oil-refinery"].cost.init(0, 0, 70, 0, 0, 0, 0, 0);
+    building["oil-refinery"].description = "add 50 units of fuel per round, maximum 2 per land";
+    building["oil-refinery"].production.init(0, 50, 0, 0, 0, 0, 0, 0);
+    building["oil-refinery"].effect = "50 fuel";
+    building["oil-refinery"].qty_owned = 2;
     // cout << building["oil-refinery"]; //success
 
     building["factory"] = Building(); // extra resouces needed
@@ -53,14 +69,14 @@ void init_interface_2()
     building["mine"].effect = "50 metal";
     building["mine"].qty_owned = 0;
 
-    building["recruiting office"] = Building(); // extra resouces needed
-    building["recruiting office"].name = "recruiting office";
-    building["recruiting office"].requirement = "10 metal";
-    building["recruiting office"].cost.init(0, 0, 10, 0, 0, 0, 0, 0);
-    building["recruiting office"].description = "recruit 750 units of soldiers per round. Maximum 1 recruiting office per land.";
-    building["recruiting office"].production.init(0, 0, 0, 0, 0, 750, 0, 0);
-    building["recruiting office"].effect = "recruit 750 units of soldiers per round.";
-    building["recruiting office"].qty_owned = 0;
+    building["recruiting-office"] = Building(); // extra resouces needed
+    building["recruiting-office"].name = "recruiting office";
+    building["recruiting-office"].requirement = "10 metal";
+    building["recruiting-office"].cost.init(0, 0, 10, 0, 0, 0, 0, 0);
+    building["recruiting-office"].description = "recruit 750 units of soldiers per round. Maximum 1 recruiting office per land.";
+    building["recruiting-office"].production.init(0, 0, 0, 0, 0, 750, 0, 0);
+    building["recruiting-office"].effect = "recruit 750 units of soldiers per round.";
+    building["recruiting-office"].qty_owned = 0;
 
     building["house"] = Building(); // extra resouces needed
     building["house"].name = "house";
@@ -71,14 +87,14 @@ void init_interface_2()
     building["house"].effect = "Increase population limit by 1000.";
     building["house"].qty_owned = 5;
 
-    building["military laboratory"] = Building(); // extra variables needed?
-    building["military laboratory"].name = "military laboratory";
-    building["military laboratory"].requirement = "upgrade needs 30% metal, 30% fuel";
-    building["military laboratory"].cost.init(0, 0, 70, 0, 0, 0, 0, 0);
-    building["military laboratory"].description = "Boost 30% power of militrary force per upgrade.";
-    building["military laboratory"].production.init(0, 0, 50, 0, 0, 0, 0.05, 0);
-    building["military laboratory"].effect = "30% military factor";
-    building["military laboratory"].qty_owned = 1;
+    building["military-laboratory"] = Building(); // extra variables needed?
+    building["military-laboratory"].name = "military laboratory";
+    building["military-laboratory"].requirement = "upgrade needs 30% metal, 30% fuel";
+    building["military-laboratory"].cost.init(0, 0, 70, 0, 0, 0, 0, 0);
+    building["military-laboratory"].description = "Boost 30% power of militrary force per upgrade.";
+    building["military-laboratory"].production.init(0, 0, 50, 0, 0, 0, 0.05, 0);
+    building["military-laboratory"].effect = "30% military factor";
+    building["military-laboratory"].qty_owned = 1;
 
     building["casino"] = Building(); // extra indexes needed
     building["casino"].name = "casino";
@@ -125,15 +141,16 @@ vector<string> list_buildable();
 
 void run_interface_2(vector<string> &cmd)
 {
+    init_interface_2();
     vector<string> content;
     // show default information/ interface2
     if (cmd[0] == "to" && (cmd[1] == "i2" || cmd[1] == "internal") && cmd.size() == 2)
     {
         show_internal(content);
     }
-    if (cmd[2] == "show")
+    else if (cmd[0] == "show")
     {
-        if (cmd[3] == "built")
+        if (cmd[1] == "built")
         {
             vector<string> built_vec;
             for (map<string, Building>::iterator it = building.begin(); it != building.end(); ++it)
@@ -143,33 +160,36 @@ void run_interface_2(vector<string> &cmd)
             content = built_vec;
             show_internal(content);
         }
-        else if (cmd[3] == "buildable")
+        else if (cmd[1] == "buildable")
         {
             content = list_buildable(); // show available buildings
             show_internal(content);
         }
-        else if (cmd[3] == "info")
+        else if (cmd[1] == "info")
         {
-            if (cmd.size() > 4)
+            if (cmd.size() == 3)
             {
-                if (building.count(cmd[4]) > 0)
+                if (building.count(cmd[2]) > 0)
                 {
                     vector<string> info_vec;
-                    info_vec.push_back("Name: " + building[cmd[4]].name);
-                    info_vec.push_back("Requirement: " + building[cmd[4]].requirement);
-                    info_vec.push_back("Cost: " + to_string(building[cmd[4]].cost));
-                    info_vec.push_back("Description: " + building[cmd[4]].description);
-                    info_vec.push_back("Production: " + to_string(building[cmd[4]].production));
+                    info_vec.push_back("Name: " + building[cmd[2]].name);
+                    info_vec.push_back("Requirement: " + building[cmd[2]].requirement);
+                    info_vec.push_back("Cost: " + to_string(building[cmd[2]].cost.food) + " food, " + to_string(building[cmd[2]].cost.fuel) + " fuels, " + to_string(building[cmd[2]].cost.population) + " population");
+                    info_vec.push_back("Description: " + building[cmd[2]].description);
+                    info_vec.push_back("Production: " + to_string(building[cmd[2]].production.food) + " food, " + to_string(building[cmd[2]].production.fuel) + " fuels, " + to_string(building[cmd[2]].production.population) + " population");
+                    info_vec.push_back(to_string(building[cmd[2]].production.tanks) + " tanks, " + to_string(building[cmd[2]].production.soldiers) + " soldiers, " + to_string(building[cmd[2]].production.military_factor) + " military factor, " + to_string(building[cmd[2]].production.max_population) + " max population");
+                    info_vec.push_back("Quantity: " + to_string(building[cmd[2]].qty_owned));
+                    content = info_vec;
                     show_internal(content);
                 }
                 else
                 {
-                    cout << "We do not have this building option" << endl;
+                    cout << "Building option does not exist." << endl;
                 }
             }
             else
             {
-                cout << "info of all buildings" << endl;
+                cout << "Please enter the building name." << endl;
             }
         }
         else
@@ -181,12 +201,27 @@ void run_interface_2(vector<string> &cmd)
     {
         if (cmd.size() < 3)
         {
-            cout << "please add quantity and then the name of building." << endl;
+            show_internal(vector<string>{"Please add quantity and then name of building."});
         }
-        else if (cmd.size() >= 3 && building.count(cmd[2]))
+        else if (cmd.size() == 3 && building.count(cmd[2]) > 0 && stoi(cmd[1]) > 0)
         {
-            cout << "success3" << endl; // testing
-            // bulding count + cmd[1]
+            if (building[cmd[2]].build_limit > building[cmd[2]].qty_owned + stoi(cmd[1]) && check_res(building[cmd[2]].cost))
+            {
+                building[cmd[2]].qty_owned += stoi(cmd[1]);
+                Sample.qty_owned += stoi(cmd[1]);
+                vector<string> build_vec;
+                player.food -= building[cmd[2]].cost.food;
+                player.fuel -= building[cmd[2]].cost.fuel;
+                player.metal -= building[cmd[2]].cost.metal;
+                player.population -= building[cmd[2]].cost.population;
+                build_vec.push_back(cmd[1] + " " + cmd[2] + " are built successfully.");
+                show_internal(build_vec);
+            }
+            else
+            {
+                vector<string> build_vec = {"Unsuccess command."};
+                show_internal(build_vec);
+            }
         }
         else
         {

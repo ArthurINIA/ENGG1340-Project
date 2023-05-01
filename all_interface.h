@@ -37,7 +37,7 @@ class Building
 {
 public:
     std::string name, requirement, description, effect;
-    int build_limit = 50, qty_owned = 0;
+    int build_limit = 50, qty_owned = 8;
     Resources cost, production;
     // void init(std::string s1, std::string s2, std::string s3);
 };
