@@ -27,7 +27,7 @@ int eventlist_content(){
     return 0;
 }
 
-int event(){
+void event(){
     int randomevent = rand() % 20;
     cout << eventl[randomevent] << endl;
     if (randomevent == 0){
@@ -101,5 +101,4 @@ int event(){
         player.millitary_factor *= 1.2;
         player.population *= 0.9;
     }
-    return 0;
 }
