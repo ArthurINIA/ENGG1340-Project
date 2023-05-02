@@ -3,6 +3,30 @@
 #include <string>
 using namespace std;
 
+int eventlist_content(){
+    eventl[0] = "Help from other country"; // increase diplomaticval 
+    eventl[1] = "Nothing happen"; 
+    eventl[2] = "Wave of unemployment"; // farm, factory decrease
+    eventl[3] = "Nothing happen";
+    eventl[4] = "Food crisis"; // farm decrease
+    eventl[5] = "Nothing happen"; 
+    eventl[6] = "Defence Secretary of your city turn coat!"; // millitaryval decrease
+    eventl[7] = "Nothing happen";
+    eventl[8] = "Strike"; // manpower decrease in one round
+    eventl[9] = "Oil refinery collapse"; // oil refinery -1
+    eventl[10] = "Your country send a wreck hook to quake-afflicted country"; // increase diplomaticval
+    eventl[11] = "Exchange Fund increased by 10%"; // econ increase
+    eventl[12] = "Nothing happen";
+    eventl[13] = "Econoy cooperation with other country"; // increase diplomaticval
+    eventl[14] = "Military Laboratory has developed a new weapon"; // milliteryval increase
+    eventl[15] = "Nothing happen";
+    eventl[16]= "Nothing happen";
+    eventl[17] = "A new fertilizer has developed in your country"; // farm factory increase
+    eventl[18]= "Pandemic"; // manpower, born rate decrease
+    eventl[19] = "Recruiting office in your country draft more army"; // milliteryval increase
+    return 0;
+}
+
 int event(){
     int randomevent = rand() % 20;
     cout << eventl[randomevent] << endl;
