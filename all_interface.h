@@ -41,6 +41,14 @@ public:
     Resources cost, production;
     // void init(std::string s1, std::string s2, std::string s3);
 };
+
+class military_resources{
+public:
+    int country [16][3] = {{1, 0, 0}, {2, 50000,0}, {3, 70000, 0}, {4, 130000, 0},{5, 70000, 0}, {6, 100000, 0}, {7, 130000, 0}, {8, 180000, 0}, {9, 140000, 0}, {10, 170000, 0}, {11, 250000, 0}, {12, 140000, 0}, {13, 210000, 0}, {14, 270000, 0}, {15, 300000, 0}, {16, 260000, 0}};
+    // alliance list
+    int alliance [3]={0,0,0};
+    int count_alliance = 0;
+};
 std::ostream &operator<<(std::ostream &os, Resources const &x);
 std::ostream &operator<<(std::ostream &os, Building const &x);
 // class objects that share between interfaces
