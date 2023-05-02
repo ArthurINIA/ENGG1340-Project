@@ -22,6 +22,53 @@ void internal_actions();
 void external_actions();
 void round_result();
 
+bool check_res(Resources res);
+bool AI_check_res(string name, Resources res)
+{
+    if (name == "PC1")
+    {
+        // cout << player.food << " " << res.food << " " << player.fuel << " " << res.fuel << " " << player.metal << " " << res.metal << " " << player.population << " " << res.population;
+        if (AI[0].food > res.food && AI[0].fuel > res.fuel && AI[0].metal > res.metal && AI[0].population > res.population)
+        {
+            // cout << "true";
+            return true;
+        }
+        else
+        {
+            // cout << "false";
+            return false;
+        }
+    }
+    else if (name == "PC2")
+    {
+        // cout << player.food << " " << res.food << " " << player.fuel << " " << res.fuel << " " << player.metal << " " << res.metal << " " << player.population << " " << res.population;
+        if (AI[1].food > res.food && AI[1].fuel > res.fuel && AI[1].metal > res.metal && AI[1].population > res.population)
+        {
+            // cout << "true";
+            return true;
+        }
+        else
+        {
+            // cout << "false";
+            return false;
+        }
+    }
+    else if (name == "PC1")
+    {
+        // cout << player.food << " " << res.food << " " << player.fuel << " " << res.fuel << " " << player.metal << " " << res.metal << " " << player.population << " " << res.population;
+        if (AI[2].food > res.food && AI[2].fuel > res.fuel && AI[2].metal > res.metal && AI[2].population > res.population)
+        {
+            // cout << "true";
+            return true;
+        }
+        else
+        {
+            // cout << "false";
+            return false;
+        }
+    }
+}
+
 // classes
 class Resources
 {
@@ -44,7 +91,7 @@ public:
 std::ostream &operator<<(std::ostream &os, Resources const &x);
 std::ostream &operator<<(std::ostream &os, Building const &x);
 // class objects that share between interfaces
-extern Resources player, AI[4], buffer;
+extern Resources player, AI[3], buffer;
 // extern Building oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 extern std::map<std::string, Building> building;
 

@@ -17,12 +17,12 @@ bool check_res(Resources res)
     // cout << player.food << " " << res.food << " " << player.fuel << " " << res.fuel << " " << player.metal << " " << res.metal << " " << player.population << " " << res.population;
     if (player.food > res.food && player.fuel > res.fuel && player.metal > res.metal && player.population > res.population)
     {
-        cout << "true";
+        // cout << "true";
         return true;
     }
     else
     {
-        cout << "false";
+        // cout << "false";
         return false;
     }
 }

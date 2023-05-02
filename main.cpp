@@ -1,14 +1,162 @@
 #include "main.h"
 #include "all_interface.h"
 #include "struct.h"
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
+int AI_buildings[3][8] = {{2, 0, 0, 0, 0, 5, 1, 0}, {2, 0, 0, 0, 0, 5, 1, 0}, {2, 0, 0, 0, 0, 5, 1, 0}};
 set<string> valid_interface_option({"show", "build", "status", "attack", "protect"});
 map<string, int> interface_id = {
     {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}};
 
-Resources player, AI[4], buffer;
+Resources player, AI[3], buffer;
+
+void execute_AI_actions(const std::string &curCountry)
+{
+    srand(time(NULL));
+    int randomNumber = rand() % 100;
+    if (curCountry == "PC1")
+    {
+        // Country 1 is aggressive and tries to do every single action per round
+
+        while (AI_check_res(curCountry, building["recruiting-office"].cost) == true)
+        {
+            AI_buildings[0][4] += 1;
+            AI[0].food -= building["recruiting-office"].cost.food;
+            AI[0].fuel -= building["recruiting-office"].cost.fuel;
+            AI[0].metal -= building["recruiting-office"].cost.metal;
+            AI[0].population -= building["recruiting-office"].cost.population;
+        }
+
+        while (AI_check_res(curCountry, building["farm"].cost) == true)
+        {
+            AI_buildings[0][2] += 1;
+            AI[0].food -= building["farm"].cost.food;
+            AI[0].fuel -= building["farm"].cost.fuel;
+            AI[0].metal -= building["farm"].cost.metal;
+            AI[0].population -= building["farm"].cost.population;
+        }
+
+        while (AI_check_res(curCountry, building["mine"].cost) == true)
+        {
+            AI_buildings[0][3] += 1;
+            AI[0].food -= building["mine"].cost.food;
+            AI[0].fuel -= building["mine"].cost.fuel;
+            AI[0].metal -= building["mine"].cost.metal;
+            AI[0].population -= building["mine"].cost.population;
+        }
+
+        while (AI_check_res(curCountry, building["oil-refinery"].cost) == true)
+        {
+            AI_buildings[0][0] += 1;
+            AI[0].food -= building["oil-refinery"].cost.food;
+            AI[0].fuel -= building["oil-refinery"].cost.fuel;
+            AI[0].metal -= building["oil-refinery"].cost.metal;
+            AI[0].population -= building["oil-refinery"].cost.population;
+        }
+    }
+
+    if (curCountry == "PC2")
+    {
+        // Country 2 has balanced inclinations
+        if (randomNumber < 25)
+        {
+            while (AI_check_res(curCountry, building["recruiting-office"].cost) == true)
+            {
+                AI_buildings[1][4] += 1;
+                AI[1].food -= building["recruiting-office"].cost.food;
+                AI[1].fuel -= building["recruiting-office"].cost.fuel;
+                AI[1].metal -= building["recruiting-office"].cost.metal;
+                AI[1].population -= building["recruiting-office"].cost.population;
+            }
+        }
+        else if (randomNumber < 50)
+        {
+            while (AI_check_res(curCountry, building["farm"].cost) == true)
+            {
+                AI_buildings[1][2] += 1;
+                AI[1].food -= building["farm"].cost.food;
+                AI[1].fuel -= building["farm"].cost.fuel;
+                AI[1].metal -= building["farm"].cost.metal;
+                AI[1].population -= building["farm"].cost.population;
+            }
+        }
+        else if (randomNumber < 75)
+        {
+            while (AI_check_res(curCountry, building["mine"].cost) == true)
+            {
+                AI_buildings[1][3] += 1;
+                AI[1].food -= building["mine"].cost.food;
+                AI[1].fuel -= building["mine"].cost.fuel;
+                AI[1].metal -= building["mine"].cost.metal;
+                AI[1].population -= building["mine"].cost.population;
+            }
+        }
+        else
+        {
+            while (AI_check_res(curCountry, building["oil-refinery"].cost) == true)
+            {
+                AI_buildings[1][0] += 1;
+                AI[1].food -= building["oil-refinery"].cost.food;
+                AI[1].fuel -= building["oil-refinery"].cost.fuel;
+                AI[1].metal -= building["oil-refinery"].cost.metal;
+                AI[1].population -= building["oil-refinery"].cost.population;
+            }
+        }
+    }
+    if (curCountry == "PC3")
+    {
+        // Country 3 is peaceful
+
+        // Example probability distribution
+        if (randomNumber < 10)
+        {
+            while (AI_check_res(curCountry, building["recruiting-office"].cost) == true)
+            {
+                AI_buildings[2][4] += 1;
+                AI[2].food -= building["recruiting-office"].cost.food;
+                AI[2].fuel -= building["recruiting-office"].cost.fuel;
+                AI[2].metal -= building["recruiting-office"].cost.metal;
+                AI[2].population -= building["recruiting-office"].cost.population;
+            }
+        }
+        else if (randomNumber < 40)
+        {
+            while (AI_check_res(curCountry, building["farm"].cost) == true)
+            {
+                AI_buildings[2][2] += 1;
+                AI[2].food -= building["farm"].cost.food;
+                AI[2].fuel -= building["farm"].cost.fuel;
+                AI[2].metal -= building["farm"].cost.metal;
+                AI[2].population -= building["farm"].cost.population;
+            }
+        }
+        else if (randomNumber < 70)
+        {
+            while (AI_check_res(curCountry, building["mine"].cost) == true)
+            {
+                AI_buildings[2][3] += 1;
+                AI[2].food -= building["mine"].cost.food;
+                AI[2].fuel -= building["mine"].cost.fuel;
+                AI[2].metal -= building["mine"].cost.metal;
+                AI[2].population -= building["mine"].cost.population;
+            }
+        }
+        else
+        {
+            while (AI_check_res(curCountry, building["oil-refinery"].cost) == true)
+            {
+                AI_buildings[2][0] += 1;
+                AI[2].food -= building["oil-refinery"].cost.food;
+                AI[2].fuel -= building["oil-refinery"].cost.fuel;
+                AI[2].metal -= building["oil-refinery"].cost.metal;
+                AI[2].population -= building["oil-refinery"].cost.population;
+            }
+        }
+    }
+}
 
 int main()
 {
@@ -66,6 +214,10 @@ int main()
                         cout << "Invalid Operation!" << endl;
                     }
                 }
+            }
+            else if (curCountry != "Player")
+            {
+                execute_AI_actions(curCountry);
             }
             round_result();
         }

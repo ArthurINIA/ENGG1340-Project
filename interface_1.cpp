@@ -10,6 +10,8 @@ void run_interface_1(vector<string> &cmd)
 {
     vector<string> indices_vec;
     indices_vec.push_back(to_string(player.livelihood));
+    indices_vec.push_back(to_string(player.military));
+    indices_vec.push_back(to_string(player.diplomacy));
     show_i1(indices_vec);
 }
 
@@ -50,7 +52,8 @@ void printNum(string s)
     cout << stoi(s) << endl;
 }
 
-int printUI1(){
+int printUI1()
+{
     cout << "+-----------------------------------------------------------------------------+" << endl;
     cout << "|                               Interface 1                                   |" << endl;
     cout << "|-----------------------------------------------------------------------------|" << endl;
@@ -85,4 +88,3 @@ int printUI1(){
     cin >> num;
     printNum(num);
 }*/
-
