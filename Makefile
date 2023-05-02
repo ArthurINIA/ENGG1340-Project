@@ -15,10 +15,13 @@ interface_4.o: interface_4.cpp all_interface.h
 UI.o: UI.cpp UI.h
 	g++ $(FLAGS) -c $<
 
+randomevent.o: randomevent.cpp randomevent.h
+	g++ $(FLAGS) -c $<
+
 main.o: main.cpp main.h all_interface.h UI.h
 	g++ $(FLAGS) -c $<
 
-main: main.o interface_1.o interface_2.o interface_3.o interface_4.o UI.o
+main: main.o interface_1.o interface_2.o interface_3.o interface_4.o UI.o randomevent.o
 	g++ $(FLAGS) $^ -o $@
 
 clean:
