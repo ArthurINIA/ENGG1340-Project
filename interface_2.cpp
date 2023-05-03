@@ -1,19 +1,7 @@
-#include "all_interface.h"
-#include "main.h"
-#include "UI.h"
-#include <string>
-#include <algorithm>
-using namespace std;
-
 std::map<string, Building> building;
-/*string struct_to_string(Resources res)
-{
-    string result = "Food: " + to_string(res.food) + "Fuel: " + to_string(res.fuel) + "Metal: " + to_string(res.metal) + "Population: " + to_string(res.population);
-}*/
 
 bool check_res(Resources res)
 {
-    // cout << player.food << " " << res.food << " " << player.fuel << " " << res.fuel << " " << player.metal << " " << res.metal << " " << player.population << " " << res.population;
     if (player.food > res.food && player.fuel > res.fuel && player.metal > res.metal && player.population > res.population)
     {
         cout << "true";
@@ -28,10 +16,6 @@ bool check_res(Resources res)
 
 void init_interface_2()
 {
-    // cout << "Your country resources:\n" << player; //success
-    // building["oil refinery"] = Building();
-    // cout << "oil-refinery " << building.count("oil-refinery") << endl; // success
-    //  food fuel metal population
     building["oil-refinery"].name = "oil-refinery";
     building["oil-refinery"].requirement = "70 metal";
     building["oil-refinery"].cost.init(0, 0, 70, 0, 0, 0, 0, 0);
@@ -39,9 +23,8 @@ void init_interface_2()
     building["oil-refinery"].production.init(0, 50, 0, 0, 0, 0, 0, 0);
     building["oil-refinery"].effect = "50 fuel";
     building["oil-refinery"].qty_owned = 2;
-    // cout << building["oil-refinery"]; //success
 
-    building["factory"] = Building(); // extra resouces needed
+    building["factory"] = Building();
     building["factory"].name = "factory";
     building["factory"].requirement = "120 metal, 500 population";
     building["factory"].cost.init(0, 0, 120, 500, 0, 0, 0, 0);
@@ -68,7 +51,7 @@ void init_interface_2()
     building["mine"].effect = "50 metal";
     building["mine"].qty_owned = 0;
 
-    building["recruiting-office"] = Building(); // extra resouces needed
+    building["recruiting-office"] = Building();
     building["recruiting-office"].name = "recruiting office";
     building["recruiting-office"].requirement = "10 metal";
     building["recruiting-office"].cost.init(0, 0, 10, 0, 0, 0, 0, 0);
@@ -77,7 +60,7 @@ void init_interface_2()
     building["recruiting-office"].effect = "recruit 750 units of soldiers per round.";
     building["recruiting-office"].qty_owned = 0;
 
-    building["house"] = Building(); // extra resouces needed
+    building["house"] = Building();
     building["house"].name = "house";
     building["house"].requirement = "20 metal, 20 fuel";
     building["house"].cost.init(0, 20, 20, 0, 0, 0, 0, 0);
@@ -86,7 +69,7 @@ void init_interface_2()
     building["house"].effect = "Increase population limit by 1000.";
     building["house"].qty_owned = 5;
 
-    building["military-laboratory"] = Building(); // extra variables needed?
+    building["military-laboratory"] = Building();
     building["military-laboratory"].name = "military laboratory";
     building["military-laboratory"].requirement = "upgrade needs 30% metal, 30% fuel";
     building["military-laboratory"].cost.init(0, 0, 70, 0, 0, 0, 0, 0);
@@ -95,7 +78,7 @@ void init_interface_2()
     building["military-laboratory"].effect = "30% military factor";
     building["military-laboratory"].qty_owned = 1;
 
-    building["casino"] = Building(); // extra indexes needed
+    building["casino"] = Building();
     building["casino"].name = "casino";
     building["casino"].requirement = "200 metal, 50 fuel";
     building["casino"].cost.init(0, 50, 200, 0, 0, 0, 0, 0);
@@ -107,12 +90,9 @@ void init_interface_2()
 
 void show_internal(vector<string> content)
 {
-    // cout << "+-------------------------------------------------------------------------------------+" << endl;
-    //  cout << "|";
     UI gameScreen;
     string s;
     string str1 = "Food: " + to_string(player.food), str2 = "Fuel: " + to_string(player.fuel), str3 = "Metal: " + to_string(player.metal), str4 = "Population: " + to_string(player.population);
-    // cout << content << endl;
     vector<string> vec1 = {str1}, vec2 = {str2}, vec3 = {str3}, vec4 = {str4};
     gameScreen.divide(1, 1, 120, 5, "resource-bar");
     gameScreen.divide(1, 1, 40, 5, "interface-name");
@@ -131,7 +111,11 @@ void show_internal(vector<string> content)
     gameScreen.drawAll("game-content", "center", content);
     gameScreen.drawLineStart("manual");
     gameScreen.drawLine("center", "user manual");
-    gameScreen.drawLine("center", "sdfsdfsdf");
+    gameScreen.drawLine("center", "show info (building name)");
+    gameScreen.drawLine("center", "show info (building name)");
+    gameScreen.drawLine("center", "show buildable");
+    gameScreen.drawLine("center", "show built");
+    gameScreen.drawLine("center", "build (quantity) (building name)");
     gameScreen.drawLineStop();
     gameScreen.print();
 }
@@ -142,7 +126,6 @@ void run_interface_2(vector<string> &cmd)
 {
     init_interface_2();
     vector<string> content;
-    // show default information/ interface2
     if (cmd[0] == "to" && (cmd[1] == "i2" || cmd[1] == "internal") && cmd.size() == 2)
     {
         show_internal(content);
@@ -152,7 +135,7 @@ void run_interface_2(vector<string> &cmd)
         if (cmd[1] == "built")
         {
             vector<string> built_vec;
-            for (map<string, Building>::iterator it = building.begin(); it != building.end(); ++it)
+            for (std::map<string, Building>::iterator it = building.begin(); it != building.end(); ++it)
             {
                 built_vec.push_back(it->first + ": Owned " + to_string(it->second.qty_owned));
             }
@@ -161,7 +144,7 @@ void run_interface_2(vector<string> &cmd)
         }
         else if (cmd[1] == "buildable")
         {
-            content = list_buildable(); // show available buildings
+            content = list_buildable();
             show_internal(content);
         }
         else if (cmd[1] == "info")
@@ -235,7 +218,7 @@ void run_interface_2(vector<string> &cmd)
 
 vector<string> list_buildable()
 {
-    map<string, Building>::iterator it;
+    std::map<string, Building>::iterator it;
     vector<string> show;
     for (it = building.begin(); it != building.end(); it++)
     {
