@@ -5,7 +5,7 @@
 #include <algorithm>
 using namespace std;
 
-map<string, Building> building;
+std::map<string, Building> building;
 /*string struct_to_string(Resources res)
 {
     string result = "Food: " + to_string(res.food) + "Fuel: " + to_string(res.fuel) + "Metal: " + to_string(res.metal) + "Population: " + to_string(res.population);
