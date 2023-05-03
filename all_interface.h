@@ -25,12 +25,14 @@ void external_actions();
 void round_result();
 
 // classes
-class Military_Resouces{
-    public:
+class Military_Resouces
+{
+public:
     int soldier = 0, tank = 0;
 };
-class Resources : public Military_Resouces{
-    public:
+class Resources : public Military_Resouces
+{
+public:
     int food = 350, fuel = 100, metal = 100, population = 10000;
     int max_population = 0, livelihood = 50, military = 50, diplomacy = 50;
     double military_factor = 0;
@@ -55,7 +57,7 @@ extern Resources player, AI[3], buffer;
 // extern Building oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 extern std::map<std::string, Building> building;
 
-//NPC functions
+// NPC functions
 bool check_res(Resources res);
 bool AI_check_res(std::string name, Resources res);
 void execute_AI_actions(const std::string &curCountry);
