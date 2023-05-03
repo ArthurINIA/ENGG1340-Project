@@ -3,21 +3,67 @@
 #include <string>
 using namespace std;
 
-
 void show_i1(vector<string> content);
 
 void run_interface_1(vector<string> &cmd)
 {
-    vector<string> indices_vec;
-    indices_vec.push_back(to_string(player.livelihood));
-    indices_vec.push_back(to_string(player.military));
-    indices_vec.push_back(to_string(player.diplomacy));
-    show_i1(indices_vec);
+    string food, fuel, metal, population;
+    int add;
+    vector<string> show_vec;
+    show_vec.push_back("Livelihood index: " + to_string(player.livelihood));
+    show_vec.push_back("Military index: " + to_string(player.military));
+    show_vec.push_back("Diplomacy index: " + to_string(player.diplomacy));
+    add = 1000 + player.livelihood * 5;
+    if (add > 0)
+    {
+        population = "+" + to_string(add);
+    }
+    else
+    {
+        population = to_string(add);
+    }
+    show_vec.push_back("Population round add: " + population);
+    add = building["oil-refinery"].qty_owned * building["oil-refinery"].production.fuel - min(player.metal / 300, player.fuel / 300) * 300;
+    if (add > 0)
+    {
+        fuel = "+" + to_string(add);
+    }
+    else
+    {
+        fuel = to_string(add);
+    }
+    show_vec.push_back("Fuel round add: " + fuel);
+    add = building["mine"].qty_owned * building["mine"].production.metal - min(player.metal / 300, player.fuel / 300) * 300;
+    if (add > 0)
+    {
+        metal = "+" + to_string(add);
+    }
+    else
+    {
+        metal = to_string(add);
+    }
+    show_vec.push_back("Metal round add: " + metal);
+    add = building["farm"].qty_owned * building["farm"].production.food - player.soldier * 0.1;
+    if (add > 0)
+    {
+        food = "+" + to_string(add);
+    }
+    else
+    {
+        food = to_string(add);
+    }
+    show_vec.push_back("Food round add: " + food);
+    /*for (map<string, Building>::iterator it = building.begin(); it != building.end(); ++it)
+    {
+        int x = building[it->first].qty_owned * building[it->first].production.food - player.soldier * 0.1;
+        built_vec.push_back(it->first + ": Owned " + to_string(it->second.qty_owned));
+    }*/
+    show_i1(show_vec);
 }
 
 void show_i1(vector<string> content)
 {
-    
+
     string s;
     string str1 = "Food: " + to_string(player.food), str2 = "Fuel: " + to_string(player.fuel), str3 = "Metal: " + to_string(player.metal), str4 = "Population: " + to_string(player.population);
     // cout << content << endl;
@@ -50,7 +96,7 @@ void printNum(string s)
     cout << stoi(s) << endl;
 }
 
-void printUI1()
+/*void printUI1()
 {
     cout << "+-----------------------------------------------------------------------------+" << endl;
     cout << "|                               Interface 1                                   |" << endl;
@@ -78,7 +124,7 @@ void printUI1()
     cout << "|*****************************************************************************|" << endl;
     cout << "|                                   Done!                                     |" << endl;
     cout << "+-----------------------------------------------------------------------------+" << endl;
-}
+}*/
 
 /*int main(){
     //test printNum
