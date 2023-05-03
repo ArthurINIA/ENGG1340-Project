@@ -1,9 +1,9 @@
 #include "main.h"
-#include "all_interface.h"
-#include "struct.h"
 #include <random>
 #include <array>
 using namespace std;
+
+UI gameScreen;
 
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 int AI_buildings[3][8] = {{2, 0, 0, 0, 0, 5, 1, 0}, {2, 0, 0, 0, 0, 5, 1, 0}, {2, 0, 0, 0, 0, 5, 1, 0}};
@@ -13,49 +13,6 @@ map<string, int> interface_id = {
 
 Resources player, AI[3], buffer;
 
-void execute_AI_actions(const string &curCountry)
-{
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> distrib(0, 3);
-    map<string, array<int, 7>> AI_move = {
-        {"PC1", array<int, 7>{0, 5, 0, 7000, 300, 300, 300}},
-        {"PC2", array<int, 7>{1, 4, 0, 2000, 500, 500, 750}},
-        {"PC3", array<int, 7>{2, 4, 0, 2000, 1000, 1000, 1000}}};
-    for (int i = 0; i < AI_move[curCountry][1] + distrib(gen); i++)
-    {
-        /*
-        if (1 /can move soldier/)
-        {
-            // move soldier
-        }
-        */
-        if (AI[AI_move[curCountry][0]].soldiers < AI_move[curCountry][3] && AI_check_res(curCountry, building["recruiting-office"].cost))
-        {
-            AI_buildings[AI_move[curCountry][0]][4] += 1;
-            AI[AI_move[curCountry][0]] -= building["recuiting-office"].cost;
-            continue;
-        }
-        if (AI[AI_move[curCountry][0]].metal < AI_move[curCountry][4] && AI_check_res(curCountry, building["mine"].cost))
-        {
-            AI_buildings[AI_move[curCountry][0]][3] += 1;
-            AI[AI_move[curCountry][0]] -= building["mine"].cost;
-            continue;
-        }
-        if (AI[AI_move[curCountry][0]].fuel < AI_move[curCountry][5] && AI_check_res(curCountry, building["oil-refinery"].cost))
-        {
-            AI_buildings[AI_move[curCountry][0]][0] += 1;
-            AI[AI_move[curCountry][0]] -= building["oil-refinery"].cost;
-            continue;
-        }
-        if (AI[AI_move[curCountry][0]].food < AI_move[curCountry][6] && AI_check_res(curCountry, building["farm"].cost))
-        {
-            AI_buildings[AI_move[curCountry][0]][2] += 1;
-            AI[AI_move[curCountry][0]] -= building["farm"].cost;
-            continue;
-        }
-    }
-}
 
 int main()
 {
@@ -124,6 +81,58 @@ int main()
     end_game();
 }
 
+//NPC control
+bool AI_check_res(string name, Resources res)
+{
+    int x = name[2] - '1';
+    return (AI[x].food > res.food && AI[x].fuel > res.fuel 
+        && AI[x].metal > res.metal && AI[x].population > res.population);
+}
+
+void execute_AI_actions(const string &curCountry)
+{
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(0, 3);
+    map<string, array<int, 7>> AI_move = {
+        {"PC1", array<int, 7>{0, 5, 0, 7000, 300, 300, 300}},
+        {"PC2", array<int, 7>{1, 4, 0, 2000, 500, 500, 750}},
+        {"PC3", array<int, 7>{2, 4, 0, 2000, 1000, 1000, 1000}}};
+    for (int i = 0; i < AI_move[curCountry][1] + distrib(gen); i++)
+    {
+        /*
+        if (1 /can move soldier/)
+        {
+            // move soldier
+        }
+        */
+        if (AI[AI_move[curCountry][0]].soldier < AI_move[curCountry][3] && AI_check_res(curCountry, building["recruiting-office"].cost))
+        {
+            AI_buildings[AI_move[curCountry][0]][4] += 1;
+            AI[AI_move[curCountry][0]] -= building["recuiting-office"].cost;
+            continue;
+        }
+        if (AI[AI_move[curCountry][0]].metal < AI_move[curCountry][4] && AI_check_res(curCountry, building["mine"].cost))
+        {
+            AI_buildings[AI_move[curCountry][0]][3] += 1;
+            AI[AI_move[curCountry][0]] -= building["mine"].cost;
+            continue;
+        }
+        if (AI[AI_move[curCountry][0]].fuel < AI_move[curCountry][5] && AI_check_res(curCountry, building["oil-refinery"].cost))
+        {
+            AI_buildings[AI_move[curCountry][0]][0] += 1;
+            AI[AI_move[curCountry][0]] -= building["oil-refinery"].cost;
+            continue;
+        }
+        if (AI[AI_move[curCountry][0]].food < AI_move[curCountry][6] && AI_check_res(curCountry, building["farm"].cost))
+        {
+            AI_buildings[AI_move[curCountry][0]][2] += 1;
+            AI[AI_move[curCountry][0]] -= building["farm"].cost;
+            continue;
+        }
+    }
+}
+
 // list of functions
 // class functions
 Resources &Resources::operator+=(const Resources &b)
@@ -138,7 +147,7 @@ Resources &Resources::operator-=(const Resources &b)
 }
 void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
 {
-    food = v1, fuel = v2, metal = v3, population = v4, tanks = v5, soldiers = v6, military_factor = v7, max_population = v8;
+    food = v1, fuel = v2, metal = v3, population = v4, tank = v5, soldier = v6, military_factor = v7, max_population = v8;
 }
 std::ostream &operator<<(std::ostream &os, Resources const &x)
 {

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "all_interface.h"
 //list of functions
 
 //utility functions

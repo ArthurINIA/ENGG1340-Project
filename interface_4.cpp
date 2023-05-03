@@ -3,7 +3,9 @@
 using namespace std;
 
 void show_round_result(vector<string> content);
-void cal_result();
+void cal_result(){
+    cout << "calculating result" << endl;
+}
 
 void run_interface_4(vector<string> &cmd)
 {

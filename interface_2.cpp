@@ -1,9 +1,4 @@
 #include "all_interface.h"
-#include "main.h"
-#include "struct.h"
-#include "UI.h"
-#include <string>
-#include <algorithm>
 using namespace std;
 
 map<string, Building> building;
@@ -104,17 +99,8 @@ void init_interface_2()
     building["casino"].production.init(0, 0, 0, 0, 0, 0, 0, 0);
     building["casino"].effect = "Increase index of livelihood.";
     building["casino"].qty_owned = 0;
-}
 
-void show_internal(vector<string> content)
-{
-    // cout << "+-------------------------------------------------------------------------------------+" << endl;
-    //  cout << "|";
-    UI gameScreen;
-    string s;
-    string str1 = "Food: " + to_string(player.food), str2 = "Fuel: " + to_string(player.fuel), str3 = "Metal: " + to_string(player.metal), str4 = "Population: " + to_string(player.population);
-    // cout << content << endl;
-    vector<string> vec1 = {str1}, vec2 = {str2}, vec3 = {str3}, vec4 = {str4};
+    //gameScreen init
     gameScreen.divide(1, 1, 120, 5, "resource-bar");
     gameScreen.divide(1, 1, 40, 5, "interface-name");
     gameScreen.divide(40, 1, 60, 5, "resource-1");
@@ -123,13 +109,19 @@ void show_internal(vector<string> content)
     gameScreen.divide(100, 1, 120, 5, "resource-4");
     gameScreen.divide(1, 5, 40, 29, "manual");
     gameScreen.divide(40, 5, 120, 29, "game-content");
+}
 
+void show_internal(vector<string> content, string hAlign="center")
+{
+    string s;
+    string str1 = "Food: " + to_string(player.food), str2 = "Fuel: " + to_string(player.fuel), str3 = "Metal: " + to_string(player.metal), str4 = "Population: " + to_string(player.population);
+    //vector<string> vec1 = {str1}, vec2 = {str2}, vec3 = {str3}, vec4 = {str4};
     gameScreen.drawAll("interface-name", "center", {"Interface 2: Internal Action"});
-    gameScreen.drawAll("resource-1", "center", vec1);
-    gameScreen.drawAll("resource-2", "center", vec2);
-    gameScreen.drawAll("resource-3", "center", vec3);
-    gameScreen.drawAll("resource-4", "center", vec4);
-    gameScreen.drawAll("game-content", "center", content);
+    gameScreen.drawAll("resource-1", "center", {str1});
+    gameScreen.drawAll("resource-2", "center", {str2});
+    gameScreen.drawAll("resource-3", "center", {str3});
+    gameScreen.drawAll("resource-4", "center", {str4});
+    gameScreen.drawAll("game-content", hAlign, content);
     gameScreen.drawLineStart("manual");
     gameScreen.drawLine("center", "user manual");
     gameScreen.drawLine("center", "sdfsdfsdf");
@@ -144,7 +136,7 @@ void run_interface_2(vector<string> &cmd)
     init_interface_2();
     vector<string> content;
     // show default information/ interface2
-    if (cmd[0] == "to" && (cmd[1] == "i2" || cmd[1] == "internal") && cmd.size() == 2)
+    if (cmd[0] == "to")
     {
         show_internal(content);
     }
@@ -172,15 +164,15 @@ void run_interface_2(vector<string> &cmd)
                 if (building.count(cmd[2]) > 0)
                 {
                     vector<string> info_vec;
-                    info_vec.push_back("Name: " + building[cmd[2]].name);
-                    info_vec.push_back("Requirement: " + building[cmd[2]].requirement);
-                    info_vec.push_back("Cost: " + to_string(building[cmd[2]].cost.food) + " food, " + to_string(building[cmd[2]].cost.fuel) + " fuels, " + to_string(building[cmd[2]].cost.metal) + " metal, " + to_string(building[cmd[2]].cost.population) + " population");
-                    info_vec.push_back("Description: " + building[cmd[2]].description);
-                    info_vec.push_back("Production: " + to_string(building[cmd[2]].production.food) + " food, " + to_string(building[cmd[2]].production.fuel) + " fuels, " + to_string(building[cmd[2]].production.population) + " population");
-                    info_vec.push_back(to_string(building[cmd[2]].production.tanks) + " tanks, " + to_string(building[cmd[2]].production.soldiers) + " soldiers, " + to_string(building[cmd[2]].production.military_factor) + " military factor, " + to_string(building[cmd[2]].production.max_population) + " max population");
-                    info_vec.push_back("Quantity: " + to_string(building[cmd[2]].qty_owned));
+                    info_vec.push_back("  Name: " + building[cmd[2]].name);
+                    info_vec.push_back("  Requirement: " + building[cmd[2]].requirement);
+                    info_vec.push_back("  Cost: " + to_string(building[cmd[2]].cost.food) + " food, " + to_string(building[cmd[2]].cost.fuel) + " fuels, " + to_string(building[cmd[2]].cost.metal) + " metal, " + to_string(building[cmd[2]].cost.population) + " population");
+                    info_vec.push_back("  Description: " + building[cmd[2]].description);
+                    info_vec.push_back("  Production: " + to_string(building[cmd[2]].production.food) + " food, " + to_string(building[cmd[2]].production.fuel) + " fuels, " + to_string(building[cmd[2]].production.population) + " population");
+                    info_vec.push_back("  " + to_string(building[cmd[2]].production.tank) + " tank, " + to_string(building[cmd[2]].production.soldier) + " soldiers, " + to_string(building[cmd[2]].production.military_factor) + " military factor, " + to_string(building[cmd[2]].production.max_population) + " max population");
+                    info_vec.push_back("  Quantity: " + to_string(building[cmd[2]].qty_owned));
                     content = info_vec;
-                    show_internal(content);
+                    show_internal(content, "left");
                 }
                 else
                 {
@@ -209,10 +201,7 @@ void run_interface_2(vector<string> &cmd)
             {
                 building[cmd[2]].qty_owned += stoi(cmd[1]);
                 vector<string> build_vec;
-                player.food -= building[cmd[2]].cost.food * stoi(cmd[1]);
-                player.fuel -= building[cmd[2]].cost.fuel * stoi(cmd[1]);
-                player.metal -= building[cmd[2]].cost.metal * stoi(cmd[1]);
-                player.population -= building[cmd[2]].cost.population * stoi(cmd[1]);
+                for(int i = 0; i < stoi(cmd[1]); i++) player -= building[cmd[2]].cost;
                 build_vec.push_back(cmd[1] + " " + cmd[2] + " are built successfully.");
                 show_internal(build_vec);
             }

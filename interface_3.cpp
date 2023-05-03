@@ -3,9 +3,14 @@
 #include <time.h>
 #include <string>
 using namespace std;
+
+void run_interface_3(vector<std::string> &cmd){
+    cout << "interface 3" << endl;
+}
+
+
+
 // extern setting maplist[16], playerland;
-extern resources player, millitaryval, agriculture, economy, energy, manpower;
-extern buildings oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 
 /*string eventl[20];
 string input, yon;

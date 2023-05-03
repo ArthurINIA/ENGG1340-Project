@@ -1,8 +1,8 @@
 #include "all_interface.h"
-#include "UI.h"
 #include <iostream>
 #include <string>
 using namespace std;
+
 
 void show_i1(vector<string> content);
 
@@ -17,9 +17,7 @@ void run_interface_1(vector<string> &cmd)
 
 void show_i1(vector<string> content)
 {
-    // cout << "+-------------------------------------------------------------------------------------+" << endl;
-    //  cout << "|";
-    UI gameScreen;
+    
     string s;
     string str1 = "Food: " + to_string(player.food), str2 = "Fuel: " + to_string(player.fuel), str3 = "Metal: " + to_string(player.metal), str4 = "Population: " + to_string(player.population);
     // cout << content << endl;
@@ -52,7 +50,7 @@ void printNum(string s)
     cout << stoi(s) << endl;
 }
 
-int printUI1()
+void printUI1()
 {
     cout << "+-----------------------------------------------------------------------------+" << endl;
     cout << "|                               Interface 1                                   |" << endl;

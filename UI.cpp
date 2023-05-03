@@ -57,9 +57,9 @@ void UI::drawLine(string hAlign, string contentToAdd)
 
     for (int i = 0; i < len2; i++)
     {
-        if (hAlign == "left" || (hAlign == "center" && i <= len2 / 2))
+        if (hAlign == "right" || (hAlign == "center" && i <= len2 / 2))
             tt = ' ' + tt;
-        else if (hAlign == "right" || (hAlign == "center" && i > len2 / 2))
+        else if (hAlign == "left" || (hAlign == "center" && i > len2 / 2))
             tt += ' ';
     }
     tt = "|" + tt + "|";
