@@ -1,11 +1,65 @@
-#include <vector>
-#include <iostream>
-#include <time.h>
-#include <string>
+#include "all_interface.h"
 using namespace std;
 
-void run_interface_3(vector<std::string> &cmd){
-    cout << "interface 3" << endl;
+void run_interface_3(vector<string> &cmd){
+    gameScreen.divide(1, 1, 120, 5, "resource-bar");
+    gameScreen.divide(1, 1, 39, 5, "interface-name");
+    gameScreen.divide(39, 1, 60, 5, "resource-1");
+    gameScreen.divide(60, 1, 80, 5, "resource-2");
+    gameScreen.divide(80, 1, 100, 5, "resource-3");
+    gameScreen.divide(100, 1, 120, 5, "resource-4");
+    gameScreen.divide(1, 5, 40, 29, "manual");
+    
+
+    gameScreen.drawAll("interface-name", "center", {"Interface 3: External Action"});
+    gameScreen.drawAll("resource-1", "center", {"All army: xxxx"});
+    gameScreen.drawAll("resource-2", "center", {"All Tank: xxxx"});
+    gameScreen.drawAll("resource-3", "center", {"Metal: xxxx"});
+    gameScreen.drawAll("resource-4", "center", {"Population: xxxx"});
+    gameScreen.drawLineStart("manual");
+    gameScreen.drawLine("center", "user manual");
+    gameScreen.drawLine("center", "sdfsdfsdf");
+    gameScreen.drawLineStop();
+
+    gameScreen.divide(39, 5, 120, 29, "game-content");
+    gameScreen.divide(39, 5, 120, 7, "world-map-title");
+    gameScreen.drawAll("world-map-title", "center", {"WORLD MAP"});
+    class i3Map : public Military_Resouces{
+        public:
+            string owner = "nobody";
+    } wldMap[4][4];
+    map<string, pair<string, string>> colorCode = {
+        {"Player", {"\033[30m", "\033[46m"}}, 
+        {"PC1", {"\033[30m", "\033[48;2;204;85;0m"}}, 
+        {"PC2", {"\033[30m", "\033[48;2;218;112;214m"}}, 
+        {"PC3", {"\033[30m", "\033[43m"}},
+        {"nobody", {"\033[37m", "\033[48;5;243m"}}
+    };
+    
+    for(int i = 0; i < 4; i++) for(int j = 0; j < 4; j++) wldMap[i][j].owner = "nobody";
+    wldMap[0][0].owner = "Player", wldMap[3][0].owner = "PC1", wldMap[0][3].owner = "PC2", wldMap[3][3].owner = "PC3" ;
+
+    //loop through each land in the world map
+    for(int y = 8, i = 0; i < 4; y += 5, i++){
+        for(int x = 40, j = 0; j < 4; x += 20, j++){
+            string land_id =  "land-"; land_id += (char)(i + '0'); land_id += ","; land_id += (char)(j + '0');
+            string CurName = "world-map-" + land_id;
+            string landOwner = wldMap[j][i].owner;
+            //land screen drawing setting
+            gameScreen.divide(x, y, x + 19, y + 4, CurName);
+            gameScreen.drawLineStart(CurName);
+            gameScreen.drawLine("center", land_id + " " + landOwner);
+            gameScreen.drawLine("left", "YourSolider:00000");
+            gameScreen.drawLine("left", "Your Tank : 00000");
+            gameScreen.drawLineStop();
+            //land color setting
+            gameScreen.setWordColor(x, y, x + 19, y + 4, colorCode[landOwner].first);
+            gameScreen.setBackgroundColor(x, y, x + 19, y + 4, colorCode[landOwner].second);
+        }
+    }
+
+
+    gameScreen.print();
 }
 
 

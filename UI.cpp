@@ -11,7 +11,7 @@ UI::UI()
     // clean whole screen to be spaces
     for (int i = 1; i <= SCREEN_H; i++)
         for (int j = 1; j <= SCREEN_W; j++)
-            grid[j][i] = ' ';
+            grid[j][i] = ' ', wdcolor[j][i] = "\033[38;5;95m", bgcolor[j][i] = "\033[40m";
     // the root region to be the who;e screen
     regionList["whole"] = ui_region(1, 1, SCREEN_W, SCREEN_H);
 }
@@ -19,9 +19,11 @@ UI::UI()
 void UI::print()
 {
     system("clear");
-    for (int i = 1; i <= SCREEN_H; i++)
-        for (int j = 1; j <= SCREEN_W; j++)
-            cout << grid[j][i] << "\0\n"[j == SCREEN_W];
+    for (int i = 1; i <= SCREEN_H; i++){
+        for (int j = 1; j <= SCREEN_W; wdcolor[j][i]="\033[38;5;95m", bgcolor[j][i]="\033[40m", j++)
+            cout << wdcolor[j][i] << bgcolor[j][i] << grid[j][i];
+        cout << endl;
+    }
 }
 
 void UI::divide(int x1, int y1, int x2, int y2, string Cname)
@@ -54,7 +56,7 @@ void UI::drawLine(string hAlign, string contentToAdd)
     int len2 = len0 - len1;
     int *pos = &drawBufferStorage_size;
     string tt = contentToAdd;
-
+    
     for (int i = 0; i < len2; i++)
     {
         if (hAlign == "right" || (hAlign == "center" && i <= len2 / 2))
@@ -96,11 +98,13 @@ void UI::drawLineStop()
     delete[] drawBufferStorage;
 }
 
-void UI::setBackgroundColor(string bgColor)
+void UI::setBackgroundColor(int x1, int y1, int x2, int y2, string color)
 {
+    for(int y = y1; y <= y2; y++) for(int x = x1; x <= x2; x++) bgcolor[x][y] = color;
 }
-void UI::setwordColor(string wdColor)
+void UI::setWordColor(int x1, int y1, int x2, int y2, string color)
 {
+    for(int y = y1; y <= y2; y++) for(int x = x1; x <= x2; x++) wdcolor[x][y] = color;
 }
 
 void UI::drawAll(string tarArea, /* string vAlign, */ string hAlign, vector<string> contentToAdd)
@@ -118,28 +122,5 @@ ui_region::ui_region(int x1, int y1, int x2, int y2)
     h = lry - uly + 1;
 }
 
-/*int main()
-{
-    UI gameScreen;
-    string s;
-    // gameScreen.print();
-    gameScreen.divide(1, 1, 120, 5, "resource-bar");
-    gameScreen.divide(1, 1, 40, 5, "interface-name");
-    gameScreen.divide(40, 1, 60, 5, "resource-1");
-    gameScreen.divide(60, 1, 80, 5, "resource-2");
-    gameScreen.divide(80, 1, 100, 5, "resource-3");
-    gameScreen.divide(100, 1, 120, 5, "resource-4");
-    gameScreen.divide(1, 5, 40, 29, "manual");
-    gameScreen.divide(40, 5, 120, 29, "game-content");
-
-    gameScreen.drawAll("interface-name", "center", {"Interface 2: Internal Action"});
-    gameScreen.drawAll("resource-1", "center", {"Food: xxxx"});
-    gameScreen.drawAll("resource-2", "center", {"Fuel: xxxx"});
-    gameScreen.drawAll("resource-3", "center", {"Metal: xxxx"});
-    gameScreen.drawAll("resource-4", "center", {"Population: xxxx"});
-    gameScreen.drawLineStart("manual");
-    gameScreen.drawLine("center", "user manual");
-    gameScreen.drawLine("center", "sdfsdfsdf");
-    gameScreen.drawLineStop();
-    gameScreen.print();
-}*/
+void colortest(){
+}
