@@ -20,6 +20,7 @@ int main()
     int cur_interface = 1;
     player.init(350, 100, 100, 70000, 0, 0, 0, 0);
     init_interface_2();
+    init_i3();
     for (int round = 0; round < 50; round++)
     {
         for (string curCountry : countryList)
