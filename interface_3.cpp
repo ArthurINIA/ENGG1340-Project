@@ -103,10 +103,9 @@ void print_i3(){
     gameScreen.drawAll("resource-2", "center", {"All Tank: xxxx"});
     gameScreen.drawAll("resource-3", "center", {"Metal: xxxx"});
     gameScreen.drawAll("resource-4", "center", {"Population: xxxx"});
-    gameScreen.drawLineStart("manual");
-    gameScreen.drawLine("center", "user manual");
-    gameScreen.drawLine("center", "sdfsdfsdf");
-    gameScreen.drawLineStop();
+
+    vector<string> i3_sidebarInfo = {"Command List:", "move", "to i1", "to i2", "to i4", "end", "quit", "help"};
+    gameScreen.drawAll("manual", "center", i3_sidebarInfo);
 
     gameScreen.divide(39, 5, 120, 29, "game-content");
     gameScreen.divide(39, 5, 120, 7, "world-map-title");

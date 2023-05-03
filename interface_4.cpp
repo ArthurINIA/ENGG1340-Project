@@ -42,9 +42,7 @@ void show_round_result(vector<string> content)
     gameScreen.drawAll("resource-3", "center", vec3);
     gameScreen.drawAll("resource-4", "center", vec4);
     gameScreen.drawAll("game-content", "center", content);
-    gameScreen.drawLineStart("manual");
-    gameScreen.drawLine("center", "user manual");
-    gameScreen.drawLine("center", "sdfsdfsdf");
-    gameScreen.drawLineStop();
+    vector<string> i4_sidebarInfo = {"Try typing the following:", "show buildable", "show info", "build", "to i1", "to i2", "to i3", "end", "quit", "help"};
+    gameScreen.drawAll("manual", "center", i4_sidebarInfo);
     gameScreen.print();
 }

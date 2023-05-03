@@ -83,10 +83,8 @@ void show_i1(vector<string> content)
     gameScreen.drawAll("resource-3", "center", vec3);
     gameScreen.drawAll("resource-4", "center", vec4);
     gameScreen.drawAll("game-content", "center", content);
-    gameScreen.drawLineStart("manual");
-    gameScreen.drawLine("center", "user manual");
-    gameScreen.drawLine("center", "sdfsdfsdf");
-    gameScreen.drawLineStop();
+    vector<string> i1_sidebarInfo = {"Command List", "to i2", "to i3", "to i4", "end", "quit", "help"};
+    gameScreen.drawAll("manual", "center", i1_sidebarInfo);
     gameScreen.print();
 }
 
