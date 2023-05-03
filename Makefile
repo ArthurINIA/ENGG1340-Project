@@ -1,15 +1,15 @@
 FLAGS = -pedantic-errors -std=c++11
 
-interface_1.o: interface_1.cpp all_interface.h
+interface_1.o: interface_1.cpp all_interface.h UI.h
 	g++ $(FLAGS) -c $<
 
 interface_2.o: interface_2.cpp all_interface.h UI.h
 	g++ $(FLAGS) -c $<
 
-interface_3.o: interface_3.cpp all_interface.h
+interface_3.o: interface_3.cpp all_interface.h UI.h
 	g++ $(FLAGS) -c $<
 
-interface_4.o: interface_4.cpp all_interface.h
+interface_4.o: interface_4.cpp all_interface.h UI.h
 	g++ $(FLAGS) -c $<
 
 UI.o: UI.cpp UI.h

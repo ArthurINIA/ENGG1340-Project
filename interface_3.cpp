@@ -1,11 +1,9 @@
 #include "all_interface.h"
+#include "UI.h"
 using namespace std;
 
 //world map material
-class i3Map : public Military_Resouces{
-    public:
-        string owner = "nobody";
-} wldMap[4][4];
+i3Map wldMap[4][4];
 map<string, pair<string, string>> colorCode = {
         //{name, {word-color, background-color}}
         {"Player", {"\033[30m", "\033[46m"}}, 
@@ -17,16 +15,78 @@ map<string, pair<string, string>> colorCode = {
 
 void print_i3();
 
-void run_interface_3(vector<string> &cmd){
-    print_i3();
-}
-
-void init_13(){
+void init_i3(){
     //set initial state of the map
     for(int i = 0; i < 4; i++) for(int j = 0; j < 4; j++) wldMap[i][j].owner = "nobody";
     wldMap[0][0].owner = "Player", wldMap[3][0].owner = "PC1", wldMap[0][3].owner = "PC2", wldMap[3][3].owner = "PC3" ;
 
 }
+
+void run_interface_3(vector<string> &cmd){
+    if(cmd[0] == "to"){
+        print_i3();
+    }else if(cmd[0] == "move"){
+        if(cmd.size() == 1){
+            gameScreen.divide(39, 5, 120, 29, "game-content");
+            gameScreen.drawLineStart("game-content");
+            gameScreen.drawLine("left", "  How do you want to move your army units?");
+            gameScreen.drawLine("left", "  Correct syntax should be:");
+            gameScreen.drawLine("left", "  move NUM ARMY_UNIT form A,B to C,D");
+            gameScreen.drawLine("left", "  Example 1:");
+            gameScreen.drawLine("left", "  move 300 soldier from 0,0 to 1,0");
+            gameScreen.drawLine("left", "  Example 2:");
+            gameScreen.drawLine("left", "  move 2 tank from 0,1 to 1,1");
+            gameScreen.drawLineStop();
+            gameScreen.print();
+            return;
+        }
+        //move NUM soldier_OR_tank form x,y to x,y
+        //validation of the move army unit command
+        if(cmd[2] != "soldier" && cmd[2] != "tank"){
+            cout << "You can only choose soldier or tank" << endl;
+            return;
+        }
+        int x_from = cmd[4][0] - '0', y_from = cmd[4][2] - '0';
+        if(x_from < 0 || x_from > 3 || y_from < 0 || y_from > 3){
+            cout << "from wrong x,y-coordinates" << endl;
+            return;
+        }
+        
+        //use reference and poiner to reduce lines  of code
+        int &soldierCanMove = wldMap[x_from][y_from].army[0].soldier;
+        int &tankCanMove = wldMap[x_from][y_from].army[0].tank;
+        int *tarUnit, *anotherUnit;
+        if(cmd[2] == "soldier") tarUnit = &soldierCanMove, anotherUnit = &tankCanMove;
+        else if(cmd[2] == "tank") tarUnit = &tankCanMove, anotherUnit = &soldierCanMove;
+        int qtyWannaMove = stoi(cmd[1]);
+        
+        if(*tarUnit < qtyWannaMove){
+            cout << "Not enough " << cmd[2] << ".";
+            if( *tarUnit == qtyWannaMove && *anotherUnit == 0) 
+                cout << " You should keep at least 1 " << cmd[2] << " in land-" << x_from << "," << y_from;
+            cout << endl;
+            return;
+        }
+        int x_to = cmd[6][0] - '0', y_to = cmd[0][2] - '0';
+        if(x_to < 0 || x_to > 3 || y_to < 0 || y_to > 3){
+            cout << "to wrong x,y-coordinates" << endl;
+            return;
+        }
+        if(x_from - x_to < -1 || x_from - x_to > 1 || y_from - y_to < -1 || y_from - y_to > 1 ){
+            cout << "You can only move army unit between adjacent lands";
+            return;
+        }
+
+        //finally valid!
+        (*tarUnit) -= qtyWannaMove; //subtract from
+        if(cmd[2] == "soldier") 
+            wldMap[x_to][y_to].army[0].soldier += qtyWannaMove; //add to
+        else if(cmd[2] == "tank") 
+            wldMap[x_to][y_to].army[0].tank += qtyWannaMove; //add to
+    }
+}
+
+
 
 void print_i3(){
     gameScreen.divide(1, 1, 120, 5, "resource-bar");

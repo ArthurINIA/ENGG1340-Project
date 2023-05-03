@@ -10,7 +10,7 @@
 #include <map>
 #include "UI.h"
 
-extern UI gameScreen;
+extern UI gameScreen, startScreen;
 
 void init_interface_2();
 void init_i3();
@@ -40,7 +40,6 @@ class Resources : public Military_Resouces{
     Resources &operator+=(const Resources &b);
     Resources &operator-=(const Resources &b);
 };
-
 class Building
 {
 public:
@@ -55,6 +54,14 @@ std::ostream &operator<<(std::ostream &os, Building const &x);
 extern Resources player, AI[3], buffer;
 // extern Building oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
 extern std::map<std::string, Building> building;
+
+//world map material
+class i3Map{
+    public:
+        Military_Resouces army[4];
+        string owner = "nobody";
+};
+extern i3Map wldMap[4][4];
 
 //NPC functions
 bool check_res(Resources res);
