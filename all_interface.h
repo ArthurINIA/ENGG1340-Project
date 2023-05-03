@@ -13,6 +13,7 @@
 extern UI gameScreen;
 
 void init_interface_2();
+void init_i3();
 
 void run_interface_1(std::vector<std::string> &cmd);
 void run_interface_2(std::vector<std::string> &cmd);

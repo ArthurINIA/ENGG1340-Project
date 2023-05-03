@@ -1,7 +1,34 @@
 #include "all_interface.h"
 using namespace std;
 
+//world map material
+class i3Map : public Military_Resouces{
+    public:
+        string owner = "nobody";
+} wldMap[4][4];
+map<string, pair<string, string>> colorCode = {
+        //{name, {word-color, background-color}}
+        {"Player", {"\033[30m", "\033[46m"}}, 
+        {"PC1", {"\033[30m", "\033[48;2;204;85;0m"}}, 
+        {"PC2", {"\033[30m", "\033[48;2;218;112;214m"}}, 
+        {"PC3", {"\033[30m", "\033[43m"}},
+        {"nobody", {"\033[37m", "\033[48;5;243m"}}
+};
+
+void print_i3();
+
 void run_interface_3(vector<string> &cmd){
+    print_i3();
+}
+
+void init_13(){
+    //set initial state of the map
+    for(int i = 0; i < 4; i++) for(int j = 0; j < 4; j++) wldMap[i][j].owner = "nobody";
+    wldMap[0][0].owner = "Player", wldMap[3][0].owner = "PC1", wldMap[0][3].owner = "PC2", wldMap[3][3].owner = "PC3" ;
+
+}
+
+void print_i3(){
     gameScreen.divide(1, 1, 120, 5, "resource-bar");
     gameScreen.divide(1, 1, 39, 5, "interface-name");
     gameScreen.divide(39, 1, 60, 5, "resource-1");
@@ -24,21 +51,7 @@ void run_interface_3(vector<string> &cmd){
     gameScreen.divide(39, 5, 120, 29, "game-content");
     gameScreen.divide(39, 5, 120, 7, "world-map-title");
     gameScreen.drawAll("world-map-title", "center", {"WORLD MAP"});
-    class i3Map : public Military_Resouces{
-        public:
-            string owner = "nobody";
-    } wldMap[4][4];
-    map<string, pair<string, string>> colorCode = {
-        {"Player", {"\033[30m", "\033[46m"}}, 
-        {"PC1", {"\033[30m", "\033[48;2;204;85;0m"}}, 
-        {"PC2", {"\033[30m", "\033[48;2;218;112;214m"}}, 
-        {"PC3", {"\033[30m", "\033[43m"}},
-        {"nobody", {"\033[37m", "\033[48;5;243m"}}
-    };
     
-    for(int i = 0; i < 4; i++) for(int j = 0; j < 4; j++) wldMap[i][j].owner = "nobody";
-    wldMap[0][0].owner = "Player", wldMap[3][0].owner = "PC1", wldMap[0][3].owner = "PC2", wldMap[3][3].owner = "PC3" ;
-
     //loop through each land in the world map
     for(int y = 8, i = 0; i < 4; y += 5, i++){
         for(int x = 40, j = 0; j < 4; x += 20, j++){
@@ -49,8 +62,8 @@ void run_interface_3(vector<string> &cmd){
             gameScreen.divide(x, y, x + 19, y + 4, CurName);
             gameScreen.drawLineStart(CurName);
             gameScreen.drawLine("center", land_id + " " + landOwner);
-            gameScreen.drawLine("left", "YourSolider:00000");
-            gameScreen.drawLine("left", "Your Tank : 00000");
+            gameScreen.drawLine("left", "YourSolider:00000"); //later have to update this part
+            gameScreen.drawLine("left", "Your Tank : 00000"); //later have to update this part
             gameScreen.drawLineStop();
             //land color setting
             gameScreen.setWordColor(x, y, x + 19, y + 4, colorCode[landOwner].first);
@@ -58,11 +71,8 @@ void run_interface_3(vector<string> &cmd){
         }
     }
 
-
     gameScreen.print();
 }
-
-
 
 // extern setting maplist[16], playerland;
 
