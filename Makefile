@@ -22,6 +22,6 @@ main: main.o interface_1.o interface_2.o interface_3.o interface_4.o UI.o
 	g++ $(FLAGS) $^ -o $@
 
 clean:
-	rm -rf *.o main
+	rm -rf *.o main ui *.exe
 
 .PHONY: clean
