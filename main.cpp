@@ -1,6 +1,6 @@
 #include "main.h"
 #include "all_interface.h"
-#include "struct.h"
+
 using namespace std;
 
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
