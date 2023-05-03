@@ -1,24 +1,67 @@
 #include "main.h"
 #include "all_interface.h"
 #include "struct.h"
+#include <random>
+#include <array>
 using namespace std;
 
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
+int AI_buildings[3][8] = {{2, 0, 0, 0, 0, 5, 1, 0}, {2, 0, 0, 0, 0, 5, 1, 0}, {2, 0, 0, 0, 0, 5, 1, 0}};
 set<string> valid_interface_option({"show", "build", "status", "attack", "protect"});
 map<string, int> interface_id = {
-    {"i1", 1}, {"admin", 1}, 
-    {"i2", 2}, {"internal", 2},
-    {"i3", 3}, {"external", 3},
-    {"i4", 4}, {"news", 4}
-};
+    {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}};
 
-Resources player, AI[4];
+Resources player, AI[3], buffer;
+
+void execute_AI_actions(const string &curCountry)
+{
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(0, 3);
+    map<string, array<int, 7>> AI_move = {
+        {"PC1", array<int, 7>{0, 5, 0, 7000, 300, 300, 300}},
+        {"PC2", array<int, 7>{1, 4, 0, 2000, 500, 500, 750}},
+        {"PC3", array<int, 7>{2, 4, 0, 2000, 1000, 1000, 1000}}};
+    for (int i = 0; i < AI_move[curCountry][1] + distrib(gen); i++)
+    {
+        /*
+        if (1 /can move soldier/)
+        {
+            // move soldier
+        }
+        */
+        if (AI[AI_move[curCountry][0]].soldiers < AI_move[curCountry][3] && AI_check_res(curCountry, building["recruiting-office"].cost))
+        {
+            AI_buildings[AI_move[curCountry][0]][4] += 1;
+            AI[AI_move[curCountry][0]] -= building["recuiting-office"].cost;
+            continue;
+        }
+        if (AI[AI_move[curCountry][0]].metal < AI_move[curCountry][4] && AI_check_res(curCountry, building["mine"].cost))
+        {
+            AI_buildings[AI_move[curCountry][0]][3] += 1;
+            AI[AI_move[curCountry][0]] -= building["mine"].cost;
+            continue;
+        }
+        if (AI[AI_move[curCountry][0]].fuel < AI_move[curCountry][5] && AI_check_res(curCountry, building["oil-refinery"].cost))
+        {
+            AI_buildings[AI_move[curCountry][0]][0] += 1;
+            AI[AI_move[curCountry][0]] -= building["oil-refinery"].cost;
+            continue;
+        }
+        if (AI[AI_move[curCountry][0]].food < AI_move[curCountry][6] && AI_check_res(curCountry, building["farm"].cost))
+        {
+            AI_buildings[AI_move[curCountry][0]][2] += 1;
+            AI[AI_move[curCountry][0]] -= building["farm"].cost;
+            continue;
+        }
+    }
+}
 
 int main()
 {
     printIntro();
     int cur_interface = 1;
-    player.init(350, 100, 100, 70000);
+    player.init(350, 100, 100, 70000, 0, 0, 0, 0);
     init_interface_2();
     for (int round = 0; round < 50; round++)
     {
@@ -31,17 +74,22 @@ int main()
                 string raw_cmd; // read command line from player
                 while (getline(cin, raw_cmd))
                 {
+                    // cout << player.food << " " << player.fuel << " " << player.metal << " " << player.population << endl;
                     vector<string> cmd = split(raw_cmd);
                     if (cmd[0] == "to")
                     {
-                        if(interface_id.count(cmd[1])){
+                        if (interface_id.count(cmd[1]))
+                        {
                             cur_interface = interface_id[cmd[1]];
                             go_interface(cur_interface, cmd);
                         }
                         else
+                        {
                             cout << "This interface does not exist!" << endl;
+                        }
                     }
-                    else if (valid_interface_option.count(cmd[0])){
+                    else if (valid_interface_option.count(cmd[0]))
+                    {
                         go_interface(cur_interface, cmd);
                     }
                     else if (cmd[0] == "end")
@@ -66,6 +114,10 @@ int main()
                     }
                 }
             }
+            else if (curCountry != "Player")
+            {
+                execute_AI_actions(curCountry);
+            }
             round_result();
         }
     }
@@ -74,31 +126,38 @@ int main()
 
 // list of functions
 // class functions
-Resources& Resources::operator+=(const Resources &b) {
+Resources &Resources::operator+=(const Resources &b)
+{
     this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->population += b.population;
     return *this;
 }
-Resources& Resources::operator-=(const Resources &b) {
+Resources &Resources::operator-=(const Resources &b)
+{
     this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->population -= b.population;
     return *this;
 }
-void Resources::init(int v1, int v2, int v3, int v4){
-    food = v1, fuel = v2, metal = v3, population = v4;
+void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
+{
+    food = v1, fuel = v2, metal = v3, population = v4, tanks = v5, soldiers = v6, military_factor = v7, max_population = v8;
 }
-std::ostream &operator<<(std::ostream &os, Resources const &x){
+std::ostream &operator<<(std::ostream &os, Resources const &x)
+{
     return os << "food = " << x.food << "\t"
-        << "fuel = " << x.fuel << "\n"
-        << "metal = " << x.metal << "\t"
-        << "population = " << x.population << endl;
+              << "fuel = " << x.fuel << "\n"
+              << "metal = " << x.metal << "\t"
+              << "ppl = " << x.population << endl;
 }
-std::ostream &operator<<(std::ostream &os, Building const &x){
+std::ostream &operator<<(std::ostream &os, Building const &x)
+{
     return os << "Building :\t" << x.name << "\n"
-        << "requirement :\t" << x.requirement << "\n"
-        << "description :\t" << x.description << "\n"
-        << "effect: \t" << x.effect << "\n"
-        << "cost--------------------------\n" << x.cost 
-        << "production--------------------\n" << x.production
-        << "------------------------------" << endl;
+              << "requirement :\t" << x.requirement << "\n"
+              << "description :\t" << x.description << "\n"
+              << "effect: \t" << x.effect << "\n"
+              << "cost--------------------------\n"
+              << x.cost
+              << "production--------------------\n"
+              << x.production
+              << "------------------------------" << endl;
 }
 // utility functions
 // debug message printer

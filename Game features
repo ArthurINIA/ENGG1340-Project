@@ -30,7 +30,7 @@ Resources:
 
 Resource standard:
     population around 10000-70000, round add 500-1000
-    food:population 1:1, food:military 1.5-2:1, initial food average 350 units, farm generate 500 units
+    food:population 1:10, food:military 2:10, initial food average 350 units, farm generate 500 units
     initial 100 units, each land 3 mines/2 extractors max
     recriuting office no limits, 750 units max per round
     factory round add 10 tanks, 300 metals/oil for 10 tanks, 500 population, need 120 metal
