@@ -19,7 +19,7 @@ int main()
 {
     printIntro();
     int cur_interface = 1;
-    player.init(350, 100, 100, 70000, 0, 0, 0, 0);
+    player.init(350, 100, 100, 70000, 0, 500, 0, 0);
     init_interface_2();
     init_i3();
     for (int round = 0; round < 20; round++)
@@ -77,8 +77,9 @@ int main()
             {
                 execute_AI_actions(curCountry);
             }
-            round_result();
+            
         }
+        round_result();
     }
     end_game();
 }
@@ -139,14 +140,20 @@ void execute_AI_actions(const string &curCountry)
 // class functions
 Resources &Resources::operator+=(const Resources &b)
 {
-    this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->population += b.population;
+    this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->population += b.population, this->soldier += b.soldier, this->tank += b.tank;
     return *this;
 }
 Resources &Resources::operator-=(const Resources &b)
 {
-    this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->population -= b.population;
+    this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->population -= b.population, this->soldier -= b.soldier, this->tank -= b.tank;
     return *this;
 }
+Resources &Resources::operator*(const int &b)
+{
+    this->food *= b, this->fuel *= b, this->metal *= b, this->population *= b, this->soldier *= b, this->tank *= b;
+    return *this;
+}
+//food, fuel, metal, ppl, tank, soldier, milFac, maxPop;
 void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
 {
     food = v1, fuel = v2, metal = v3, population = v4, tank = v5, soldier = v6, military_factor = v7, max_population = v8;
@@ -220,10 +227,6 @@ void printIntro()
 }
 
 void pick_random_event()
-{
-}
-
-void round_result()
 {
 }
 

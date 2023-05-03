@@ -28,10 +28,13 @@ void init_interface_2()
     // building["oil refinery"] = Building();
     // cout << "oil-refinery " << building.count("oil-refinery") << endl; // success
     //  food fuel metal population
+    //food, fuel, metal, ppl, tank, soldier, milFac, maxPop;
     building["oil-refinery"].name = "oil-refinery";
     building["oil-refinery"].requirement = "70 metal";
+    //metal -= 70
     building["oil-refinery"].cost.init(0, 0, 70, 0, 0, 0, 0, 0);
     building["oil-refinery"].description = "add 50 units of fuel per round, maximum 2 per land";
+    //fuel += 50
     building["oil-refinery"].production.init(0, 50, 0, 0, 0, 0, 0, 0);
     building["oil-refinery"].effect = "50 fuel";
     building["oil-refinery"].qty_owned = 2;

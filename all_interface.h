@@ -41,6 +41,7 @@ public:
     void init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8);
     Resources &operator+=(const Resources &b);
     Resources &operator-=(const Resources &b);
+    Resources &operator*(const int &b);
 };
 class Building
 {

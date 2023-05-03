@@ -10,7 +10,8 @@ map<string, pair<string, string>> colorCode = {
         {"PC1", {"\033[30m", "\033[48;2;204;85;0m"}}, 
         {"PC2", {"\033[30m", "\033[48;2;218;112;214m"}}, 
         {"PC3", {"\033[30m", "\033[43m"}},
-        {"nobody", {"\033[37m", "\033[48;5;243m"}}
+        {"nobody", {"\033[37m", "\033[48;5;243m"}},
+        {"AT WAR", {"\033[37m", "\033[41m"}}
 };
 
 void print_i3();
@@ -19,6 +20,7 @@ void init_i3(){
     //set initial state of the map
     for(int i = 0; i < 4; i++) for(int j = 0; j < 4; j++) wldMap[i][j].owner = "nobody";
     wldMap[0][0].owner = "Player", wldMap[3][0].owner = "PC1", wldMap[0][3].owner = "PC2", wldMap[3][3].owner = "PC3" ;
+    wldMap[0][0].army[0].soldier = 500, wldMap[3][0].army[1].soldier = 500, wldMap[0][3].army[2].soldier = 500, wldMap[3][3].army[3].soldier = 500;
 
 }
 
@@ -67,7 +69,7 @@ void run_interface_3(vector<string> &cmd){
             cout << endl;
             return;
         }
-        int x_to = cmd[6][0] - '0', y_to = cmd[0][2] - '0';
+        int x_to = cmd[6][0] - '0', y_to = cmd[6][2] - '0';
         if(x_to < 0 || x_to > 3 || y_to < 0 || y_to > 3){
             cout << "to wrong x,y-coordinates" << endl;
             return;
@@ -99,8 +101,8 @@ void print_i3(){
     
 
     gameScreen.drawAll("interface-name", "center", {"Interface 3: External Action"});
-    gameScreen.drawAll("resource-1", "center", {"All army: xxxx"});
-    gameScreen.drawAll("resource-2", "center", {"All Tank: xxxx"});
+    gameScreen.drawAll("resource-1", "center", {"soldier: " + to_string(player.soldier)});
+    gameScreen.drawAll("resource-2", "center", {"All Tank: " + to_string(player.tank)});
     gameScreen.drawAll("resource-3", "center", {"Metal: xxxx"});
     gameScreen.drawAll("resource-4", "center", {"Population: xxxx"});
 
@@ -114,15 +116,15 @@ void print_i3(){
     //loop through each land in the world map
     for(int y = 8, i = 0; i < 4; y += 5, i++){
         for(int x = 40, j = 0; j < 4; x += 20, j++){
-            string land_id =  "land-"; land_id += (char)(i + '0'); land_id += ","; land_id += (char)(j + '0');
+            string land_id =  "land-"; land_id += (char)(j + '0'); land_id += ","; land_id += (char)(i + '0');
             string CurName = "world-map-" + land_id;
             string landOwner = wldMap[j][i].owner;
             //land screen drawing setting
             gameScreen.divide(x, y, x + 19, y + 4, CurName);
             gameScreen.drawLineStart(CurName);
             gameScreen.drawLine("center", land_id + " " + landOwner);
-            gameScreen.drawLine("left", "YourSolider:00000"); //later have to update this part
-            gameScreen.drawLine("left", "Your Tank : 00000"); //later have to update this part
+            gameScreen.drawLine("left", "YourSoldier:" + to_string(wldMap[j][i].army[0].soldier)); //later have to update this part
+            gameScreen.drawLine("left", "Your Tank : " + to_string(wldMap[j][i].army[0].tank)); //later have to update this part
             gameScreen.drawLineStop();
             //land color setting
             gameScreen.setWordColor(x, y, x + 19, y + 4, colorCode[landOwner].first);
