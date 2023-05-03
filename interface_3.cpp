@@ -1,6 +1,5 @@
 #include "all_interface.h"
 #include "main.h"
-#include "struct.h"
 #include "UI.h"
 #include <string>
 #include <algorithm>
