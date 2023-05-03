@@ -5,7 +5,7 @@ using namespace std;
 
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 set<string> valid_interface_option({"show", "build", "status", "attack", "protect"});
-map<string, int> interface_id = {
+std::map<string, int> interface_id = {
     {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}};
 
 Resources player, AI[4], buffer;
