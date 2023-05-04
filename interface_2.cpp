@@ -117,11 +117,10 @@ void show_internal(vector<string> content)
     gameScreen.drawAll("game-content", "center", content);
     gameScreen.drawLineStart("manual");
     gameScreen.drawLine("center", "user manual");
-    gameScreen.drawLine("center", "show info (building name)");
-    gameScreen.drawLine("center", "show info (building name)");
     gameScreen.drawLine("center", "show buildable");
-    gameScreen.drawLine("center", "show built");
+    gameScreen.drawLine("center", "show info (building name)");
     gameScreen.drawLine("center", "build (quantity) (building name)");
+    gameScreen.drawLine("center", "show built");
     gameScreen.drawLineStop();
     gameScreen.print();
 }
@@ -134,6 +133,17 @@ void run_interface_2(vector<string> &cmd)
     vector<string> content;
     if (cmd[0] == "to" && (cmd[1] == "i2" || cmd[1] == "internal") && cmd.size() == 2)
     {
+        show_internal(content);
+        vector<string> comm_vec;
+        comm_vec.push_back("Guidline of command:");
+        comm_vec.push_back("");
+        comm_vec.push_back("Use 'show buildable' to check what building you can buiuld.");
+        comm_vec.push_back("");
+        comm_vec.push_back("Use 'show info (the building you want to build)'");
+        comm_vec.push_back("to check the requirment and statistic of that building.");
+        comm_vec.push_back("");
+        comm_vec.push_back("Use 'show built' to check what building you already done.");
+        content = comm_vec;
         show_internal(content);
     }
     else if (cmd[0] == "show")
