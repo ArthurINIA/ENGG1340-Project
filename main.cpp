@@ -88,7 +88,8 @@ int main(){
                 }
             }
             else{
-                npc_decision(uid);
+                if(!play[uid].dead)
+                    npc_decision(uid);
             }
         }
         round_result();
@@ -146,9 +147,12 @@ void npc_decision(int uid){
 
 void round_result(){
     // working
-
+    pair<int, int> main_city[4] = {
+        {0,0}, {3,0}, {0,3}, {3,3}
+    };
     // cal external changes
     // put this first, coz war loss can reduce land, which destroy some of the player's building
+    
     for (int y = 0; y < 4; y++){
         for (int x = 0; x < 4; x++){
             vector<int> cty;
@@ -239,12 +243,20 @@ void round_result(){
         }
     }
 
+    //determine collapse of countries
+    for(int i = 0; i < 4; i++){
+        int x = main_city[i].first;
+        int y = main_city[i].second;
+        if(wldMap[x][y].owner != countryList[i]){
+            player[i].dead = true;
+        }
+    }
+
     // cal internal econ
-    pair<int, int> main_city[4] = {
-        {0,0}, {3,0}, {0,3}, {3,3}
-    };
     //loop through the player
     for(int i = 0; i < 4; i++){
+        if(player[i].dead)
+            continue;
         cout << countryList[i] << endl;
         cout << "before:" << endl << player[i]<< endl; // testing
 
@@ -299,12 +311,8 @@ void round_result(){
                 }
             }   
         }
-        
         cout << "after:" << endl << player[i]<< endl << endl; // testing        
     }
-    
-    //determine destruction of countries
-
 }
 
 // list of functions

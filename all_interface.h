@@ -56,6 +56,7 @@ class i3Map{
 };
 class Country : public Resources{
     public:
+        bool dead = false;
         std::map<std::string, int> build_lim;
         std::map<std::string, int> qty_owned;
 };
