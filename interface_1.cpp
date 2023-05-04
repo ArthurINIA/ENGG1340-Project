@@ -7,7 +7,7 @@ void show_i1(vector<string> content);
 
 void run_interface_1(vector<string> &cmd)
 {
-    string food, fuel, metal, population;
+    string food, fuel, metal, population, soldier, tank;
     int add;
     vector<string> show_vec;
     show_vec.push_back("Livelihood index: " + to_string(player.livelihood));
@@ -23,7 +23,11 @@ void run_interface_1(vector<string> &cmd)
         population = to_string(add);
     }
     show_vec.push_back("Population round add: " + population);
-    add = building["oil-refinery"].qty_owned * building["oil-refinery"].production.fuel - min(player.metal / 300, player.fuel / 300) * 300;
+    add = building["oil-refinery"].qty_owned * building["oil-refinery"].production.fuel;
+    if (building["factory"].qty_owned > 0)
+    {
+        add -= min(player.metal / 300, player.fuel / 300) * 300;
+    }
     if (add > 0)
     {
         fuel = "+" + to_string(add);
@@ -33,7 +37,11 @@ void run_interface_1(vector<string> &cmd)
         fuel = to_string(add);
     }
     show_vec.push_back("Fuel round add: " + fuel);
-    add = building["mine"].qty_owned * building["mine"].production.metal - min(player.metal / 300, player.fuel / 300) * 300;
+    add = building["mine"].qty_owned * building["mine"].production.metal;
+    if (building["factory"].qty_owned > 0)
+    {
+        add -= min(player.metal / 300, player.fuel / 300) * 300;
+    }
     if (add > 0)
     {
         metal = "+" + to_string(add);
@@ -53,6 +61,28 @@ void run_interface_1(vector<string> &cmd)
         food = to_string(add);
     }
     show_vec.push_back("Food round add: " + food);
+    add = building["recruiting-office"].qty_owned * building["recruiting-office"].production.soldier;
+    if (player.soldier + add > player.population)
+    {
+        add = player.population - player.soldier;
+    }
+    soldier = "+" + to_string(add);
+    show_vec.push_back("Soldier round add: " + soldier);
+    add = building["factory"].qty_owned * building["factory"].production.tank;
+    if (building["factory"].qty_owned * 300 > player.metal || building["factory"].qty_owned * 300 > player.fuel)
+    {
+        for (int i = building["factory"].qty_owned; i != 0; i--)
+        {
+            if (i * 300 > player.metal && i * 300 > player.fuel)
+            {
+                add = i * building["factory"].production.tank;
+                break;
+            }
+            add = 0;
+        }
+    }
+    tank = "+" + to_string(add);
+    show_vec.push_back("Tank round add: " + tank);
     /*for (map<string, Building>::iterator it = building.begin(); it != building.end(); ++it)
     {
         int x = building[it->first].qty_owned * building[it->first].production.food - player.soldier * 0.1;
