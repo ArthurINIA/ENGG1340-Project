@@ -99,25 +99,35 @@ void execute_AI_actions(const string &curCountry)
         {"PC1", array<int, 7>{0, 5, 0, 7000, 300, 300, 300}},
         {"PC2", array<int, 7>{1, 4, 0, 2000, 500, 500, 750}},
         {"PC3", array<int, 7>{2, 4, 0, 2000, 1000, 1000, 1000}}};
+    map<string, array<string, 4>> AI_range = {{"PC1", array<string, 4>{"3,0", "2,0", "2,1", "3,1"}}, {"PC2", array<string, 4>{"0,3", "0,2", "1,2", "1,3"}}, {"PC3", array<string, 4>{"3,3", "3,2", "2,2", "2,3"}}};
     for (int i = 0; i < AI_move[curCountry][1] + distrib(gen); i++)
     {
-
-        /*if (AI[AI_move[curCountry][0]].soldier > 0)
+        int *AItarUnit, *AIanotherUnit;
+        int AIsoldierCanMove = wldMap[AI_range[curCountry][0][0]][AI_range[curCountry][0][2]].army[curCountry[2]].soldier + wldMap[AI_range[curCountry][1][0]][AI_range[curCountry][1][2]].army[curCountry[2]].soldier + wldMap[AI_range[curCountry][2][0]][AI_range[curCountry][2][2]].army[curCountry[2]].soldier + wldMap[AI_range[curCountry][3][0]][AI_range[curCountry][3][2]].army[curCountry[2]].soldier;
+        int AItankCanMove = wldMap[AI_range[curCountry][0][0]][AI_range[curCountry][0][2]].army[curCountry[2]].tank + wldMap[AI_range[curCountry][1][0]][AI_range[curCountry][1][2]].army[curCountry[2]].tank + wldMap[AI_range[curCountry][2][0]][AI_range[curCountry][2][2]].army[curCountry[2]].tank + wldMap[AI_range[curCountry][3][0]][AI_range[curCountry][3][2]].army[curCountry[2]].tank;
+        if (AI[AI_move[curCountry][0]].soldier > 0)
         {
-            int &AIsoldierCanMove = wldMap[x_from][y_from].army[1].soldier;
-            int &AItankCanMove = wldMap[x_from][y_from].army[1].tank;
-            int *AItarUnit, *AIanotherUnit;
-
-            if (cmd[2] == "soldier")
+            bool area[4] = {true, true, true, true};
+            for (int i = 0; i < 4; i++)
             {
-                AItarUnit = &AIsoldierCanMove, AIanotherUnit = &AItankCanMove;
+                if (wldMap[AI_range[curCountry][i][0]][AI_range[curCountry][i][2]].owner != curCountry)
+                {
+                    area[i] = false;
+                }
             }
-            else if (cmd[2] == "tank")
+            for (int i = 0; i < 4; i++)
             {
-                AItarUnit = &AItankCanMove, AIanotherUnit = &AIsoldierCanMove;
+                int AIqtyWannaMove = (distrib(gen) + 1) * 500;
+                if (area[i] == false && AIsoldierCanMove > AIqtyWannaMove)
+                {
+                    wldMap[AI_range[curCountry][i][0]][AI_range[curCountry][i][0]].army[curCountry[2]].soldier += AIqtyWannaMove;
+                    if (area[i] == false && AItankCanMove > AIqtyWannaMove / 100)
+                    {
+                        wldMap[AI_range[curCountry][i][0]][AI_range[curCountry][i][0]].army[curCountry[2]].tank += AIqtyWannaMove;
+                    }
+                }
             }
-            int qtyWannaMove = stoi(cmd[1]);
-        }*/
+        }
 
         if (AI[AI_move[curCountry][0]].soldier < AI_move[curCountry][3] && AI_check_res(curCountry, building["recruiting-office"].cost))
         {
