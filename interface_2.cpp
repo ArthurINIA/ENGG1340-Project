@@ -1,3 +1,9 @@
+#include "all_interface.h"
+#include "main.h"
+#include "UI.h"
+#include <string>
+#include <algorithm>
+
 std::map<string, Building> building;
 
 bool check_res(Resources res)
