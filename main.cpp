@@ -5,6 +5,7 @@
 using namespace std;
 
 UI gameScreen;
+i3Map wldMap[4][4];
 
 string countryList[] = {"Player", "PC1", "PC2", "PC3"};
 int AI_buildings[3][8] = {{2, 0, 0, 0, 0, 5, 1, 0}, {2, 0, 0, 0, 0, 5, 1, 0}, {2, 0, 0, 0, 0, 5, 1, 0}};
@@ -13,7 +14,6 @@ map<string, int> interface_id = {
     {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}};
 
 Resources player, AI[3], buffer;
-
 
 int main()
 {
@@ -77,19 +77,17 @@ int main()
             {
                 execute_AI_actions(curCountry);
             }
-            
         }
         round_result();
     }
     end_game();
 }
 
-//NPC control
+// NPC control
 bool AI_check_res(string name, Resources res)
 {
     int x = name[2] - '1';
-    return (AI[x].food > res.food && AI[x].fuel > res.fuel 
-        && AI[x].metal > res.metal && AI[x].population > res.population);
+    return (AI[x].food >= res.food && AI[x].fuel >= res.fuel && AI[x].metal >= res.metal && AI[x].population >= res.population);
 }
 
 void execute_AI_actions(const string &curCountry)
@@ -103,12 +101,24 @@ void execute_AI_actions(const string &curCountry)
         {"PC3", array<int, 7>{2, 4, 0, 2000, 1000, 1000, 1000}}};
     for (int i = 0; i < AI_move[curCountry][1] + distrib(gen); i++)
     {
-        /*
-        if (1 /can move soldier/)
+
+        /*if (AI[AI_move[curCountry][0]].soldier > 0)
         {
-            // move soldier
-        }
-        */
+            int &AIsoldierCanMove = wldMap[x_from][y_from].army[1].soldier;
+            int &AItankCanMove = wldMap[x_from][y_from].army[1].tank;
+            int *AItarUnit, *AIanotherUnit;
+
+            if (cmd[2] == "soldier")
+            {
+                AItarUnit = &AIsoldierCanMove, AIanotherUnit = &AItankCanMove;
+            }
+            else if (cmd[2] == "tank")
+            {
+                AItarUnit = &AItankCanMove, AIanotherUnit = &AIsoldierCanMove;
+            }
+            int qtyWannaMove = stoi(cmd[1]);
+        }*/
+
         if (AI[AI_move[curCountry][0]].soldier < AI_move[curCountry][3] && AI_check_res(curCountry, building["recruiting-office"].cost))
         {
             AI_buildings[AI_move[curCountry][0]][4] += 1;
@@ -153,7 +163,7 @@ Resources &Resources::operator*(const int &b)
     this->food *= b, this->fuel *= b, this->metal *= b, this->population *= b, this->soldier *= b, this->tank *= b;
     return *this;
 }
-//food, fuel, metal, ppl, tank, soldier, milFac, maxPop;
+// food, fuel, metal, ppl, tank, soldier, milFac, maxPop;
 void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
 {
     food = v1, fuel = v2, metal = v3, population = v4, tank = v5, soldier = v6, military_factor = v7, max_population = v8;
