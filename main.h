@@ -8,12 +8,16 @@
 //list of functions
 
 //utility functions
+void readLine(std::string &str);
 std::vector<std::string> split(std::string raw_line);
 void go_interface(int id, std::vector<std::string> &cmd);
+
 //game procedure functions
 void printIntro();
 void pick_random_event();
-void end_game();
+void end_game(std::string status);
+
+void npc_decision(int uid);
 
 
 #endif

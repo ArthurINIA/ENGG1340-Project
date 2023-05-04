@@ -10,6 +10,7 @@
 #include <map>
 #include "UI.h"
 
+extern int curGameDay, curCountry;
 extern UI gameScreen, startScreen;
 
 void init_interface_2();
@@ -26,50 +27,52 @@ void external_actions();
 void round_result();
 
 // classes
-class Military_Resouces
-{
+class Military_Resouces{
 public:
     int soldier = 0, tank = 0;
 };
-class Resources : public Military_Resouces
-{
+class Resources : public Military_Resouces{
 public:
-    int food = 350, fuel = 100, metal = 100, population = 10000;
+    int food = 350, fuel = 100, metal = 100, citizen = 10000;
     int max_population = 0, livelihood = 50, military = 50, diplomacy = 50;
     double military_factor = 0;
-    Resources() : food(0), fuel(0), metal(0), population(0), military_factor(0), max_population(0) {}
+    Resources() : food(0), fuel(0), metal(0), citizen(0), military_factor(0), max_population(0) {}
     void init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8);
     Resources &operator+=(const Resources &b);
     Resources &operator-=(const Resources &b);
     Resources &operator*(const int &b);
 };
-class Building
-{
+class Building{
 public:
     std::string name, requirement, description, effect;
-    int build_limit = 50, qty_owned = 8;
+    int limit_per_land = 30, init_qty = 0;
     Resources cost, production;
-    // void init(std::string s1, std::string s2, std::string s3);
 };
-std::ostream &operator<<(std::ostream &os, Resources const &x);
-std::ostream &operator<<(std::ostream &os, Building const &x);
-// class objects that share between interfaces
-extern Resources player, AI[3], buffer;
-// extern Building oil_refinery, factory, farm, house, recruiting_office, mine, casino, military_laboratory;
-extern std::map<std::string, Building> building;
-
 //world map material
 class i3Map{
     public:
         Military_Resouces army[4];
         string owner = "nobody";
 };
+class Country : public Resources{
+    public:
+        std::map<std::string, int> build_lim;
+        std::map<std::string, int> qty_owned;
+};
+
+
+std::ostream &operator<<(std::ostream &os, Resources const &x);
+std::ostream &operator<<(std::ostream &os, Building const &x);
+
+//useful constants that share between interfaces
+extern string buildingList[6];
+// class objects that share between interfaces
+extern Country player[4]; //Player, PC1, PC2, PC3
+extern std::map<std::string, Building> building;
 extern i3Map wldMap[4][4];
 
-//NPC functions
-bool check_res(Resources res);
-bool AI_check_res(std::string name, Resources res);
-void execute_AI_actions(const std::string &curCountry);
+//helper functions
+bool check_res(int id, Resources res);
 
 // testing code
 void printNum(std::string s);

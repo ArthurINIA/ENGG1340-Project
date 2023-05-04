@@ -3,54 +3,7 @@
 using namespace std;
 
 void show_round_result(vector<string> content);
-void round_result()
-{
-    // unfinished
-    // cout << "calculating result" << endl;
 
-    // cal external changes
-    // put this first, coz war loss can reduce land, which destroy some of the player's building
-    for (int y = 0; y < 4; y++)
-    {
-        for (int x = 0; x < 4; x++)
-        {
-            vector<int> cty;
-            for (int i = 0; i < 4; i++)
-                if (wldMap[x][y].army[i].soldier || wldMap[x][y].army[i].tank)
-                    cty.push_back(i);
-            if (cty.empty())
-            {
-                wldMap[x][y].owner = "nobody";
-            }
-            else if (cty.size() == 1)
-            {
-                string ctyList[] = {"Player", "PC1", "PC2", "PC3"};
-                wldMap[x][y].owner = ctyList[cty[0]];
-                // gain land addition
-            }
-            else
-            {
-                // war simulation!
-            }
-        }
-    }
-
-    // cal internal econ
-    cout << "before:" << endl
-         << player << endl; // testing
-    for (map<string, Building>::iterator it = building.begin(); it != building.end(); it++)
-    {
-        Building cur = it->second;
-        player += cur.production * cur.qty_owned;
-        if (it->first == "recruiting-office" && cur.qty_owned)
-        {
-            wldMap[0][0].army[0].soldier += 750 * cur.qty_owned;
-        }
-        // not yet add daily tank if there is factory
-    }
-    cout << "after:" << endl
-         << player << endl; // testing
-}
 
 void run_interface_4(vector<string> &cmd)
 {
@@ -64,11 +17,8 @@ void run_interface_4(vector<string> &cmd)
 
 void show_round_result(vector<string> content)
 {
-    // cout << "+-------------------------------------------------------------------------------------+" << endl;
-    //  cout << "|";
-    UI gameScreen;
     string s;
-    string str1 = "Food: " + to_string(player.food), str2 = "Fuel: " + to_string(player.fuel), str3 = "Metal: " + to_string(player.metal), str4 = "Population: " + to_string(player.population);
+    string str1 = "Food: " + to_string(player[0].food), str2 = "Fuel: " + to_string(player[0].fuel), str3 = "Metal: " + to_string(player[0].metal), str4 = "Citizen: " + to_string(player[0].citizen);
     // cout << content << endl;
     vector<string> vec1 = {str1}, vec2 = {str2}, vec3 = {str3}, vec4 = {str4};
     gameScreen.divide(1, 1, 120, 5, "resource-bar");

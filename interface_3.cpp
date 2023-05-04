@@ -12,7 +12,7 @@ map<string, pair<string, string>> colorCode = {
     {"nobody", {"\033[37m", "\033[48;5;243m"}},
     {"AT WAR", {"\033[37m", "\033[41m"}}};
 
-void print_i3();
+void print_i3(int id);
 
 void init_i3()
 {
@@ -26,14 +26,11 @@ void init_i3()
 
 void run_interface_3(vector<string> &cmd)
 {
-    if (cmd[0] == "to")
-    {
-        print_i3();
+    if (cmd[0] == "to"){
+        print_i3(0);
     }
-    else if (cmd[0] == "move")
-    {
-        if (cmd.size() == 1)
-        {
+    else if (cmd[0] == "move"){
+        if (cmd.size() == 1){
             gameScreen.divide(39, 5, 120, 29, "game-content");
             gameScreen.drawLineStart("game-content");
             gameScreen.drawLine("left", "  How do you want to move your army units?");
@@ -90,6 +87,10 @@ void run_interface_3(vector<string> &cmd)
             cout << "You can only move army unit between adjacent lands";
             return;
         }
+        if(wldMap[x_from][y_from].owner != "Player"){
+            cout << "You can only move army unit form the land you have conquored";
+            return;
+        }
 
         // finally valid!
         (*tarUnit) -= qtyWannaMove; // subtract from
@@ -97,10 +98,19 @@ void run_interface_3(vector<string> &cmd)
             wldMap[x_to][y_to].army[0].soldier += qtyWannaMove; // add to
         else if (cmd[2] == "tank")
             wldMap[x_to][y_to].army[0].tank += qtyWannaMove; // add to
+        
+        //refresh
+        print_i3(0);
+    }
+    //testing 
+    else if (cmd[0] == "admin" && cmd[1] == "i3"){
+        if(cmd[2] == "player")
+            print_i3(0);
+        else if(cmd[2][1] == 'c') print_i3(cmd[2][2] - '0');
     }
 }
 
-void print_i3()
+void print_i3(int id)
 {
     gameScreen.divide(1, 1, 120, 5, "resource-bar");
     gameScreen.divide(1, 1, 39, 5, "interface-name");
@@ -110,18 +120,20 @@ void print_i3()
     gameScreen.divide(100, 1, 120, 5, "resource-4");
     gameScreen.divide(1, 5, 40, 29, "manual");
 
-    gameScreen.drawAll("interface-name", "center", {"Interface 3: External Action"});
-    gameScreen.drawAll("resource-1", "center", {"soldier: " + to_string(player.soldier)});
-    gameScreen.drawAll("resource-2", "center", {"All Tank: " + to_string(player.tank)});
+    gameScreen.drawAll("interface-name", "center", {to_string(curGameDay), "", "Interface 3: External Action"});
+    gameScreen.drawAll("resource-1", "center", {"soldier: " + to_string(player[id].soldier)});
+    gameScreen.drawAll("resource-2", "center", {"All Tank: " + to_string(player[id].tank)});
     gameScreen.drawAll("resource-3", "center", {"Metal: xxxx"});
-    gameScreen.drawAll("resource-4", "center", {"Population: xxxx"});
-
+    gameScreen.drawAll("resource-4", "center", {"Citizen: xxxx"});
+    //set sidebar info
     vector<string> i3_sidebarInfo = {"Command List:", "move", "to i1", "to i2", "to i4", "end", "quit", "help"};
     gameScreen.drawAll("manual", "center", i3_sidebarInfo);
 
     gameScreen.divide(39, 5, 120, 29, "game-content");
     gameScreen.divide(39, 5, 120, 7, "world-map-title");
-    gameScreen.drawAll("world-map-title", "center", {"WORLD MAP"});
+    //gameScreen.drawAll("world-map-title", "center", {"WORLD MAP"});
+    string wmt[4] = {"WORLD MAP", "DEBUG PC1", "DEBUG PC2", "DEBUG PC3"};
+    gameScreen.drawAll("world-map-title", "center", {wmt[id]});
 
     // loop through each land in the world map
     for (int y = 8, i = 0; i < 4; y += 5, i++)
@@ -138,8 +150,9 @@ void print_i3()
             gameScreen.divide(x, y, x + 19, y + 4, CurName);
             gameScreen.drawLineStart(CurName);
             gameScreen.drawLine("center", land_id + " " + landOwner);
-            gameScreen.drawLine("left", "YourSoldier:" + to_string(wldMap[j][i].army[0].soldier)); // later have to update this part
-            gameScreen.drawLine("left", "Your Tank : " + to_string(wldMap[j][i].army[0].tank));    // later have to update this part
+            string belong_to[4] = {"Your", "PC1", "PC2", "PC3"};
+            gameScreen.drawLine("left", belong_to[id] + "Soldier:" + to_string(wldMap[j][i].army[id].soldier)); // later have to update this part
+            gameScreen.drawLine("left", belong_to[id] + " Tank : " + to_string(wldMap[j][i].army[id].tank));    // later have to update this part
             gameScreen.drawLineStop();
             // land color setting
             gameScreen.setWordColor(x, y, x + 19, y + 4, colorCode[landOwner].first);
