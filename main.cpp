@@ -33,12 +33,14 @@ int main()
                 string raw_cmd; // read command line from player
                 while (getline(cin, raw_cmd))
                 {
-                    // cout << player.food << " " << player.fuel << " " << player.metal << " " << player.population << endl;
+                    //split the lines of raw command into blocks of string
                     vector<string> cmd = split(raw_cmd);
                     if (cmd[0] == "to")
                     {
+                        //correct interface name
                         if (interface_id.count(cmd[1]))
                         {
+                            //current interface may change
                             cur_interface = interface_id[cmd[1]];
                             go_interface(cur_interface, cmd);
                         }
@@ -54,7 +56,7 @@ int main()
                     else if (cmd[0] == "end")
                     {
                         cout << "Today has come to an end." << endl;
-                        break;
+                        break; //stop recieving commands for today's action
                     }
                     else if (cmd[0] == "quit")
                     {
