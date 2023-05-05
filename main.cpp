@@ -10,6 +10,8 @@ Country player[4]; // Player, PC1, PC2, PC3
 map<string, Building> building;
 i3Map wldMap[4][4];
 
+int starve[4] = {0, 0, 0, 0};
+
 string countryList[4] = {"Player", "PC1", "PC2", "PC3"};
 string buildingList[6] = {"farm", "oil-refinery", "mine", "house", "recruiting-office", "factory"};
 set<string> valid_interface_option({"to", "show", "build", "move", "admin"});
@@ -87,8 +89,19 @@ int main()
         }
         round_result();
         save_data();
+        if (player[0].dead)
+        {
+            break;
+        }
     }
-    end_game("survived");
+    if (player[0].dead)
+    {
+        end_game("failed");
+    }
+    else
+    {
+        end_game("survive");
+    }
 }
 
 void npc_decision(int uid)
@@ -266,6 +279,10 @@ void round_result()
         {
             player[i].dead = true;
         }
+        if (starve[i] >= 3)
+        {
+            player[i].dead = true;
+        }
     }
 
     // cal internal econ
@@ -281,6 +298,14 @@ void round_result()
         //--not enough food will stop producing army and citizens
         bool starvation = (player[i].food < player[i].soldier * 2 + player[i].tank * 2 + player[i].citizen);
         //--food consumption
+        if (starvation)
+        {
+            starve[i] += 1;
+        }
+        else
+        {
+            starve[i] = 0;
+        }
         player[i].citizen += player[i].qty_owned["house"];
         player[i].food = max(0, player[i].food - player[i].soldier * 2);
         player[i].food = max(0, player[i].food - player[i].tank * 2);
@@ -558,13 +583,15 @@ void pick_random_event()
 void end_game(string status)
 {
     vector<string> content;
+    // cout << "testing";
+    // cin.get();
     if (status == "survive")
     {
         content.push_back("mission complete! Survived!");
         show_round_result(content);
         exit(0);
     }
-    else if (status == "fail")
+    else if (status == "failed")
     {
         content.push_back("mission failed!");
         show_round_result(content);
