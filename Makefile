@@ -28,6 +28,7 @@ main: main.o interface_1.o interface_2.o interface_3.o interface_4.o db.o UI.o r
 	g++ $(FLAGS) $^ -o $@
 
 start: 
+	make main
 	./main
 
 clean:

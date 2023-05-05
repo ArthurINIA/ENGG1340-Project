@@ -126,7 +126,12 @@ void run_interface_2(vector<string> &cmd)
         show_internal(content);
     }
     else if (cmd[0] == "show")
-    {
+    {   
+        if(cmd.size() < 3){
+            vector<string> guide = {"You can type:", "show built", "show buildable", "show info BUILDING_NAME"};
+            show_internal(guide);
+            return;
+        }
         if (cmd[1] == "built")
         {
             vector<string> built_vec;
@@ -205,8 +210,12 @@ void run_interface_2(vector<string> &cmd)
 
         //finally can perform purchase
         player[0].qty_owned[cmd[2]] += qty;
+        player[0].food -= building[cmd[2]].cost.food * qty;
+        player[0].fuel -= building[cmd[2]].cost.fuel * qty;
+        player[0].metal -= building[cmd[2]].cost.metal * qty;
+        player[0].citizen -= building[cmd[2]].cost.citizen * qty;
         
-        player[0] -= building[cmd[2]].cost * qty;
+
         vector<string> build_vec;
         build_vec.push_back(cmd[1] + " " + cmd[2] + " are built successfully.");
         show_internal(build_vec);
@@ -235,6 +244,8 @@ vector<string> list_buildable()
         if (cur.citizen)
             build_count = min(build_count, player[0].citizen / cur.citizen);
         show.push_back(bu + " : Right now you can buy at most " + to_string(build_count));
+
     }
+    
     return show;
 }

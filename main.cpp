@@ -21,7 +21,7 @@ int main(){
     start_game();
     int cur_interface = 1;
     //the game engine
-    for (int round = curGameDay; round < 20; round++, curGameDay++){
+    for (int round = curGameDay; round <= 20; round++, curGameDay++){
         for(int uid = 0; uid < 4; uid++){
             if (uid == 0){
                 //random boost or debuff
@@ -338,11 +338,13 @@ Resources &Resources::operator*=(const int &b)
     this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
     return *this;
 }
-Resources &Resources::operator*(const int &b)
-{
-    Resources temp = *this;
-    temp.food *= b, temp.fuel *= b, temp.metal *= b, temp.citizen *= b, temp.soldier *= b, temp.tank *= b;
-    return *temp;
+Resources Resources::operator*(const int &b)
+{   
+     this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
+    return *this;
+    //Resources temp = (*this);
+    //temp.food *= b, temp.fuel *= b, temp.metal *= b, temp.citizen *= b, temp.soldier *= b, temp.tank *= b;
+    //return temp;
 }
 // food, fuel, metal, citizen, tank, soldier, milFac, maxPop;
 void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
@@ -478,6 +480,7 @@ void start_game(){
 
 void init_game(){
     //if start a new game
+    curGameDay = 1;
     init_interface_2();
     init_i3();
     //init players

@@ -39,7 +39,7 @@ public:
     Resources &operator+=(const Resources &b);
     Resources &operator-=(const Resources &b);
     Resources &operator*=(const int &b);
-    Resources &operator*(const int &b);
+    Resources operator*(const int &b);
 };
 class Building{
 public:
