@@ -6,7 +6,7 @@ using namespace std;
 
 int curGameDay = -1;
 UI gameScreen, startScreen;
-Country player[4]; //Player, PC1, PC2, PC3
+Country player[4]; // Player, PC1, PC2, PC3
 map<string, Building> building;
 i3Map wldMap[4][4];
 
@@ -16,31 +16,34 @@ set<string> valid_interface_option({"to", "show", "build", "move", "admin"});
 map<string, int> interface_id = {
     {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}};
 
-
-int main(){
+int main()
+{
     start_game();
     init_interface_2();
     init_i4();
     int cur_interface = 1;
-    //the game engine
-    for (int round = curGameDay; round <= 20; round++, curGameDay++){
-        for(int uid = 0; uid < 4; uid++){
-            if (uid == 0){
-                //random boost or debuff
+    // the game engine
+    for (int round = curGameDay; round <= 20; round++, curGameDay++)
+    {
+        for (int uid = 0; uid < 4; uid++)
+        {
+            if (uid == 0)
+            {
+                // random boost or debuff
                 pick_random_event();
 
                 while (1)
                 {
                     string raw_cmd = ""; // read command line from player
                     readLine(raw_cmd);
-                    //split the lines of raw command into blocks of string
+                    // split the lines of raw command into blocks of string
                     vector<string> cmd = split(raw_cmd);
                     if (cmd[0] == "to")
                     {
-                        //correct interface name
+                        // correct interface name
                         if (interface_id.count(cmd[1]))
                         {
-                            //current interface may change
+                            // current interface may change
                             cur_interface = interface_id[cmd[1]];
                             go_interface(cur_interface, cmd);
                         }
@@ -56,7 +59,7 @@ int main(){
                     else if (cmd[0] == "end")
                     {
                         //"Today has come to an end."
-                        break; //stop recieving commands for today's action
+                        break; // stop recieving commands for today's action
                     }
                     else if (cmd[0] == "quit")
                     {
@@ -76,8 +79,9 @@ int main(){
                     }
                 }
             }
-            else{
-                if(!player[uid].dead)
+            else
+            {
+                if (!player[uid].dead)
                     npc_decision(uid);
             }
         }
@@ -87,47 +91,46 @@ int main(){
     end_game("survived");
 }
 
-void npc_decision(int uid){
-    //base amount of actions the pc can make per round
+void npc_decision(int uid)
+{
+    // base amount of actions the pc can make per round
     int actionLimit[3] = {0, 1, 0};
-    
+
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> distrib(0, 3);
-    
-    //x is .first, y is .second
-    pair<int, int> main_city[4] = {
-        {0,0},{3,0}, {0,3}, {3,3}
-    },
-    line_of_defense[4][3] = {
-        {{1,0}, {0,1}, {1,1}},
-        {{2,0}, {2,1}, {3,1}},
-        {{0,2}, {1,2}, {1,3}},
-        {{2,3}, {3,2}, {2,2}}
-    }; 
 
-    for(int i = 0; i < actionLimit[uid] + distrib(gen); i++){
-        //first priority is move soldier to strenghen the surroundings
+    // x is .first, y is .second
+    pair<int, int> main_city[4] = {
+        {0, 0}, {3, 0}, {0, 3}, {3, 3}},
+                   line_of_defense[4][3] = {{{1, 0}, {0, 1}, {1, 1}}, {{2, 0}, {2, 1}, {3, 1}}, {{0, 2}, {1, 2}, {1, 3}}, {{2, 3}, {3, 2}, {2, 2}}};
+
+    for (int i = 0; i < actionLimit[uid] + distrib(gen); i++)
+    {
+        // first priority is move soldier to strenghen the surroundings
         int x = main_city[uid].first, y = main_city[uid].second;
-        //check if main city has excess soldier to send
-        if(wldMap[x][y].army[uid].soldier > 300){
+        // check if main city has excess soldier to send
+        if (wldMap[x][y].army[uid].soldier > 300)
+        {
             srand(time(0));
             int randChoice = rand() % 3;
             int x2 = line_of_defense[uid][randChoice].first;
             int y2 = line_of_defense[uid][randChoice].second;
-            //send 300 soldiers to one of the near land
+            // send 300 soldiers to one of the near land
             wldMap[x][y].army[uid].soldier -= 300;
             wldMap[x2][y2].army[uid].soldier += 300;
             continue;
         }
-        //second priority is to build farm
-        if(player[uid].metal > 250 && player[uid].qty_owned["farm"] < player[uid].build_lim["farm"]){
+        // second priority is to build farm
+        if (player[uid].metal > 250 && player[uid].qty_owned["farm"] < player[uid].build_lim["farm"])
+        {
             player[uid] -= building["farm"].cost;
             player[uid].qty_owned["farm"]++;
             continue;
         }
-        //third priority is to build recruiting office
-        if(player[uid].metal > 50 && player[uid].qty_owned["recruiting-office"] < player[uid].build_lim["recruiting-office"]){
+        // third priority is to build recruiting office
+        if (player[uid].metal > 50 && player[uid].qty_owned["recruiting-office"] < player[uid].build_lim["recruiting-office"])
+        {
             player[uid] -= building["recruiting-office"].cost;
             player[uid].qty_owned["recruiting-office"]++;
             continue;
@@ -135,149 +138,172 @@ void npc_decision(int uid){
     }
 }
 
-void round_result(){
+void round_result()
+{
     // working
     pair<int, int> main_city[4] = {
-        {0,0}, {3,0}, {0,3}, {3,3}
-    };
+        {0, 0}, {3, 0}, {0, 3}, {3, 3}};
     vector<string> content;
     content.push_back("Today has come to an end.");
     // cal external changes
     // put this first, coz war loss can reduce land, which destroy some of the player's building
-    
-    for (int y = 0; y < 4; y++){
-        for (int x = 0; x < 4; x++){
+
+    for (int y = 0; y < 4; y++)
+    {
+        for (int x = 0; x < 4; x++)
+        {
             vector<int> cty;
             for (int i = 0; i < 4; i++)
                 if (wldMap[x][y].army[i].soldier || wldMap[x][y].army[i].tank)
                     cty.push_back(i);
-            if (cty.empty()){
+            if (cty.empty())
+            {
                 wldMap[x][y].owner = "nobody";
             }
-            else if (cty.size() == 1){
+            else if (cty.size() == 1)
+            {
                 string ctyList[] = {"Player", "PC1", "PC2", "PC3"};
-                if(wldMap[x][y].owner != ctyList[cty[0]])
-                    for(string bu: buildingList)
+                if (wldMap[x][y].owner != ctyList[cty[0]])
+                    for (string bu : buildingList)
                         player[cty[0]].build_lim[bu] += building[bu].limit_per_land;
                 wldMap[x][y].owner = ctyList[cty[0]];
                 // gain land addition
             }
             // war simulation!
-            else if(cty.size() == 2){
-                //I only made conservative npc, so each land at most 2 different countries
+            else if (cty.size() == 2)
+            {
+                // I only made conservative npc, so each land at most 2 different countries
                 Military_Resouces &A = wldMap[x][y].army[cty[0]];
                 Military_Resouces &B = wldMap[x][y].army[cty[1]];
 
-                //tank is stronger, calculate tank first
-                if(A.tank && B.tank){
-                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose){
+                // tank is stronger, calculate tank first
+                if (A.tank && B.tank)
+                {
+                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose)
+                    {
                         troopWin -= troopLose;
                         player[id1].tank -= troopLose;
                         troopLose = 0;
                         player[id2].tank = 0;
                     };
-                    if(A.tank >= B.tank)
+                    if (A.tank >= B.tank)
                         cal(cty[0], A.tank, cty[1], B.tank);
                     else
                         cal(cty[1], B.tank, cty[0], A.tank);
                 }
-                //then if one side still have tank, use tank to destroy the enemy soldier
-                if((A.tank > 0) ^ (B.tank > 0)){
-                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose){
+                // then if one side still have tank, use tank to destroy the enemy soldier
+                if ((A.tank > 0) ^ (B.tank > 0))
+                {
+                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose)
+                    {
                         int killed = min(troopLose, troopWin * 40);
                         player[id2].soldier -= killed;
                         troopLose -= killed;
                     };
-                    if(A.tank)
+                    if (A.tank)
                         cal(cty[0], A.tank, cty[1], B.soldier);
                     else
                         cal(cty[1], B.tank, cty[0], A.soldier);
                 }
-                //after that calculate the soldier fight
-                if(A.soldier && B.soldier){
-                    cout << "before" << A.soldier << ' ' << B.soldier << endl;//test
-                    
-                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose){
+                // after that calculate the soldier fight
+                if (A.soldier && B.soldier)
+                {
+                    cout << "before" << A.soldier << ' ' << B.soldier << endl; // test
+
+                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose)
+                    {
                         troopWin -= troopLose;
                         player[id1].soldier -= troopLose;
                         troopLose = 0;
                         player[id2].soldier = 0;
                     };
-                    if(A.soldier >= B.soldier)
+                    if (A.soldier >= B.soldier)
                         cal(cty[0], A.soldier, cty[1], B.soldier);
                     else
                         cal(cty[1], B.soldier, cty[0], A.soldier);
-                    
-                    cout << "after" << A.soldier << ' ' << B.soldier << endl;//test
-                    cin.get();//test
+
+                    cout << "after" << A.soldier << ' ' << B.soldier << endl; // test
+                    cin.get();                                                // test
                 }
-                
-                //cty[0] now marks the winner
-                if(B.soldier || B.tank) swap(cty[0], cty[1]);
+
+                // cty[0] now marks the winner
+                if (B.soldier || B.tank)
+                    swap(cty[0], cty[1]);
                 string ctyList[] = {"Player", "PC1", "PC2", "PC3"};
-                if(wldMap[x][y].owner != ctyList[cty[0]]){
-                    //winner gets more room to build their buildings
-                    for(string bu: buildingList)
+                if (wldMap[x][y].owner != ctyList[cty[0]])
+                {
+                    // winner gets more room to build their buildings
+                    for (string bu : buildingList)
                         player[cty[0]].build_lim[bu] += building[bu].limit_per_land;
-                    if(wldMap[x][y].owner != "nobody"){
-                        //int id = ctyList.find(wldMap[x][y].owner);
+                    if (wldMap[x][y].owner != "nobody")
+                    {
+                        // int id = ctyList.find(wldMap[x][y].owner);
                         int id = (wldMap[x][y].owner == "Player"
-                            ? 0
-                            : wldMap[x][y].owner[2] - '0');
-                        //lose land, lose some building
-                        for(string bu: buildingList){
+                                      ? 0
+                                      : wldMap[x][y].owner[2] - '0');
+                        // lose land, lose some building
+                        for (string bu : buildingList)
+                        {
                             player[id].build_lim[bu] -= building[bu].limit_per_land;
-                            if(player[id].qty_owned[bu] > player[id].build_lim[bu]) 
+                            if (player[id].qty_owned[bu] > player[id].build_lim[bu])
                                 player[id].qty_owned[bu] = player[id].build_lim[bu];
                         }
-                            
                     }
                 }
                 wldMap[x][y].owner = ctyList[cty[0]];
                 // gain land addition
-                //then next part, cal internal econ, will see who remains in this land
+                // then next part, cal internal econ, will see who remains in this land
             }
         }
     }
 
-    //determine collapse of countries
-    for(int i = 0; i < 4; i++){
+    // determine collapse of countries
+    for (int i = 0; i < 4; i++)
+    {
         int x = main_city[i].first;
         int y = main_city[i].second;
-        if(wldMap[x][y].owner != countryList[i]){
+        if (wldMap[x][y].owner != countryList[i])
+        {
             player[i].dead = true;
         }
     }
 
     // cal internal econ
-    //loop through the player
-    for(int i = 0; i < 4; i++){
-        if(player[i].dead)
+    // loop through the player
+    for (int i = 0; i < 4; i++)
+    {
+        if (player[i].dead)
             continue;
-        //cout << countryList[i] << endl;
-        //cout << "before:" << endl << player[i]<< endl; // testing
+        // cout << countryList[i] << endl;
+        // cout << "before:" << endl << player[i]<< endl; // testing
 
-        //resources consumption
+        // resources consumption
         //--not enough food will stop producing army and citizens
         bool starvation = (player[i].food < player[i].soldier * 2 + player[i].tank * 2 + player[i].citizen);
         //--food consumption
+        player[i].citizen += player[i].qty_owned["house"];
         player[i].food = max(0, player[i].food - player[i].soldier * 2);
         player[i].food = max(0, player[i].food - player[i].tank * 2);
-        if(player[i].food < player[i].citizen){
+        if (player[i].food < player[i].citizen)
+        {
             player[i].citizen -= player[i].food;
             player[i].food = 0;
-        }else{
+        }
+        else
+        {
             player[i].food -= player[i].citizen;
         }
 
-        //resources production
+        // resources production
         int x = main_city[i].first, y = main_city[i].second;
-        //loop through the bilding list
-        for(int j = 0; j < 6; j++){
+        // loop through the bilding list
+        for (int j = 0; j < 6; j++)
+        {
             string bu = buildingList[j];
             int qty = player[i].qty_owned[bu];
-            if(!qty) continue;
-            
+            if (!qty)
+                continue;
+
             /*
             if(bu == "oil-refinery"){
                 content.push_back(countryList[i]+" fuel");
@@ -285,45 +311,52 @@ void round_result(){
                 content.push_back("plus: "+to_string(building[bu].production.fuel)+" * "+to_string(qty));//testing
             }
             */
-            
-            if(bu != "recruiting-office" && bu != "factory"){
+
+            if (bu != "recruiting-office" && bu != "factory")
+            {
                 Resources temp = building[bu].production;
                 player[i] += temp * qty;
                 continue;
             }
-            
+
             /*
             if(bu == "oil-refinery"){
                 content.push_back("after = "+to_string(player[i].fuel));//testing;
             }
             */
 
-            if(bu == "recruiting-office" && !starvation){
-                for(int k = 1; k <= qty; k++){
-                    if(!player[i].citizen) break;
-                    int gain = (player[i].citizen < building[bu].production.soldier) 
-                        ? player[i].citizen                     
-                        : building[bu].production.soldier;
-                    //citizens are recruited to be soldier
+            if (bu == "recruiting-office" && !starvation)
+            {
+                for (int k = 1; k <= qty; k++)
+                {
+                    if (!player[i].citizen)
+                        break;
+                    int gain = (player[i].citizen < building[bu].production.soldier)
+                                   ? player[i].citizen
+                                   : building[bu].production.soldier;
+                    // citizens are recruited to be soldier
                     player[i].citizen -= gain;
                     player[i].soldier += gain;
                     wldMap[x][y].army[i].soldier += gain;
                 }
             }
-            if(bu == "factory" && !starvation){
-                for(int k = 1; k <= qty; k++){
-                    if(!player[i].citizen) break;
-                    int gain = (player[i].citizen < building[bu].production.tank) 
-                        ? player[i].citizen                     
-                        : building[bu].production.tank;
-                    //citizens are recruited to be tank driver
+            if (bu == "factory" && !starvation)
+            {
+                for (int k = 1; k <= qty; k++)
+                {
+                    if (!player[i].citizen)
+                        break;
+                    int gain = (player[i].citizen < building[bu].production.tank)
+                                   ? player[i].citizen
+                                   : building[bu].production.tank;
+                    // citizens are recruited to be tank driver
                     player[i].citizen -= gain;
                     player[i].tank += gain;
                     wldMap[x][y].army[i].tank += gain;
                 }
-            }   
+            }
         }
-        //cout << "after:" << endl << player[i]<< endl << endl; // testing        
+        // cout << "after:" << endl << player[i]<< endl << endl; // testing
     }
     show_round_result(content);
 }
@@ -346,12 +379,12 @@ Resources &Resources::operator*=(const int &b)
     return *this;
 }
 Resources Resources::operator*(const int &b)
-{   
-     this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
+{
+    this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
     return *this;
-    //Resources temp = (*this);
-    //temp.food *= b, temp.fuel *= b, temp.metal *= b, temp.citizen *= b, temp.soldier *= b, temp.tank *= b;
-    //return temp;
+    // Resources temp = (*this);
+    // temp.food *= b, temp.fuel *= b, temp.metal *= b, temp.citizen *= b, temp.soldier *= b, temp.tank *= b;
+    // return temp;
 }
 // food, fuel, metal, citizen, tank, soldier, milFac, maxPop;
 void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
@@ -384,11 +417,15 @@ std::ostream &operator<<(std::ostream &os, Building const &x)
 void testing()
 {
 }
-void readLine(string &str){
-    while(1){
+void readLine(string &str)
+{
+    while (1)
+    {
         char c = getchar();
-        if(c == '\n' && str.size() > 0) return;
-        if(c != '\n') str += c;
+        if (c == '\n' && str.size() > 0)
+            return;
+        if (c != '\n')
+            str += c;
     }
 }
 vector<string> split(string raw_line)
@@ -412,7 +449,8 @@ vector<string> split(string raw_line)
         rt.push_back(cur);
     return rt;
 }
-bool check_res(int id, Resources res){
+bool check_res(int id, Resources res)
+{
     return (player[id].food >= res.food && player[id].fuel >= res.fuel && player[id].metal >= res.metal && player[id].citizen >= res.citizen);
 }
 
@@ -429,7 +467,8 @@ void go_interface(int id, vector<string> &cmd)
 }
 
 // game procedure functions
-void start_game(){
+void start_game()
+{
     startScreen.divide(1, 1, 120, 29, "whole");
 
     startScreen.divide(100, 1, 120, 29, "start-menu");
@@ -461,45 +500,51 @@ void start_game(){
         "    Nuclear Department Head: Please protect us from the neighbouring threats.",
         "......",
         " ",
-        "  Can you keep your country alive in the next 20 days?"
-    };
+        "  Can you keep your country alive in the next 20 days?"};
     startScreen.drawAll("intro", "left", introStory);
 
     startScreen.print();
 
     string mode;
-    while(1){
+    while (1)
+    {
         readLine(mode);
-        if(mode == "new"){
+        if (mode == "new")
+        {
             init_game();
             return;
         }
-        if(mode == "previous" || mode == "load"){
-            //load;
+        if (mode == "previous" || mode == "load")
+        {
+            // load;
             load_data();
-            if(curGameDay == -1) init_game();
+            if (curGameDay == -1)
+                init_game();
             return;
         }
         mode = "";
     }
 }
 
-void init_game(){
-    //if start a new game
+void init_game()
+{
+    // if start a new game
     curGameDay = 1;
     init_interface_2();
     init_i3();
     init_i4();
-    //init players
-    for(int i = 0; i < 4; i++){
+    // init players
+    for (int i = 0; i < 4; i++)
+    {
         player[i].init(70000, 100, 100, 4000, 0, 500, 0, 0);
-        for(int j = 0; j < 6; j++){
+        for (int j = 0; j < 6; j++)
+        {
             string bu = buildingList[j];
             player[i].qty_owned[bu] = building[bu].init_qty;
             player[i].build_lim[bu] = building[bu].limit_per_land;
         }
     }
-    
+
     vector<string> dummy = {""};
     run_interface_1(dummy);
 }
@@ -510,15 +555,17 @@ void pick_random_event()
 }
 */
 
-
 void end_game(string status)
-{   
+{
     vector<string> content;
-    if(status == "survive"){
+    if (status == "survive")
+    {
         content.push_back("mission complete! Survived!");
         show_round_result(content);
         exit(0);
-    }else if(status == "fail"){
+    }
+    else if (status == "fail")
+    {
         content.push_back("mission failed!");
         show_round_result(content);
         exit(0);
