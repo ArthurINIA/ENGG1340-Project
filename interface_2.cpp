@@ -1,7 +1,6 @@
 #include "all_interface.h"
 using namespace std;
 
-
 void init_interface_2()
 {
     // food, fuel, metal, ppl, tank, soldier, milFac, maxPop;
@@ -40,8 +39,8 @@ void init_interface_2()
     building["house"].requirement = "20 metal, 20 fuel";
     building["house"].cost.init(0, 20, 20, 0, 0, 0, 0, 0);
     building["house"].description = "Increase citizen limit by 1000. Initially 5 houses.";
-    building["house"].production.init(0, 0, 0, 0, 0, 0, 0, 1000);
-    building["house"].effect = "Increase citizen limit by 1000.";
+    building["house"].production.init(0, 0, 0, 1000, 0, 0, 0, 0);
+    building["house"].effect = "Increase citizen by 1000.";
     building["house"].init_qty = 5;
     building["house"].limit_per_land = 20;
 
@@ -64,7 +63,7 @@ void init_interface_2()
     building["factory"].effect = "10 tank unit";
     building["factory"].init_qty = 0;
     building["factory"].limit_per_land = 1;
-    
+
     /*
     building["military-laboratory"] = Building(); // extra variables needed?
     building["military-laboratory"].name = "military laboratory";
@@ -126,8 +125,9 @@ void run_interface_2(vector<string> &cmd)
         show_internal(content);
     }
     else if (cmd[0] == "show")
-    {   
-        if(cmd.size() < 3){
+    {
+        if (cmd.size() < 3)
+        {
             vector<string> guide = {"You can type:", "show built", "show buildable", "show info BUILDING_NAME"};
             show_internal(guide);
             return;
@@ -178,43 +178,50 @@ void run_interface_2(vector<string> &cmd)
             cout << "Invalid command" << endl;
         }
     }
-    else if (cmd[0] == "build"){
+    else if (cmd[0] == "build")
+    {
         if (cmd.size() < 3)
         {
             show_internal(vector<string>{"Please add quantity and then name of building."});
             return;
         }
-        if(!building.count(cmd[2])){
+        if (!building.count(cmd[2]))
+        {
             show_internal(vector<string>{"Doesn't exist such building"});
             return;
         }
 
         int qty = -1;
         bool ok_to_stoi = true;
-        for(char c: cmd[1]) if(!isdigit(c)) ok_to_stoi = false;
-        if(ok_to_stoi) qty = stoi(cmd[1]);
-        if(qty == -1){
+        for (char c : cmd[1])
+            if (!isdigit(c))
+                ok_to_stoi = false;
+        if (ok_to_stoi)
+            qty = stoi(cmd[1]);
+        if (qty == -1)
+        {
             show_internal(vector<string>{"Invalid quantity of the building"});
             return;
         }
 
-        if(player[0].build_lim[cmd[2]] < player[0].qty_owned[cmd[2]] + qty){
+        if (player[0].build_lim[cmd[2]] < player[0].qty_owned[cmd[2]] + qty)
+        {
             show_internal(vector<string>{"Building Limit of " + cmd[2] + " has reached"});
             return;
         }
 
-        if(!check_res(0, building[cmd[2]].cost)){
+        if (!check_res(0, building[cmd[2]].cost))
+        {
             show_internal(vector<string>{"Unsuccess purchase.", " ", "Not enough resources to pay for."});
             return;
         }
 
-        //finally can perform purchase
+        // finally can perform purchase
         player[0].qty_owned[cmd[2]] += qty;
         player[0].food -= building[cmd[2]].cost.food * qty;
         player[0].fuel -= building[cmd[2]].cost.fuel * qty;
         player[0].metal -= building[cmd[2]].cost.metal * qty;
         player[0].citizen -= building[cmd[2]].cost.citizen * qty;
-        
 
         vector<string> build_vec;
         build_vec.push_back(cmd[1] + " " + cmd[2] + " are built successfully.");
@@ -229,7 +236,8 @@ void run_interface_2(vector<string> &cmd)
 vector<string> list_buildable()
 {
     vector<string> show;
-    for(string bu: buildingList){
+    for (string bu : buildingList)
+    {
         int build_count = player[0].build_lim[bu] - player[0].qty_owned[bu];
         Resources cur = building[bu].cost;
         if (cur.food)
@@ -244,8 +252,7 @@ vector<string> list_buildable()
         if (cur.citizen)
             build_count = min(build_count, player[0].citizen / cur.citizen);
         show.push_back(bu + " : Right now you can buy at most " + to_string(build_count));
-
     }
-    
+
     return show;
 }
