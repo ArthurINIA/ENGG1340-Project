@@ -9,11 +9,13 @@ Kwong King Lam (azidoazideazide)
 
 *name in bracket is the nickname in GitHub
 
+
 + Game Description:
 
 Our game, Galatic Empires: Odyssey, is a simulation game which is inspired by the existing civilization-building game "Civilization VI". The goal of the game is to expand your territory through means such as building infrastructures and houses, attack other countries. The game is turn-based, each turn means one day. You can choose when to end each turn, but all the changes made will only be settled after you declare the end of each turn.
 
 The game is won by occupying all the 16 regions on the world map or you can survive for more than 20 days. The game can also be lost by losing all your territories through being conquered by other countries or consumption of your own military power and manpower after each attack.
+
 
 + Game Rules:
 
@@ -27,9 +29,11 @@ There are 4 countries in total and there are four resources for each country, na
 
 *You can save the game progress at any time, so that you can get back to it next time if you have not reached the state of victory or loss.
 
+
 + Game World:
 
 The game world is a 4x4 map consisting of 16 territories. The 4 territories at the 4 corners are being occupied by each country respectively at the beginning of the game. The remaining 12 lands remain unoccupied at first and players will have to send troops to the desired land and fight with their enemies before they can get the land. Failure may occur depending on various factors, such as the military factor.
+
 
 + A List of Features Implemented
 
@@ -37,6 +41,7 @@ The game world is a 4x4 map consisting of 16 territories. The 4 territories at t
 2.  We will remind you if you give an invalid command.
 3.  You can check your amount of resources at anytime during the game.
 4.  Every time when you quit the game, your game progress is saved. Thus, you can get back to the previous status when you enter our game again later on.
+
 
 + Coding Elements:
 
@@ -56,9 +61,11 @@ We have implemented file input/output functionality to allow the player to save 
 5.	Program codes in multiple files: 
 Our code is organized into multiple source files to improve readability and maintainability.
 
+
 + Non-Standard C/C++ Libraries:
 
 We have not used any non-standard C/C++ libraries in our game.
+
 
 + Compilation and Execution Instructions:
 
