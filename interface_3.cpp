@@ -120,7 +120,7 @@ void print_i3(int id)
     gameScreen.divide(100, 1, 120, 5, "resource-4");
     gameScreen.divide(1, 5, 40, 29, "manual");
 
-    gameScreen.drawAll("interface-name", "center", {to_string(curGameDay), "", "Interface 3: External Action"});
+    gameScreen.drawAll("interface-name", "center", {"Day : " + to_string(curGameDay), "Interface 3: External Action"});
     gameScreen.drawAll("resource-1", "center", {"soldier: " + to_string(player[id].soldier)});
     gameScreen.drawAll("resource-2", "center", {"All Tank: " + to_string(player[id].tank)});
     gameScreen.drawAll("resource-3", "center", {"Metal: xxxx"});

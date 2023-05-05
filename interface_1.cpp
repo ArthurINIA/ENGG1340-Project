@@ -107,7 +107,7 @@ void show_i1(vector<string> content)
     gameScreen.divide(1, 5, 40, 29, "manual");
     gameScreen.divide(40, 5, 120, 29, "game-content");
 
-    gameScreen.drawAll("interface-name", "center", {"Interface 1: Fundemental Data"});
+    gameScreen.drawAll("interface-name", "center", {"Day : " + to_string(curGameDay), "Interface 1: Fundemental Data"});
     gameScreen.drawAll("resource-1", "center", vec1);
     gameScreen.drawAll("resource-2", "center", vec2);
     gameScreen.drawAll("resource-3", "center", vec3);

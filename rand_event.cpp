@@ -1,7 +1,28 @@
-#include <iostream>
-#include <time.h>
-#include <string>
+#include "all_interface.h"
+#include <random>
 using namespace std;
+
+void pick_random_event(){
+    
+    string eventl[10];
+    eventl[0] = "A peaceful day";
+    eventl[1] = "Nothing happen"; 
+    eventl[2] = "Wave of unemployment"; // farm, factory decrease
+    eventl[3] = "Nothing happen";
+    eventl[4] = "Food crisis"; // farm decrease
+    eventl[5] = "Nothing happen"; 
+    eventl[6] = "Defence Secretary of your city turn coat!"; // millitaryval decrease
+    eventl[7] = "Nothing happen";
+    eventl[8] = "Strike"; // manpower decrease in one round
+    eventl[9] = "Oil refinery collapse"; // oil refinery -1
+    
+    srand(time(0));
+    int pick = rand() % 10;
+    
+    vector<string> show; 
+    show.push_back(eventl[pick]);
+    show_round_result(show);
+}
 /*
 int eventlist_content(){
     eventl[0] = "Help from other country"; // increase diplomaticval 

@@ -100,7 +100,7 @@ void show_internal(vector<string> content, string hAlign = "center")
 {
     string s;
     string str1 = "Food: " + to_string(player[0].food), str2 = "Fuel: " + to_string(player[0].fuel), str3 = "Metal: " + to_string(player[0].metal), str4 = "Citizen: " + to_string(player[0].citizen);
-    gameScreen.drawAll("interface-name", "center", {"Interface 2: Internal Action"});
+    gameScreen.drawAll("interface-name", "center", {"Day : " + to_string(curGameDay), "Interface 2: Internal Action"});
     gameScreen.drawAll("resource-1", "center", {str1});
     gameScreen.drawAll("resource-2", "center", {str2});
     gameScreen.drawAll("resource-3", "center", {str3});

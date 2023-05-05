@@ -498,9 +498,12 @@ void init_game(){
     run_interface_1(dummy);
 }
 
+/*
 void pick_random_event()
 {
 }
+*/
+
 
 void end_game(string status)
 {   
