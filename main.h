@@ -13,6 +13,7 @@ std::vector<std::string> split(std::string raw_line);
 void go_interface(int id, std::vector<std::string> &cmd);
 
 //game procedure functions
+void start_game();
 void printIntro();
 void pick_random_event();
 void end_game(std::string status);
