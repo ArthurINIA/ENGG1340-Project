@@ -2,15 +2,34 @@
 #include "UI.h"
 using namespace std;
 
-void show_round_result(vector<string> content);
-
-
-void run_interface_4(vector<string> &cmd)
-{
-    // cout << "interface 4" << endl; // testing
-    // cal_result();
-
+void run_interface_4(vector<string> &cmd){
     vector<string> content; // contains all result
+    if(cmd[0] == "admin"){
+        for(int i = 0; i < 4; i++){
+            content.push_back(countryList[i] + " resources");
+            content.push_back(
+                "food: " + to_string(player[i].food)
+                + "fuel: " + to_string(player[i].fuel)
+                + "metal: " + to_string(player[i].metal)
+                + "citizen: " + to_string(player[i].citizen)
+                + "soldier: " + to_string(player[i].soldier)
+                + "tank: " + to_string(player[i].tank)
+            );
+            for(int j = 0; j < 3; j++){
+                string bu = buildingList[j*2];
+                string tt = bu;
+                tt += " Owned" + to_string(player[i].qty_owned[bu]);
+                tt += " build Lim" + to_string(player[i].build_lim[bu]);
+                tt += "\t";
+                bu = buildingList[j*2 + 1];
+                tt += bu;
+                tt += " Owned " + to_string(player[i].qty_owned[bu]);
+                tt += " Lim " + to_string(player[i].build_lim[bu]);
+                tt += "\t";
+                content.push_back(tt);
+            }
+        }
+    }
 
     show_round_result(content);
 }
@@ -35,7 +54,11 @@ void show_round_result(vector<string> content)
     gameScreen.drawAll("resource-2", "center", vec2);
     gameScreen.drawAll("resource-3", "center", vec3);
     gameScreen.drawAll("resource-4", "center", vec4);
+    
+    //cout << "ok" <<endl; //testing
+    //for(auto x: content) cout << x << endl; //testing
     gameScreen.drawAll("game-content", "center", content);
+    
     vector<string> i4_sidebarInfo = {"Try typing the following:", "show buildable", "show info", "build", "to i1", "to i2", "to i3", "end", "quit", "help"};
     gameScreen.drawAll("manual", "center", i4_sidebarInfo);
     gameScreen.print();

@@ -53,7 +53,7 @@ int main(){
                     }
                     else if (cmd[0] == "end")
                     {
-                        cout << "Today has come to an end." << endl;
+                        //"Today has come to an end."
                         break; //stop recieving commands for today's action
                     }
                     else if (cmd[0] == "quit")
@@ -110,7 +110,7 @@ void npc_decision(int uid){
         //check if main city has excess soldier to send
         if(wldMap[x][y].army[uid].soldier > 300){
             srand(time(0));
-            int randChoice = 1 + rand() % 3;
+            int randChoice = rand() % 3;
             int x2 = line_of_defense[uid][randChoice].first;
             int y2 = line_of_defense[uid][randChoice].second;
             //send 300 soldiers to one of the near land
@@ -138,6 +138,8 @@ void round_result(){
     pair<int, int> main_city[4] = {
         {0,0}, {3,0}, {0,3}, {3,3}
     };
+    vector<string> content;
+    content.push_back("Today has come to an end.");
     // cal external changes
     // put this first, coz war loss can reduce land, which destroy some of the player's building
     
@@ -245,8 +247,8 @@ void round_result(){
     for(int i = 0; i < 4; i++){
         if(player[i].dead)
             continue;
-        cout << countryList[i] << endl;
-        cout << "before:" << endl << player[i]<< endl; // testing
+        //cout << countryList[i] << endl;
+        //cout << "before:" << endl << player[i]<< endl; // testing
 
         //resources consumption
         //--not enough food will stop producing army and citizens
@@ -269,11 +271,26 @@ void round_result(){
             int qty = player[i].qty_owned[bu];
             if(!qty) continue;
             
+            /*
+            if(bu == "oil-refinery"){
+                content.push_back(countryList[i]+" fuel");
+                content.push_back("before : "+to_string(player[i].fuel)); //testing
+                content.push_back("plus: "+to_string(building[bu].production.fuel)+" * "+to_string(qty));//testing
+            }
+            */
+            
             if(bu != "recruiting-office" && bu != "factory"){
-                player[i] += building[bu].production * qty;
+                Resources temp = building[bu].production;
+                player[i] += temp * qty;
                 continue;
             }
             
+            /*
+            if(bu == "oil-refinery"){
+                content.push_back("after = "+to_string(player[i].fuel));//testing;
+            }
+            */
+
             if(bu == "recruiting-office" && !starvation){
                 for(int k = 1; k <= qty; k++){
                     if(!player[i].citizen) break;
@@ -299,8 +316,9 @@ void round_result(){
                 }
             }   
         }
-        cout << "after:" << endl << player[i]<< endl << endl; // testing        
+        //cout << "after:" << endl << player[i]<< endl << endl; // testing        
     }
+    show_round_result(content);
 }
 
 // list of functions
@@ -315,12 +333,18 @@ Resources &Resources::operator-=(const Resources &b)
     this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->citizen -= b.citizen, this->soldier -= b.soldier, this->tank -= b.tank;
     return *this;
 }
-Resources &Resources::operator*(const int &b)
+Resources &Resources::operator*=(const int &b)
 {
     this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
     return *this;
 }
-// food, fuel, metal, ppl, tank, soldier, milFac, maxPop;
+Resources &Resources::operator*(const int &b)
+{
+    Resources temp = *this;
+    temp.food *= b, temp.fuel *= b, temp.metal *= b, temp.citizen *= b, temp.soldier *= b, temp.tank *= b;
+    return *temp;
+}
+// food, fuel, metal, citizen, tank, soldier, milFac, maxPop;
 void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
 {
     food = v1, fuel = v2, metal = v3, citizen = v4, tank = v5, soldier = v6, military_factor = v7, max_population = v8;
@@ -448,6 +472,7 @@ void start_game(){
             else init_interface_2();
             return;
         }
+        mode = "";
     }
 }
 
@@ -474,12 +499,15 @@ void pick_random_event()
 }
 
 void end_game(string status)
-{
+{   
+    vector<string> content;
     if(status == "survive"){
-        system("clear");
-        cout << "mission complete! Survived!" << endl;
+        content.push_back("mission complete! Survived!");
+        show_round_result(content);
+        exit(0);
     }else if(status == "fail"){
-        system("clear");
-        cout << "mission failed!" << endl;
+        content.push_back("mission failed!");
+        show_round_result(content);
+        exit(0);
     }
 }

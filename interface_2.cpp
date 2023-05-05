@@ -121,6 +121,8 @@ void run_interface_2(vector<string> &cmd)
     if (cmd[0] == "to")
     {
         content = list_buildable(); // show available buildings
+        content.push_back(" ");
+        content.push_back("  Everyday the normal citizen eat 1 unit of food, solider eat 2.");
         show_internal(content);
     }
     else if (cmd[0] == "show")
@@ -191,7 +193,7 @@ void run_interface_2(vector<string> &cmd)
             return;
         }
 
-        if(player[0].build_lim[cmd[2]] <= player[0].qty_owned[cmd[2]] + qty){
+        if(player[0].build_lim[cmd[2]] < player[0].qty_owned[cmd[2]] + qty){
             show_internal(vector<string>{"Building Limit of " + cmd[2] + " has reached"});
             return;
         }
@@ -203,6 +205,7 @@ void run_interface_2(vector<string> &cmd)
 
         //finally can perform purchase
         player[0].qty_owned[cmd[2]] += qty;
+        
         player[0] -= building[cmd[2]].cost * qty;
         vector<string> build_vec;
         build_vec.push_back(cmd[1] + " " + cmd[2] + " are built successfully.");

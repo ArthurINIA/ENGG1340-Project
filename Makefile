@@ -18,11 +18,17 @@ UI.o: UI.cpp UI.h
 db.o: db.cpp all_interface.h UI.h
 	g++ $(FLAGS) -c $<
 
+rand_event.o: rand_event.cpp all_interface.h
+	g++ $(FLAGS) -c $<
+
 main.o: main.cpp main.h all_interface.h UI.h
 	g++ $(FLAGS) -c $<
 
-main: main.o interface_1.o interface_2.o interface_3.o interface_4.o db.o UI.o
+main: main.o interface_1.o interface_2.o interface_3.o interface_4.o db.o UI.o rand_event.o
 	g++ $(FLAGS) $^ -o $@
+
+start: 
+	./main
 
 clean:
 	rm -rf *.o main ui *.exe

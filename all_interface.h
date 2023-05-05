@@ -21,9 +21,7 @@ void run_interface_2(std::vector<std::string> &cmd);
 void run_interface_3(std::vector<std::string> &cmd);
 void run_interface_4(std::vector<std::string> &cmd);
 
-void show_data();
-void internal_actions();
-void external_actions();
+void pick_random_event();
 void round_result();
 
 // classes
@@ -40,6 +38,7 @@ public:
     void init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8);
     Resources &operator+=(const Resources &b);
     Resources &operator-=(const Resources &b);
+    Resources &operator*=(const int &b);
     Resources &operator*(const int &b);
 };
 class Building{
@@ -66,7 +65,7 @@ std::ostream &operator<<(std::ostream &os, Resources const &x);
 std::ostream &operator<<(std::ostream &os, Building const &x);
 
 //useful constants that share between interfaces
-extern string buildingList[6];
+extern string buildingList[6], countryList[4];
 // class objects that share between interfaces
 extern Country player[4]; //Player, PC1, PC2, PC3
 extern std::map<std::string, Building> building;
@@ -76,6 +75,7 @@ extern i3Map wldMap[4][4];
 bool check_res(int id, Resources res);
 void save_data();
 void load_data();
+void show_round_result(vector<string> content);
 
 // testing code
 void printNum(std::string s);

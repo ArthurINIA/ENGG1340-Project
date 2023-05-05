@@ -2,7 +2,7 @@
 #include <time.h>
 #include <string>
 using namespace std;
-
+/*
 int eventlist_content(){
     eventl[0] = "Help from other country"; // increase diplomaticval 
     eventl[1] = "Nothing happen"; 
@@ -102,3 +102,4 @@ void event(){
         player.population *= 0.9;
     }
 }
+*/
