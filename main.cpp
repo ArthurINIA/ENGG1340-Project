@@ -483,6 +483,7 @@ void init_game(){
     curGameDay = 1;
     init_interface_2();
     init_i3();
+    init_i4();
     //init players
     for(int i = 0; i < 4; i++){
         player[i].init(70000, 100, 100, 4000, 0, 500, 0, 0);

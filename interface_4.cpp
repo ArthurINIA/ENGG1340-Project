@@ -2,6 +2,20 @@
 #include "UI.h"
 using namespace std;
 
+UI i4 = UI();
+vector<string> history;
+
+void init_i4(){
+    //i4.divide(1, 1, 120, 5, "resource-bar");
+    i4.divide(1, 1, 20, 5, "interface-name");
+    //i4.divide(40, 1, 60, 5, "resource-1");
+    //i4.divide(60, 1, 80, 5, "resource-2");
+    //i4.divide(80, 1, 100, 5, "resource-3");
+    //i4.divide(100, 1, 120, 5, "resource-4");
+    i4.divide(1, 5, 20, 29, "manual");
+    i4.divide(20, 1, 120, 29, "game-content");
+}
+
 void run_interface_4(vector<string> &cmd){
     vector<string> content; // contains all result
     if(cmd[0] == "admin"){
@@ -20,12 +34,11 @@ void run_interface_4(vector<string> &cmd){
                 string tt = bu;
                 tt += " Owned" + to_string(player[i].qty_owned[bu]);
                 tt += " build Lim" + to_string(player[i].build_lim[bu]);
-                tt += "\t";
+                tt += " ";
                 bu = buildingList[j*2 + 1];
                 tt += bu;
                 tt += " Owned " + to_string(player[i].qty_owned[bu]);
                 tt += " Lim " + to_string(player[i].build_lim[bu]);
-                tt += "\t";
                 content.push_back(tt);
             }
         }
@@ -36,30 +49,23 @@ void run_interface_4(vector<string> &cmd){
 
 void show_round_result(vector<string> content)
 {
-    string s;
+    //history = content;
     string str1 = "Food: " + to_string(player[0].food), str2 = "Fuel: " + to_string(player[0].fuel), str3 = "Metal: " + to_string(player[0].metal), str4 = "Citizen: " + to_string(player[0].citizen);
     // cout << content << endl;
     vector<string> vec1 = {str1}, vec2 = {str2}, vec3 = {str3}, vec4 = {str4};
-    gameScreen.divide(1, 1, 120, 5, "resource-bar");
-    gameScreen.divide(1, 1, 40, 5, "interface-name");
-    gameScreen.divide(40, 1, 60, 5, "resource-1");
-    gameScreen.divide(60, 1, 80, 5, "resource-2");
-    gameScreen.divide(80, 1, 100, 5, "resource-3");
-    gameScreen.divide(100, 1, 120, 5, "resource-4");
-    gameScreen.divide(1, 5, 40, 29, "manual");
-    gameScreen.divide(40, 5, 120, 29, "game-content");
 
-    gameScreen.drawAll("interface-name", "center", {"Interface 4: Round Result"});
-    gameScreen.drawAll("resource-1", "center", vec1);
-    gameScreen.drawAll("resource-2", "center", vec2);
-    gameScreen.drawAll("resource-3", "center", vec3);
-    gameScreen.drawAll("resource-4", "center", vec4);
+
+    i4.drawAll("interface-name", "center", {"Day : " + to_string(curGameDay), "Interface 4:", "Round Result"});
+    //i4.drawAll("resource-1", "center", vec1);
+    //i4.drawAll("resource-2", "center", vec2);
+    //i4.drawAll("resource-3", "center", vec3);
+    //i4.drawAll("resource-4", "center", vec4);
     
     //cout << "ok" <<endl; //testing
     //for(auto x: content) cout << x << endl; //testing
-    gameScreen.drawAll("game-content", "center", content);
+    i4.drawAll("game-content", "center", content);
     
-    vector<string> i4_sidebarInfo = {"Try typing the following:", "show buildable", "show info", "build", "to i1", "to i2", "to i3", "end", "quit", "help"};
-    gameScreen.drawAll("manual", "center", i4_sidebarInfo);
-    gameScreen.print();
+    vector<string> i4_sidebarInfo = {"Try typing", "the following:", "show buildable", "show info", "build", "to i1", "to i2", "to i3", "end", "quit", "help"};
+    i4.drawAll("manual", "center", i4_sidebarInfo);
+    i4.print();
 }

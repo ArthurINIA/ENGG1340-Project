@@ -11,10 +11,11 @@
 #include "UI.h"
 
 extern int curGameDay, curCountry;
-extern UI gameScreen, startScreen;
+extern UI gameScreen, startScreen, i4;
 
 void init_interface_2();
 void init_i3();
+void init_i4();
 
 void run_interface_1(std::vector<std::string> &cmd);
 void run_interface_2(std::vector<std::string> &cmd);
