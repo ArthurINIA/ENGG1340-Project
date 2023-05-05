@@ -4,7 +4,7 @@
 #include <array>
 using namespace std;
 
-int curGameDay = 0;
+int curGameDay = -1;
 UI gameScreen, startScreen;
 Country player[4]; //Player, PC1, PC2, PC3
 map<string, Building> building;
@@ -59,6 +59,7 @@ int main(){
                     else if (cmd[0] == "quit")
                     {
                         // save game
+                        save_data();
                         cout << "Game Saved" << endl;
                         // close game
                         exit(0);
@@ -79,6 +80,7 @@ int main(){
             }
         }
         round_result();
+        save_data();
     }
     end_game("survived");
 }
@@ -436,33 +438,36 @@ void start_game(){
     while(1){
         readLine(mode);
         if(mode == "new"){
-            //if start a new game
-            //init players
-            for(int i = 0; i < 4; i++){
-                player[i].init(70000, 100, 100, 4000, 0, 500, 0, 0);
-                for(int j = 0; j < 6; j++){
-                    string bu = buildingList[j];
-                    player[i].qty_owned[bu] = building[bu].init_qty;
-                    player[i].build_lim[bu] = building[bu].limit_per_land;
-                }
-            }
-            init_i3();
-            init_interface_2();
-            vector<string> dummy = {""};
-            run_interface_1(dummy);
+            init_game();
             return;
         }
-        if(mode == "previous"){
-            ///save load;
-            init_interface_2();
+        if(mode == "previous" || mode == "load"){
+            //load;
+            load_data();
+            if(curGameDay == -1) init_game();
+            else init_interface_2();
             return;
         }
     }
-    
-    
-    
 }
 
+void init_game(){
+    //if start a new game
+    init_interface_2();
+    init_i3();
+    //init players
+    for(int i = 0; i < 4; i++){
+        player[i].init(70000, 100, 100, 4000, 0, 500, 0, 0);
+        for(int j = 0; j < 6; j++){
+            string bu = buildingList[j];
+            player[i].qty_owned[bu] = building[bu].init_qty;
+            player[i].build_lim[bu] = building[bu].limit_per_land;
+        }
+    }
+    
+    vector<string> dummy = {""};
+    run_interface_1(dummy);
+}
 
 void pick_random_event()
 {

@@ -74,6 +74,8 @@ extern i3Map wldMap[4][4];
 
 //helper functions
 bool check_res(int id, Resources res);
+void save_data();
+void load_data();
 
 // testing code
 void printNum(std::string s);
