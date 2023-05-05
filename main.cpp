@@ -170,7 +170,7 @@ void round_result(){
 
                 //tank is stronger, calculate tank first
                 if(A.tank && B.tank){
-                    auto cal = [&](int id1, int troopWin, int id2, int troopLose){
+                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose){
                         troopWin -= troopLose;
                         player[id1].tank -= troopLose;
                         troopLose = 0;
@@ -183,7 +183,7 @@ void round_result(){
                 }
                 //then if one side still have tank, use tank to destroy the enemy soldier
                 if((A.tank > 0) ^ (B.tank > 0)){
-                    auto cal = [&](int id1, int troopWin, int id2, int troopLose){
+                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose){
                         int killed = min(troopLose, troopWin * 40);
                         player[id2].soldier -= killed;
                         troopLose -= killed;
@@ -195,7 +195,9 @@ void round_result(){
                 }
                 //after that calculate the soldier fight
                 if(A.soldier && B.soldier){
-                    auto cal = [&](int id1, int troopWin, int id2, int troopLose){
+                    cout << "before" << A.soldier << ' ' << B.soldier << endl;//test
+                    
+                    auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose){
                         troopWin -= troopLose;
                         player[id1].soldier -= troopLose;
                         troopLose = 0;
@@ -205,6 +207,9 @@ void round_result(){
                         cal(cty[0], A.soldier, cty[1], B.soldier);
                     else
                         cal(cty[1], B.soldier, cty[0], A.soldier);
+                    
+                    cout << "after" << A.soldier << ' ' << B.soldier << endl;//test
+                    cin.get();//test
                 }
                 
                 //cty[0] now marks the winner
