@@ -74,6 +74,23 @@ int main()
                     else if (cmd[0] == "help")
                     {
                         // manual
+                        vector<string> content;
+                        content.push_back("Interface1:");
+                        content.push_back("it shows the basic resources' amount and round add.");
+                        content.push_back("Interface2:");
+                        content.push_back("type show buildable to show what you can build.");
+                        content.push_back("type build [NUM] [buildingNAME] to build.");
+                        content.push_back("type show info [buildingNAME] to show info of them.");
+                        content.push_back("(buildingNAME is the same as you see in show buildable.)");
+                        content.push_back("Interface3:");
+                        content.push_back("type move [NUM] [soldier/tank] from [x,y] to [x,y] to move troops.");
+                        content.push_back("Interface4:");
+                        content.push_back("show round result.");
+                        content.push_back("**Type end to end round**");
+                        content.push_back("**Type quit to save and quit game**");
+                        gameScreen.divide(40, 5, 120, 29, "game-content");
+                        gameScreen.drawAll("game-content", "left", content);
+                        gameScreen.print();
                     }
                     else
                     {
