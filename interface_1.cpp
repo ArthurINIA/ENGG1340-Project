@@ -1,5 +1,4 @@
 #include "all_interface.h"
-#include "UI.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -8,18 +7,95 @@ void show_i1(vector<string> content);
 
 void run_interface_1(vector<string> &cmd)
 {
-    vector<string> indices_vec;
-    indices_vec.push_back(to_string(player.livelihood));
-    show_i1(indices_vec);
+    string food, fuel, metal, citizen, soldier, tank;
+    int add;
+    vector<string> show_vec;
+    show_vec.push_back("Livelihood index: " + to_string(player[0].livelihood));
+    show_vec.push_back("Military index: " + to_string(player[0].military));
+    show_vec.push_back("Diplomacy index: " + to_string(player[0].diplomacy));
+    add = 1000 + player[0].livelihood * 5;
+    if (add > 0)
+    {
+        citizen = "+" + to_string(add);
+    }
+    else
+    {
+        citizen = to_string(add);
+    }
+    show_vec.push_back("Citizen round add: " + citizen);
+    add = player[0].qty_owned["oil-refinery"] * building["oil-refinery"].production.fuel;
+    if (player[0].qty_owned["factory"] > 0)
+    {
+        add -= min(player[0].metal / 300, player[0].fuel / 300) * 300;
+    }
+    if (add > 0)
+    {
+        fuel = "+" + to_string(add);
+    }
+    else
+    {
+        fuel = to_string(add);
+    }
+    show_vec.push_back("Fuel round add: " + fuel);
+    add = player[0].qty_owned["mine"] * building["mine"].production.metal;
+    if (player[0].qty_owned["factory"] > 0)
+    {
+        add -= min(player[0].metal / 300, player[0].fuel / 300) * 300;
+    }
+    if (add > 0)
+    {
+        metal = "+" + to_string(add);
+    }
+    else
+    {
+        metal = to_string(add);
+    }
+    show_vec.push_back("Metal round add: " + metal);
+    add = player[0].qty_owned["farm"] * building["farm"].production.food - player[0].soldier * 0.1;
+    if (add > 0)
+    {
+        food = "+" + to_string(add);
+    }
+    else
+    {
+        food = to_string(add);
+    }
+    show_vec.push_back("Food round add: " + food);
+    add = player[0].qty_owned["recruiting-office"] * building["recruiting-office"].production.soldier;
+    if (player[0].soldier + add > player[0].citizen)
+    {
+        add = player[0].citizen - player[0].soldier;
+    }
+    soldier = "+" + to_string(add);
+    show_vec.push_back("Soldier round add: " + soldier);
+    add = player[0].qty_owned["factory"] * building["factory"].production.tank;
+    if (player[0].qty_owned["factory"] * 300 > player[0].metal || player[0].qty_owned["factory"] * 300 > player[0].fuel)
+    {
+        for (int i = player[0].qty_owned["factory"]; i != 0; i--)
+        {
+            if (i * 300 > player[0].metal && i * 300 > player[0].fuel)
+            {
+                add = i * building["factory"].production.tank;
+                break;
+            }
+            add = 0;
+        }
+    }
+    tank = "+" + to_string(add);
+    show_vec.push_back("Tank round add: " + tank);
+    /*for (map<string, Building>::iterator it = building.begin(); it != building.end(); ++it)
+    {
+        int x = building[it->first].qty_owned * building[it->first].production.food - player[0].soldier * 0.1;
+        built_vec.push_back(it->first + ": Owned " + to_string(it->second.qty_owned));
+    }*/
+    show_i1(show_vec);
 }
 
 void show_i1(vector<string> content)
 {
-    // cout << "+-------------------------------------------------------------------------------------+" << endl;
-    //  cout << "|";
-    UI gameScreen;
+
     string s;
-    string str1 = "Food: " + to_string(player.food), str2 = "Fuel: " + to_string(player.fuel), str3 = "Metal: " + to_string(player.metal), str4 = "Population: " + to_string(player.population);
+    string str1 = "Food: " + to_string(player[0].food), str2 = "Fuel: " + to_string(player[0].fuel), str3 = "Metal: " + to_string(player[0].metal), str4 = "Citizen: " + to_string(player[0].citizen);
     // cout << content << endl;
     vector<string> vec1 = {str1}, vec2 = {str2}, vec3 = {str3}, vec4 = {str4};
     gameScreen.divide(1, 1, 120, 5, "resource-bar");
@@ -37,10 +113,8 @@ void show_i1(vector<string> content)
     gameScreen.drawAll("resource-3", "center", vec3);
     gameScreen.drawAll("resource-4", "center", vec4);
     gameScreen.drawAll("game-content", "center", content);
-    gameScreen.drawLineStart("manual");
-    gameScreen.drawLine("center", "user manual");
-    gameScreen.drawLine("center", "sdfsdfsdf");
-    gameScreen.drawLineStop();
+    vector<string> i1_sidebarInfo = {"Command List", "to i2", "to i3", "to i4", "end", "quit", "help"};
+    gameScreen.drawAll("manual", "center", i1_sidebarInfo);
     gameScreen.print();
 }
 
@@ -50,7 +124,8 @@ void printNum(string s)
     cout << stoi(s) << endl;
 }
 
-int printUI1(){
+/*void printUI1()
+{
     cout << "+-----------------------------------------------------------------------------+" << endl;
     cout << "|                               Interface 1                                   |" << endl;
     cout << "|-----------------------------------------------------------------------------|" << endl;
@@ -63,7 +138,7 @@ int printUI1(){
     cout << "|*Resource 03: Metal                                                         *|" << endl;
     cout << "|*Total (units):                                                             *|" << endl;
     cout << "|*****************************************************************************|" << endl;
-    cout << "|*Resource 04: Population                                                    *|" << endl;
+    cout << "|*Resource 04: Citizen                                                    *|" << endl;
     cout << "|*Total (units):                                                             *|" << endl;
     cout << "|*****************************************************************************|" << endl;
     cout << "|*City index 01: Diplomacy                                                   *|" << endl;
@@ -77,7 +152,7 @@ int printUI1(){
     cout << "|*****************************************************************************|" << endl;
     cout << "|                                   Done!                                     |" << endl;
     cout << "+-----------------------------------------------------------------------------+" << endl;
-}
+}*/
 
 /*int main(){
     //test printNum
@@ -85,4 +160,3 @@ int printUI1(){
     cin >> num;
     printNum(num);
 }*/
-
