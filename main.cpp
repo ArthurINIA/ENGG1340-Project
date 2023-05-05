@@ -19,6 +19,8 @@ map<string, int> interface_id = {
 
 int main(){
     start_game();
+    init_interface_2();
+    init_i4();
     int cur_interface = 1;
     //the game engine
     for (int round = curGameDay; round <= 20; round++, curGameDay++){
@@ -26,7 +28,7 @@ int main(){
             if (uid == 0){
                 //random boost or debuff
                 pick_random_event();
-                
+
                 while (1)
                 {
                     string raw_cmd = ""; // read command line from player
@@ -471,7 +473,6 @@ void start_game(){
             //load;
             load_data();
             if(curGameDay == -1) init_game();
-            else init_interface_2();
             return;
         }
         mode = "";
