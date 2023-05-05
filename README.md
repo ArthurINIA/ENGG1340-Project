@@ -10,6 +10,8 @@ ENGG1340-Project
 4. Hui Chi Ming (JimmyHCM)
 5. Kwong King Lam (azidoazideazide)
 
+*name in bracket is the nickname in GitHub
+
 
 ## Game Description
 
