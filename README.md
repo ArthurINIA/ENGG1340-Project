@@ -4,11 +4,11 @@ ENGG1340-Project
 
 ## Team Members (alphabetically order)
 
-Chan Yiu Sing (IORIshizuku)
-Cheng Ching Yan Grace (flyuzu)
-Chiu Yi Shun (Eylssca)
-Hui Chi Ming (JimmyHCM)
-Kwong King Lam (azidoazideazide)
+1. Chan Yiu Sing (IORIshizuku)
+2. Cheng Ching Yan Grace (flyuzu)
+3. Chiu Yi Shun (Eylssca)
+4. Hui Chi Ming (JimmyHCM)
+5. Kwong King Lam (azidoazideazide)
 
 
 ## Game Description
