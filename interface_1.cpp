@@ -51,7 +51,7 @@ void run_interface_1(vector<string> &cmd)
         metal = to_string(add);
     }
     show_vec.push_back("Metal round add: " + metal);
-    add = player[0].qty_owned["farm"] * building["farm"].production.food - player[0].soldier * 0.1;
+    add = player[0].qty_owned["farm"] * building["farm"].production.food - player[0].soldier * 2 - player[0].tank * 2- player[0].citizen;
     if (add > 0)
     {
         food = "+" + to_string(add);

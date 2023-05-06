@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "all_interface.h"
+#include <sstream>
 #include "UI.h"
 using namespace std;
 
@@ -110,9 +110,23 @@ void UI::setWordColor(int x1, int y1, int x2, int y2, string color)
 void UI::drawAll(string tarArea, /* string vAlign, */ string hAlign, vector<string> contentToAdd)
 {
     drawLineStart(tarArea);
+    // loop through each line of the string to draw it one by one
     for (string x : contentToAdd)
         drawLine(hAlign, x);
     drawLineStop();
+}
+
+void UI::drawAll(string tarArea, /* string vAlign, */ string hAlign, string raw_output){
+    //create a stringstream object to parse the string
+    stringstream ss(raw_output); 
+    // create a vector of strings to store the substrings
+    vector<string> output_vec;
+    string substr;
+    while (getline(ss, substr, '\n')) { // loop through each line of the string
+        output_vec.push_back(substr); // add the line to the vector
+    }
+    // print out the vector of strings
+    drawAll(tarArea, hAlign, output_vec);
 }
 
 ui_region::ui_region(int x1, int y1, int x2, int y2)

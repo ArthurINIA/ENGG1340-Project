@@ -8,11 +8,11 @@ void init_interface_2()
     building["farm"].name = "farm";
     building["farm"].requirement = "25 metal";
     building["farm"].cost.init(0, 0, 25, 0, 0, 0, 0, 0);
-    building["farm"].description = "add 500 units of food per round.";
-    building["farm"].production.init(500, 0, 0, 0, 0, 0, 0, 0);
-    building["farm"].effect = "500 food";
-    building["farm"].init_qty = 0;
-    building["farm"].limit_per_land = 20;
+    building["farm"].description = "add 600 units of food per round.";
+    building["farm"].production.init(600, 0, 0, 0, 0, 0, 0, 0);
+    building["farm"].effect = "600 food";
+    building["farm"].init_qty = 9;
+    building["farm"].limit_per_land = 30;
 
     building["oil-refinery"] = Building();
     building["oil-refinery"].name = "oil-refinery";
@@ -38,8 +38,8 @@ void init_interface_2()
     building["house"].name = "house";
     building["house"].requirement = "20 metal, 20 fuel";
     building["house"].cost.init(0, 20, 20, 0, 0, 0, 0, 0);
-    building["house"].description = "Increase citizen limit by 1000. Initially 5 houses.";
-    building["house"].production.init(0, 0, 0, 1000, 0, 0, 0, 0);
+    building["house"].description = "Increase citizen by 300. Initially 5 houses.";
+    building["house"].production.init(0, 0, 0, 300, 0, 0, 0, 0);
     building["house"].effect = "Increase citizen by 1000.";
     building["house"].init_qty = 5;
     building["house"].limit_per_land = 20;

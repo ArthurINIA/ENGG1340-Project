@@ -5,9 +5,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "all_interface.h"
-
-using namespace std;
 
 class ui_region
 {
@@ -23,15 +20,15 @@ public:
 class UI
 {
     char grid[122][47];                // the screen as a char array;
-    string wdcolor[122][47], bgcolor[122][47]; //color setting of each grid, default dark brown word, black background
+    std::string wdcolor[122][47], bgcolor[122][47]; //color setting of each grid, default dark brown word, black background
 public:
     // private:
     int SCREEN_W = 120, SCREEN_H = 29; // dimension of the screen
     // char grid[SCREEN_W + 2][SCREEN_H + 2]; //the screen as a char array;
-    map<string, ui_region> regionList; // stores the subdivided region in the UI screen;
-    string cur_region;
-    map<string, int> drawLineCounter; // for drawLine()
-    string *drawBufferStorage;
+    std::map<std::string, ui_region> regionList; // stores the subdivided region in the UI screen;
+    std::string cur_region;
+    std::map<std::string, int> drawLineCounter; // for drawLine()
+    std::string *drawBufferStorage;
     int drawBufferStorage_size = 0;
     // public:
     // constructor, init
@@ -39,7 +36,7 @@ public:
     // print the whole screen
     void print();
     // ability to set and divide the screen into different regions
-    void divide(int x1, int y1, int x2, int y2, string Cname);
+    void divide(int x1, int y1, int x2, int y2, std::string Cname);
 
     // 2 modes to add content to the screen, add line by line or add all at once to a screen area
     /*
@@ -48,16 +45,18 @@ public:
         drawLine() accept input line by line
         drawLineStop() tell the program to stop the input mode when inputting is finished, then it will start doing the positioning work
     */
-    void drawLineStart(string tarArea);
-    void drawLine(string hAlign, string contentToAdd);
+    void drawLineStart(std::string tarArea);
+    void drawLine(std::string hAlign, std::string contentToAdd);
     void drawLineStop();
     // set the background color and the word color of the next line
-    void setBackgroundColor(int x1, int y1, int x2, int y2, string color);
-    void setWordColor(int x1, int y1, int x2, int y2, string color);
+    void setBackgroundColor(int x1, int y1, int x2, int y2, std::string color);
+    void setWordColor(int x1, int y1, int x2, int y2, std::string color);
     /*
         add all content at once by giving an array
     */
-    void drawAll(string tarArea, /* string vAlign, */ string hAlign, vector<string> contentToAdd);
+    void drawAll(std::string tarArea, /* string vAlign, */ std::string hAlign, std::vector<std::string> contentToAdd);
+    //separate the content by '\n'
+    void drawAll(std::string tarArea, /* string vAlign, */ std::string hAlign, std::string raw_string);
 };
 
 #endif

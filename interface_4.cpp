@@ -17,6 +17,10 @@ void init_i4(){
 }
 
 void run_interface_4(vector<string> &cmd){
+    if(cmd[0] == "to"){
+        i4.print();
+        return;
+    }
     vector<string> content; // contains all result
     if(cmd[0] == "admin"){
         for(int i = 0; i < 4; i++){
@@ -49,23 +53,11 @@ void run_interface_4(vector<string> &cmd){
 
 void show_round_result(vector<string> content)
 {
-    //history = content;
-    string str1 = "Food: " + to_string(player[0].food), str2 = "Fuel: " + to_string(player[0].fuel), str3 = "Metal: " + to_string(player[0].metal), str4 = "Citizen: " + to_string(player[0].citizen);
-    // cout << content << endl;
-    vector<string> vec1 = {str1}, vec2 = {str2}, vec3 = {str3}, vec4 = {str4};
-
-
     i4.drawAll("interface-name", "center", {"Day : " + to_string(curGameDay), "Interface 4:", "Round Result"});
-    //i4.drawAll("resource-1", "center", vec1);
-    //i4.drawAll("resource-2", "center", vec2);
-    //i4.drawAll("resource-3", "center", vec3);
-    //i4.drawAll("resource-4", "center", vec4);
     
-    //cout << "ok" <<endl; //testing
-    //for(auto x: content) cout << x << endl; //testing
     i4.drawAll("game-content", "center", content);
     
-    vector<string> i4_sidebarInfo = {"Try typing", "the following:", "show buildable", "show info", "build", "to i1", "to i2", "to i3", "end", "quit", "help"};
+    vector<string> i4_sidebarInfo = {"Try typing", "the following:", " ", "to i1", "to i2", "to i3", "to i4", "end", "quit", "help"};
     i4.drawAll("manual", "center", i4_sidebarInfo);
     i4.print();
 }

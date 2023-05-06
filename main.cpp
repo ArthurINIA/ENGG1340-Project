@@ -232,9 +232,12 @@ void round_result()
                 {
                     auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose)
                     {
+                        
                         int killed = min(troopLose, troopWin * 40);
                         player[id2].soldier -= killed;
                         troopLose -= killed;
+                        troopWin -= killed / 40;
+                        player[id1].tank -= killed / 40;
                     };
                     if (A.tank)
                         cal(cty[0], A.tank, cty[1], B.soldier);
@@ -523,32 +526,32 @@ void start_game()
     startScreen.drawAll("start-menu", "center", {"Choose game:", " ", "new", " ", "previous"});
 
     startScreen.divide(1, 1, 100, 29, "intro");
-    vector<string> introStory = {
-        "  In the last century, the Earth was overdeveloped by human civilization, and the pollution",
-        "  storm were unprecedented destructive forces that reverted to the civilized world.        ",
-        " ",
-        "  The catastrophe not only set back human civilization in terms of technology and desertifi",
-        "  cation of most of the land, but also brought about a horrific change to the Earth - \"a   ",
-        "  black miasma covering the outer atmosphere, with daylight no longer within reach\".       ",
-        " ",
-        "  Talents spring up in the turbulent days, your country's rising stars of the future have  ",
-        "  been put into new energy research, cold fusion technology is about to be completed.      ",
-        " ",
-        "  The countries are struggling for land, searching for rare raw energy under the region,",
-        "  for the sake of national peace and security.",
-        " ",
-        "  You, as a commander, please keep your resources intact and hold the border until the",
-        "  cold fusion arrives.",
-        "......",
-        "  01-Jan-2023",
-        "    Nuclear Department Head: Greetings sir, I have a good news to you.",
-        "    Nuclear Department Head: The testing phase of the cold fusion will be finished soon",
-        "                        You: How many days do you need?",
-        "    Nuclear Department Head: 20 more days before our new era.",
-        "    Nuclear Department Head: Please protect us from the neighbouring threats.",
-        "......",
-        " ",
-        "  Can you keep your country alive in the next 20 days?"};
+    const char *introStory = R"(In the last century, the Earth was overdeveloped by human civilization, and the pollution
+storm was unprecedented that its destructive forces have reverted the modern cities back to
+the uncivilized world.        
+
+The catastrophe not only set back human civilization in terms of technology and resources
+, resulting in desertification, but also brought about a horrific change to the Earth - a   
+black miasma covering the outer atmosphere, and daylight no longer be able to reach.       
+
+Talents spring up in the turbulent days, your country's rising stars of the future have  
+been put into new energy research - cold fusion technology, and it will be completed soon.      
+
+The countries are struggling for land, searching for rare raw energy under the region, 
+for the sake of national peace and security, and most importantly, survival.
+
+You, as a commander, have to keep your resources intact and hold the border until the
+cold fusion is developed.
+....
+01-Jan-2023
+  Nuclear Department Head: Greetings sir, I have a good news to you.
+  Nuclear Department Head: The testing phase of the cold fusion will be finished soon
+                      You: How many days do you need?
+  Nuclear Department Head: 20 more days before our new era.
+  Nuclear Department Head: Please protect us from the neighbouring threats.
+....
+Can you keep your country alive in the next 20 days?)";
+
     startScreen.drawAll("intro", "left", introStory);
 
     startScreen.print();

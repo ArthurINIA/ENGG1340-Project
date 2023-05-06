@@ -58,7 +58,7 @@ class i3Map
 {
 public:
     Military_Resouces army[4];
-    string owner = "nobody";
+    std::string owner = "nobody";
 };
 class Country : public Resources
 {
@@ -72,7 +72,7 @@ std::ostream &operator<<(std::ostream &os, Resources const &x);
 std::ostream &operator<<(std::ostream &os, Building const &x);
 
 // useful constants that share between interfaces
-extern string buildingList[6], countryList[4];
+extern std::string buildingList[6], countryList[4];
 // class objects that share between interfaces
 extern Country player[4]; // Player, PC1, PC2, PC3
 extern std::map<std::string, Building> building;
@@ -82,7 +82,7 @@ extern i3Map wldMap[4][4];
 bool check_res(int id, Resources res);
 void save_data();
 void load_data();
-void show_round_result(vector<string> content);
+void show_round_result(std::vector<std::string> content);
 
 // testing code
 void printNum(std::string s);
