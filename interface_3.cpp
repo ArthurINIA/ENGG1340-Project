@@ -26,11 +26,14 @@ void init_i3()
 
 void run_interface_3(vector<string> &cmd)
 {
-    if (cmd[0] == "to"){
+    if (cmd[0] == "to")
+    {
         print_i3(0);
     }
-    else if (cmd[0] == "move"){
-        if (cmd.size() == 1){
+    else if (cmd[0] == "move")
+    {
+        if (cmd.size() == 1)
+        {
             gameScreen.divide(39, 5, 120, 29, "game-content");
             gameScreen.drawLineStart("game-content");
             gameScreen.drawLine("left", "  How do you want to move your army units?");
@@ -87,7 +90,8 @@ void run_interface_3(vector<string> &cmd)
             cout << "You can only move army unit between adjacent lands";
             return;
         }
-        if(wldMap[x_from][y_from].owner != "Player"){
+        if (wldMap[x_from][y_from].owner != "Player")
+        {
             cout << "You can only move army unit form the land you have conquored";
             return;
         }
@@ -98,15 +102,17 @@ void run_interface_3(vector<string> &cmd)
             wldMap[x_to][y_to].army[0].soldier += qtyWannaMove; // add to
         else if (cmd[2] == "tank")
             wldMap[x_to][y_to].army[0].tank += qtyWannaMove; // add to
-        
-        //refresh
+
+        // refresh
         print_i3(0);
     }
-    //testing 
-    else if (cmd[0] == "admin" && cmd[1] == "i3"){
-        if(cmd[2] == "player")
+    // testing
+    else if (cmd[0] == "admin" && cmd[1] == "i3")
+    {
+        if (cmd[2] == "player")
             print_i3(0);
-        else if(cmd[2][1] == 'c') print_i3(cmd[2][2] - '0');
+        else if (cmd[2][1] == 'c')
+            print_i3(cmd[2][2] - '0');
     }
 }
 
@@ -123,15 +129,15 @@ void print_i3(int id)
     gameScreen.drawAll("interface-name", "center", {"Day : " + to_string(curGameDay), "Interface 3: External Action"});
     gameScreen.drawAll("resource-1", "center", {"soldier: " + to_string(player[id].soldier)});
     gameScreen.drawAll("resource-2", "center", {"All Tank: " + to_string(player[id].tank)});
-    gameScreen.drawAll("resource-3", "center", {"Metal: xxxx"});
-    gameScreen.drawAll("resource-4", "center", {"Citizen: xxxx"});
-    //set sidebar info
+    gameScreen.drawAll("resource-3", "center", {"Metal: " + to_string(player[id].metal)});
+    gameScreen.drawAll("resource-4", "center", {"Citizen: " + to_string(player[id].citizen)});
+    // set sidebar info
     vector<string> i3_sidebarInfo = {"Command List:", "move", "to i1", "to i2", "to i4", "end", "quit", "help"};
     gameScreen.drawAll("manual", "center", i3_sidebarInfo);
 
     gameScreen.divide(39, 5, 120, 29, "game-content");
     gameScreen.divide(39, 5, 120, 7, "world-map-title");
-    //gameScreen.drawAll("world-map-title", "center", {"WORLD MAP"});
+    // gameScreen.drawAll("world-map-title", "center", {"WORLD MAP"});
     string wmt[4] = {"WORLD MAP", "DEBUG PC1", "DEBUG PC2", "DEBUG PC3"};
     gameScreen.drawAll("world-map-title", "center", {wmt[id]});
 

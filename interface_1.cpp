@@ -13,7 +13,7 @@ void run_interface_1(vector<string> &cmd)
     show_vec.push_back("Livelihood index: " + to_string(player[0].livelihood));
     show_vec.push_back("Military index: " + to_string(player[0].military));
     show_vec.push_back("Diplomacy index: " + to_string(player[0].diplomacy));
-    add = 1000 + player[0].livelihood * 5;
+    add = building["house"].production.citizen * player[0].qty_owned["house"];
     if (add > 0)
     {
         citizen = "+" + to_string(add);
@@ -64,7 +64,7 @@ void run_interface_1(vector<string> &cmd)
     add = player[0].qty_owned["recruiting-office"] * building["recruiting-office"].production.soldier;
     if (player[0].soldier + add > player[0].citizen)
     {
-        add = player[0].citizen - player[0].soldier;
+        add = player[0].citizen;
     }
     soldier = "+" + to_string(add);
     show_vec.push_back("Soldier round add: " + soldier);
