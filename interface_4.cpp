@@ -20,7 +20,7 @@ void init_i4()
 void run_interface_4(vector<string> &cmd)
 {
     vector<string> content;                  // contains all result
-    if (cmd[0] == "to" && cmd[2] == "admin") // below is debugging
+    if (cmd[0] == "to" && cmd[2] == "admin") // below is debugging admin panel, can be accessed by to i4 admin, show all country resources
     {
         for (int i = 0; i < 4; i++)
         {

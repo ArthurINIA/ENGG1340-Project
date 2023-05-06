@@ -155,35 +155,35 @@ void npc_decision(int uid)
             // send 300 soldiers to one of the near land
             wldMap[x][y].army[uid].soldier -= 300;
             wldMap[x2][y2].army[uid].soldier += 300;
-            continue;
+            // continue;
         }
         // second priority is to build mine
-        if (player[uid].metal <= 100 && player[uid].qty_owned["mine"] < player[uid].build_lim["mine"])
+        if (player[uid].metal <= 100 && player[uid].metal > 70 && player[uid].qty_owned["mine"] < player[uid].build_lim["mine"])
         {
             player[uid] -= building["mine"].cost;
             player[uid].qty_owned["mine"]++;
-            continue;
+            // continue;
         }
         // third priority is to build farm
-        if (player[uid].metal > 250 && player[uid].qty_owned["farm"] < player[uid].build_lim["farm"])
+        if (player[uid].metal > 20 && player[uid].qty_owned["farm"] < player[uid].build_lim["farm"])
         {
             player[uid] -= building["farm"].cost;
             player[uid].qty_owned["farm"]++;
-            continue;
+            // continue;
+        }
+        // fifth priority is to build recruiting office
+        if (player[uid].metal > 10 && player[uid].qty_owned["recruiting-office"] < player[uid].build_lim["recruiting-office"])
+        {
+            player[uid] -= building["recruiting-office"].cost;
+            player[uid].qty_owned["recruiting-office"]++;
+            // continue;
         }
         // fourth priority is to build house
         if (player[uid].metal > 20 && player[uid].fuel > 20 && player[uid].qty_owned["house"] < player[uid].build_lim["house"])
         {
             player[uid] -= building["house"].cost;
             player[uid].qty_owned["house"]++;
-            continue;
-        }
-        // fifth priority is to build recruiting office
-        if (player[uid].metal > 50 && player[uid].qty_owned["recruiting-office"] < player[uid].build_lim["recruiting-office"])
-        {
-            player[uid] -= building["recruiting-office"].cost;
-            player[uid].qty_owned["recruiting-office"]++;
-            continue;
+            // continue;
         }
     }
 }
@@ -318,7 +318,7 @@ void round_result()
         {
             player[i].dead = true;
         }
-        if (starve[i] >= 3)
+        if (starve[i] >= 7)
         {
             player[i].dead = true;
         }
@@ -345,7 +345,7 @@ void round_result()
         {
             starve[i] = 0;
         }
-        player[i].citizen += player[i].qty_owned["house"] * 500; // calculate resouces for npc countries
+        player[i].citizen += player[i].qty_owned["house"] * 50; // calculate resouces for npc countries
         player[i].food = max(0, player[i].food - player[i].soldier * 2);
         player[i].food = max(0, player[i].food - player[i].tank * 2);
         if (player[i].food < player[i].citizen)
