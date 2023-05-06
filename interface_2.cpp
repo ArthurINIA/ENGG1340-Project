@@ -106,7 +106,7 @@ void show_internal(vector<string> content, string hAlign = "center")
     gameScreen.drawAll("resource-4", "center", {str4});
     gameScreen.divide(40, 5, 120, 29, "game-content");
     gameScreen.drawAll("game-content", hAlign, content);
-    vector<string> i2_sidebarInfo = {"Command List:", "show buildable", "show info", "build", "to i1", "to i3", "to i4", "end", "quit", "help"};
+    vector<string> i2_sidebarInfo = {"Command List:", " ", "show built", "show info", "build", "to i1", "to i3", "to i4", "end", "quit", "help"};
     gameScreen.drawAll("manual", "center", i2_sidebarInfo);
     gameScreen.print();
 }
@@ -126,7 +126,7 @@ void run_interface_2(vector<string> &cmd)
     }
     else if (cmd[0] == "show")
     {
-        if (cmd.size() < 3)
+        if (cmd.size() == 1)
         {
             vector<string> guide = {"You can type:", "show built", "show buildable", "show info BUILDING_NAME"};
             show_internal(guide);
