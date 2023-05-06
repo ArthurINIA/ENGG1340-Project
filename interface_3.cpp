@@ -14,7 +14,7 @@ map<string, pair<string, string>> colorCode = {
 
 void print_i3(int id);
 
-void init_i3()
+void init_i3() // initialize interface 3 world map, no input, no output
 {
     // set initial state of the map
     for (int i = 0; i < 4; i++)
@@ -24,7 +24,7 @@ void init_i3()
     wldMap[0][0].army[0].soldier = 500, wldMap[3][0].army[1].soldier = 500, wldMap[0][3].army[2].soldier = 500, wldMap[3][3].army[3].soldier = 500;
 }
 
-void run_interface_3(vector<string> &cmd)
+void run_interface_3(vector<string> &cmd) // runs interface 3 sub-functions, input command vector pass-by-reference, no output
 {
     if (cmd[0] == "to")
     {
@@ -116,7 +116,7 @@ void run_interface_3(vector<string> &cmd)
     }
 }
 
-void print_i3(int id)
+void print_i3(int id) // print interface 3 informations, input player id, no output
 {
     gameScreen.divide(1, 1, 120, 5, "resource-bar");
     gameScreen.divide(1, 1, 39, 5, "interface-name");

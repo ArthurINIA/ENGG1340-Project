@@ -18,7 +18,7 @@ set<string> valid_interface_option({"to", "show", "build", "move", "admin"});   
 map<string, int> interface_id = {
     {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}}; // set interface id
 
-int main()
+int main() // runs the game, no input, no output
 {
     start_game();
     init_interface_2();    // initialize interface 2 for setting all buiulding parameter
@@ -110,7 +110,7 @@ int main()
                     npc_decision(uid);
             }
         }
-        round_result(); // show round random event, construct a random story line for 20 random events throughout the game
+        round_result(); // process all round actions
         save_data();
         if (player[0].dead) // if player dead, break 20 day loop
         {
@@ -127,7 +127,7 @@ int main()
     }
 }
 
-void npc_decision(int uid)
+void npc_decision(int uid) // proccess AI players action, input player id, no output
 {
     // base amount of actions the pc can make per round
     int actionLimit[3] = {0, 1, 0};
@@ -188,7 +188,7 @@ void npc_decision(int uid)
     }
 }
 
-void round_result()
+void round_result() // process all round actions, no input, no output
 {
     // working
     pair<int, int> main_city[4] = {
@@ -248,7 +248,6 @@ void round_result()
                 {
                     auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose)
                     {
-                        
                         int killed = min(troopLose, troopWin * 40);
                         player[id2].soldier -= killed;
                         troopLose -= killed;
@@ -430,22 +429,22 @@ void round_result()
 
 // list of functions
 // class functions
-Resources &Resources::operator+=(const Resources &b)
+Resources &Resources::operator+=(const Resources &b) // define += operator for resources, input Resources constant variable, output pointer
 {
     this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->citizen += b.citizen, this->soldier += b.soldier, this->tank += b.tank;
     return *this;
 }
-Resources &Resources::operator-=(const Resources &b)
+Resources &Resources::operator-=(const Resources &b) // define -= operator for resources, input Resources constnat variable, output pointer
 {
     this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->citizen -= b.citizen, this->soldier -= b.soldier, this->tank -= b.tank;
     return *this;
 }
-Resources &Resources::operator*=(const int &b)
+Resources &Resources::operator*=(const int &b) // define *= operator for resources, input Resources constant variable, output pointer
 {
     this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
     return *this;
 }
-Resources Resources::operator*(const int &b)
+Resources Resources::operator*(const int &b) // define * operator for resources, input Resources constant variable, output pointer
 {
     this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
     return *this;
@@ -454,11 +453,11 @@ Resources Resources::operator*(const int &b)
     // return temp;
 }
 // food, fuel, metal, citizen, tank, soldier, milFac, maxPop;
-void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8)
+void Resources::init(int v1, int v2, int v3, int v4, int v5, int v6, double v7, int v8) // initialize building(map) cost and production, input 7 integers and 1 double, no output
 {
     food = v1, fuel = v2, metal = v3, citizen = v4, tank = v5, soldier = v6, military_factor = v7, max_population = v8;
 }
-std::ostream &operator<<(std::ostream &os, Resources const &x)
+std::ostream &operator<<(std::ostream &os, Resources const &x) // define << operator for Resources, input Resources constant variable pass-by-reference and os variable pass-by-reference, output os
 {
     return os << "food = " << x.food << "\t"
               << "fuel = " << x.fuel << "\t"
@@ -467,7 +466,7 @@ std::ostream &operator<<(std::ostream &os, Resources const &x)
               << "soldier = " << x.soldier << "\t"
               << "tank = " << x.tank << endl;
 }
-std::ostream &operator<<(std::ostream &os, Building const &x)
+std::ostream &operator<<(std::ostream &os, Building const &x) // define << operator for Building, input Resources constant variable pass-by-reference and os variable pass-by-reference, output os
 {
     return os << "Building :\t" << x.name << "\n"
               << "requirement :\t" << x.requirement << "\n"
@@ -481,10 +480,10 @@ std::ostream &operator<<(std::ostream &os, Building const &x)
 }
 // utility functions
 // debug message printer
-void testing()
+void testing() // testing purpose, no input, no output
 {
 }
-void readLine(string &str) // readLine function, read until \n
+void readLine(string &str) // read line until \n, input string pass-by-reference, no output
 {
     while (1)
     {
@@ -495,7 +494,7 @@ void readLine(string &str) // readLine function, read until \n
             str += c;
     }
 }
-vector<string> split(string raw_line)
+vector<string> split(string raw_line) // split raw_line to usable command, input string, output vector<string>
 {
     // split the string by space and return a vecetor of strings
     vector<string> rt;
@@ -516,12 +515,12 @@ vector<string> split(string raw_line)
         rt.push_back(cur);
     return rt;
 }
-bool check_res(int id, Resources res) // check if resources are enough for operations
+bool check_res(int id, Resources res) // check if resources are enough for operations, input player id and Resources variable, output true or false
 {
     return (player[id].food >= res.food && player[id].fuel >= res.fuel && player[id].metal >= res.metal && player[id].citizen >= res.citizen);
 }
 
-void go_interface(int id, vector<string> &cmd)
+void go_interface(int id, vector<string> &cmd) // navigate to 4 interface, input player id and command vector<string> pass-by-reference, no output
 {
     if (id == 1)
         run_interface_1(cmd);
@@ -534,7 +533,7 @@ void go_interface(int id, vector<string> &cmd)
 }
 
 // game procedure functions
-void start_game()
+void start_game() // show story and read new or previous, no input, no output
 {
     startScreen.divide(1, 1, 120, 29, "whole");
 
@@ -593,7 +592,7 @@ void start_game()
     }
 }
 
-void init_game()
+void init_game() // start game and pre-set parameters, no input, no output
 {
     // if start a new game
     curGameDay = 1;
@@ -622,7 +621,7 @@ void pick_random_event()
 }
 */
 
-void end_game(string status) // output different ending
+void end_game(string status) // print end game information, input string, no output
 {
     vector<string> content;
     // cout << "testing";

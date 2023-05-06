@@ -2,42 +2,55 @@
 #include <random>
 using namespace std;
 
-void pick_random_event(){
+void pick_random_event() // pick and show random event, no input, no output
+{
     vector<string> show;
     srand(time(0));
     int pick = rand() % 20;
-    if(curGameDay < 3 || (pick < 10 || pick > 14)){
+    if (curGameDay < 3 || (pick < 10 || pick > 14))
+    {
         show.push_back("A peaceful day");
         show.push_back(" ");
         show.push_back("Make sure you have balanced your main resources");
-    }else if(pick == 10){
+    }
+    else if (pick == 10)
+    {
         show.push_back("Food crisis");
         show.push_back(" ");
         show.push_back("food decreases");
         show.push_back(" ");
         show.push_back("Make sure you have enough food.");
-        if(player[0].food > 5000) 
+        if (player[0].food > 5000)
             player[0].food -= 5000;
-        else 
+        else
             player[0].food = 0;
-    }else if(pick == 11){
+    }
+    else if (pick == 11)
+    {
         show.push_back("Wave of unemployment");
         show.push_back(" ");
         show.push_back("Make sure you have enough citizens.");
-    }else if(pick == 12){
+    }
+    else if (pick == 12)
+    {
         show.push_back("Oil refinery collapse!!!");
         show.push_back(" ");
         show.push_back("oil refinery -1");
         show.push_back(" ");
         show.push_back("Make sure you have enough fuel.");
-        if(player[0].qty_owned["oil-refinery"]) player[0].qty_owned["oil-refinery"]--;
-    }else if(pick == 13){
+        if (player[0].qty_owned["oil-refinery"])
+            player[0].qty_owned["oil-refinery"]--;
+    }
+    else if (pick == 13)
+    {
         show.push_back("Typhoon!!!");
         show.push_back(" ");
         show.push_back("30% of the houses are destroyed.");
         show.push_back("Your growth of citizens falls back...");
         player[0].qty_owned["house"] = (player[0].qty_owned["house"] * 7) / 10;
-    }else if(pick == 14){
+    }
+    else if (pick == 14)
+    {
         show.push_back("Military Officer: Hey general, I've made some tanks for you.");
         show.push_back("");
         show.push_back("6 new tanks arrived in your main city");
@@ -45,7 +58,8 @@ void pick_random_event(){
         wldMap[0][0].army[0].tank += 6;
     }
 
-    if(curGameDay <= 1){
+    if (curGameDay <= 1)
+    {
         show.push_back(" ");
         show.push_back("Each day each normal citizen consume 1 food unit, and each army unit consume 2 food units");
         show.push_back("Your coutry will be collapsed if it runs out of food");
@@ -56,19 +70,18 @@ void pick_random_event(){
         show.push_back(" ");
         show.push_back("In interface 3, you can move soldiers to get more land.                    ");
         show.push_back("  In the next day, if your troops are still there, that land becomes yours.");
-        
     }
 
     show_round_result(show);
 }
 /*
 int eventlist_content(){
-    eventl[0] = "Help from other country"; // increase diplomaticval 
-    eventl[1] = "Nothing happen"; 
+    eventl[0] = "Help from other country"; // increase diplomaticval
+    eventl[1] = "Nothing happen";
     eventl[2] = "Wave of unemployment"; // farm, factory decrease
     eventl[3] = "Nothing happen";
     eventl[4] = "Food crisis"; // farm decrease
-    eventl[5] = "Nothing happen"; 
+    eventl[5] = "Nothing happen";
     eventl[6] = "Defence Secretary of your city turn coat!"; // millitaryval decrease
     eventl[7] = "Nothing happen";
     eventl[8] = "Strike"; // manpower decrease in one round
@@ -101,7 +114,7 @@ void event(){
         if (eventpick == 2){
             country[15][2] += 100;
         }
-        
+
     }
     if (randomevent == 2){
         player.food -=200;

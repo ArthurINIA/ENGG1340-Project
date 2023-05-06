@@ -5,7 +5,7 @@ using namespace std;
 
 void show_i1(vector<string> content);
 
-void run_interface_1(vector<string> &cmd)
+void run_interface_1(vector<string> &cmd) // runs interface 1 sub-functions, input command vector pass-by-reference, no output
 {
     string food, fuel, metal, citizen, soldier, tank;
     int add;
@@ -51,7 +51,7 @@ void run_interface_1(vector<string> &cmd)
         metal = to_string(add);
     }
     show_vec.push_back("Metal round add: " + metal);
-    add = player[0].qty_owned["farm"] * building["farm"].production.food - player[0].soldier * 2 - player[0].tank * 2- player[0].citizen;
+    add = player[0].qty_owned["farm"] * building["farm"].production.food - player[0].soldier * 2 - player[0].tank * 2 - player[0].citizen;
     if (add > 0)
     {
         food = "+" + to_string(add);
@@ -91,7 +91,7 @@ void run_interface_1(vector<string> &cmd)
     show_i1(show_vec);
 }
 
-void show_i1(vector<string> content)
+void show_i1(vector<string> content) // print internal 1 informations, input vector content, no output
 {
 
     string s;
@@ -119,7 +119,7 @@ void show_i1(vector<string> content)
 }
 
 // testing code
-void printNum(string s)
+void printNum(string s) // testing code, convert string to number, input string, no output
 {
     cout << stoi(s) << endl;
 }

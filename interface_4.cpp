@@ -5,7 +5,7 @@ using namespace std;
 UI i4 = UI();
 vector<string> history;
 
-void init_i4()
+void init_i4() // intialize interface 4 screen, no input, no output
 {
     // i4.divide(1, 1, 120, 5, "resource-bar");
     i4.divide(1, 1, 20, 5, "interface-name"); // initialize interface 4 UI interface
@@ -17,8 +17,10 @@ void init_i4()
     i4.divide(20, 1, 120, 29, "game-content");
 }
 
-void run_interface_4(vector<string> &cmd){
-    if(cmd[0] == "to" && cmd.size() == 2){
+void run_interface_4(vector<string> &cmd) // runs interface 4 sub-functions, input command vactor<string> pass-by-reference, no output
+{
+    if (cmd[0] == "to" && cmd.size() == 2)
+    {
         i4.print();
         return;
     }
@@ -44,7 +46,9 @@ void run_interface_4(vector<string> &cmd){
                 content.push_back(tt);
             }
         }
-    }else{
+    }
+    else
+    {
         i4.print();
         return;
     }
@@ -52,12 +56,12 @@ void run_interface_4(vector<string> &cmd){
     show_round_result(content);
 }
 
-void show_round_result(vector<string> content)
+void show_round_result(vector<string> content) // show interface 4 information, input vector<string> game content, no output
 {
     i4.drawAll("interface-name", "center", {"Day : " + to_string(curGameDay), "Interface 4:", "Round Result"});
-    
+
     i4.drawAll("game-content", "center", content);
-    
+
     vector<string> i4_sidebarInfo = {"Try typing", "the following:", " ", "to i1", "to i2", "to i3", "to i4", "end", "quit", "help"};
     i4.drawAll("manual", "center", i4_sidebarInfo);
     i4.print();

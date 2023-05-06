@@ -1,10 +1,10 @@
 #include "all_interface.h"
 using namespace std;
 
-void init_interface_2()
+void init_interface_2() // initialize building parameters and set interface 2 game screen, no input, no output
 {
     // food, fuel, metal, ppl, tank, soldier, milFac, maxPop;
-    building["farm"] = Building();
+    building["farm"] = Building(); // initialize all parameters of buildings
     building["farm"].name = "farm";
     building["farm"].requirement = "20 metal";
     building["farm"].cost.init(0, 0, 20, 0, 0, 0, 0, 0);
@@ -85,7 +85,7 @@ void init_interface_2()
     */
 
     // gameScreen init
-    gameScreen.divide(1, 1, 120, 5, "resource-bar");
+    gameScreen.divide(1, 1, 120, 5, "resource-bar"); // set game screen for interface 2
     gameScreen.divide(1, 1, 40, 5, "interface-name");
     gameScreen.divide(40, 1, 60, 5, "resource-1");
     gameScreen.divide(60, 1, 80, 5, "resource-2");
@@ -95,7 +95,7 @@ void init_interface_2()
     gameScreen.divide(40, 5, 120, 29, "game-content");
 }
 
-void show_internal(vector<string> content, string hAlign = "center")
+void show_internal(vector<string> content, string hAlign = "center") // print interface 2 information, input vector content and vector hAlign(alignment direction), no output
 {
     string s;
     string str1 = "Food: " + to_string(player[0].food), str2 = "Fuel: " + to_string(player[0].fuel), str3 = "Metal: " + to_string(player[0].metal), str4 = "Citizen: " + to_string(player[0].citizen);
@@ -113,7 +113,7 @@ void show_internal(vector<string> content, string hAlign = "center")
 
 vector<string> list_buildable();
 
-void run_interface_2(vector<string> &cmd)
+void run_interface_2(vector<string> &cmd) // runs interface 2 sub-functions, input vector command, no output
 {
     vector<string> content;
     // show default information/ interface2
@@ -233,7 +233,7 @@ void run_interface_2(vector<string> &cmd)
     }
 }
 
-vector<string> list_buildable()
+vector<string> list_buildable() // show buildable buildings, no input, no output
 {
     vector<string> show;
     for (string bu : buildingList)
