@@ -238,7 +238,7 @@ void round_result()
                 // after that calculate the soldier fight
                 if (A.soldier && B.soldier)
                 {
-                    cout << "before" << A.soldier << ' ' << B.soldier << endl; // test
+                    //cout << "before" << A.soldier << ' ' << B.soldier << endl; // test
 
                     auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose)
                     {
@@ -252,8 +252,8 @@ void round_result()
                     else
                         cal(cty[1], B.soldier, cty[0], A.soldier);
 
-                    cout << "after" << A.soldier << ' ' << B.soldier << endl; // test
-                    cin.get();                                                // test
+                    //cout << "after" << A.soldier << ' ' << B.soldier << endl; // test
+                    //cin.get();                                                // test
                 }
 
                 // cty[0] now marks the winner
