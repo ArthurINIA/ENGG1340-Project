@@ -429,22 +429,22 @@ void round_result() // process all round actions, no input, no output
 
 // list of functions
 // class functions
-Resources &Resources::operator+=(const Resources &b) // define += operator for resources, input Resources constant variable, output pointer
+Resources &Resources::operator+=(const Resources &b) // define += operator for resources, input Resources constant variable, output Resource class object
 {
     this->food += b.food, this->fuel += b.fuel, this->metal += b.metal, this->citizen += b.citizen, this->soldier += b.soldier, this->tank += b.tank;
     return *this;
 }
-Resources &Resources::operator-=(const Resources &b) // define -= operator for resources, input Resources constnat variable, output pointer
+Resources &Resources::operator-=(const Resources &b) // define -= operator for resources, input Resources constnat variable, output Resource class object
 {
     this->food -= b.food, this->fuel -= b.fuel, this->metal -= b.metal, this->citizen -= b.citizen, this->soldier -= b.soldier, this->tank -= b.tank;
     return *this;
 }
-Resources &Resources::operator*=(const int &b) // define *= operator for resources, input Resources constant variable, output pointer
+Resources &Resources::operator*=(const int &b) // define *= operator for resources, input Resources constant variable, output Resource class object
 {
     this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
     return *this;
 }
-Resources Resources::operator*(const int &b) // define * operator for resources, input Resources constant variable, output pointer
+Resources Resources::operator*(const int &b) // define * operator for resources, input Resources constant variable, output Resource class object
 {
     this->food *= b, this->fuel *= b, this->metal *= b, this->citizen *= b, this->soldier *= b, this->tank *= b;
     return *this;
