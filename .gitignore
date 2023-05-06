@@ -1,5 +1,6 @@
 .vscode/settings.json
 ui
+*.txt
 #C++ 
 # Compiled Object files
 *.slo
