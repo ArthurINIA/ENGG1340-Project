@@ -5,7 +5,7 @@
 <img src="/images/gameplay-map2.png">
 Our game, Galatic Empires: Odyssey, is a simulation game which is inspired by the existing civilization-building game "Civilization VI". The goal of the game is to expand your territory through means such as building infrastructures and houses, attack other countries. The game is turn-based, each turn means one day. You can choose when to end each turn, but all the changes made will only be settled after you declare the end of each turn.
 
-The game is won by occupying all the 16 regions on the world map or you can survive for more than 20 days. The game can also be lost by losing all your territories through being conquered by other countries or consumption of your own military power and manpower after each attack.
+The game is won by occupying all the 16 regions on the world map or you can survive for 20 days. The game can also be lost by losing all your territories through being conquered by other countries or consumption of your own military power and manpower after each attack.
 
 
 ## Installation
@@ -17,7 +17,7 @@ If you are Windows users type`wsl` to access it.
 2. type `make start`
 
 ## How to Play
-This game requires you to type commands.
+This game requires only one player to type commands.
 
 ### In the starting screen, 
 You can type `new` to start a new game; type `load` or `previous` to load saved game, a new game is started if there is no saved game.
