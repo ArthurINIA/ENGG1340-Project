@@ -2,7 +2,7 @@
 #include "all_interface.h"
 using namespace std;
 
-void save_data()
+void save_data() // save data to save.txt
 {
     ofstream fout("save.txt");
     fout << curGameDay << endl;
@@ -29,7 +29,7 @@ void save_data()
     }
     fout << starve[0] << " " << starve[1] << " " << starve[2] << " " << starve[3];
 }
-void load_data()
+void load_data() // load data from save.txt
 {
     ifstream fin("save.txt");
     fin >> curGameDay;

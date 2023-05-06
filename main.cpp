@@ -4,32 +4,32 @@
 #include <array>
 using namespace std;
 
-int curGameDay = -1;
+int curGameDay = -1; // set game day
 UI gameScreen, startScreen;
-Country player[4]; // Player, PC1, PC2, PC3
-map<string, Building> building;
-i3Map wldMap[4][4];
+Country player[4];              // Player, PC1, PC2, PC3
+map<string, Building> building; // set map for calling building parameters
+i3Map wldMap[4][4];             // set world map
 
-int starve[4] = {0, 0, 0, 0};
+int starve[4] = {0, 0, 0, 0}; // set starve array for 4 countries
 
-string countryList[4] = {"Player", "PC1", "PC2", "PC3"};
-string buildingList[6] = {"farm", "oil-refinery", "mine", "house", "recruiting-office", "factory"};
-set<string> valid_interface_option({"to", "show", "build", "move", "admin"});
+string countryList[4] = {"Player", "PC1", "PC2", "PC3"};                                            // set country list
+string buildingList[6] = {"farm", "oil-refinery", "mine", "house", "recruiting-office", "factory"}; // set building list
+set<string> valid_interface_option({"to", "show", "build", "move", "admin"});                       // set valid connand
 map<string, int> interface_id = {
-    {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}};
+    {"i1", 1}, {"admin", 1}, {"i2", 2}, {"internal", 2}, {"i3", 3}, {"external", 3}, {"i4", 4}, {"news", 4}}; // set interface id
 
 int main()
 {
     start_game();
-    init_interface_2();
-    init_i4();
-    int cur_interface = 1;
+    init_interface_2();    // initialize interface 2 for setting all buiulding parameter
+    init_i4();             // initialize interface 4 screen output
+    int cur_interface = 1; // set current interface to interface1
     // the game engine
-    for (int round = curGameDay; round <= 20; round++, curGameDay++)
+    for (int round = curGameDay; round <= 20; round++, curGameDay++) // 20 game day loop
     {
-        for (int uid = 0; uid < 4; uid++)
+        for (int uid = 0; uid < 4; uid++) // loop for 4 countries
         {
-            if (uid == 0)
+            if (uid == 0) // if country is player
             {
                 // random boost or debuff
                 pick_random_event();
@@ -54,14 +54,14 @@ int main()
                             cout << "This interface does not exist!" << endl;
                         }
                     }
-                    else if (valid_interface_option.count(cmd[0]))
+                    else if (valid_interface_option.count(cmd[0])) // if first block of command is valid
                     {
                         go_interface(cur_interface, cmd);
                     }
                     else if (cmd[0] == "end")
                     {
-                        //"Today has come to an end."
-                        break; // stop recieving commands for today's action
+
+                        break; // stop recieving commands for today's action, break 4 country loop
                     }
                     else if (cmd[0] == "quit")
                     {
@@ -106,18 +106,18 @@ int main()
             }
             else
             {
-                if (!player[uid].dead)
+                if (!player[uid].dead) // if npc country not dead, make random decision for them
                     npc_decision(uid);
             }
         }
-        round_result();
+        round_result(); // show round random event, construct a random story line for 20 random events throughout the game
         save_data();
-        if (player[0].dead)
+        if (player[0].dead) // if player dead, break 20 day loop
         {
             break;
         }
     }
-    if (player[0].dead)
+    if (player[0].dead) // check player dead flag, output different ending
     {
         end_game("failed");
     }
@@ -138,10 +138,10 @@ void npc_decision(int uid)
 
     // x is .first, y is .second
     pair<int, int> main_city[4] = {
-        {0, 0}, {3, 0}, {0, 3}, {3, 3}},
-                   line_of_defense[4][3] = {{{1, 0}, {0, 1}, {1, 1}}, {{2, 0}, {2, 1}, {3, 1}}, {{0, 2}, {1, 2}, {1, 3}}, {{2, 3}, {3, 2}, {2, 2}}};
+        {0, 0}, {3, 0}, {0, 3}, {3, 3}},                                                                                                  // set initail city coordinates
+        line_of_defense[4][3] = {{{1, 0}, {0, 1}, {1, 1}}, {{2, 0}, {2, 1}, {3, 1}}, {{0, 2}, {1, 2}, {1, 3}}, {{2, 3}, {3, 2}, {2, 2}}}; // setting defense line for all countries
 
-    for (int i = 0; i < actionLimit[uid] + distrib(gen); i++)
+    for (int i = 0; i < actionLimit[uid] + distrib(gen); i++) // random number of moves
     {
         // first priority is move soldier to strenghen the surroundings
         int x = main_city[uid].first, y = main_city[uid].second;
@@ -149,27 +149,41 @@ void npc_decision(int uid)
         if (wldMap[x][y].army[uid].soldier > 300)
         {
             srand(time(0));
-            int randChoice = rand() % 3;
+            int randChoice = rand() % 3; // randomly choose a land nearby to move soldier
             int x2 = line_of_defense[uid][randChoice].first;
             int y2 = line_of_defense[uid][randChoice].second;
             // send 300 soldiers to one of the near land
             wldMap[x][y].army[uid].soldier -= 300;
             wldMap[x2][y2].army[uid].soldier += 300;
-            continue;
+            // continue;
         }
-        // second priority is to build farm
-        if (player[uid].metal > 250 && player[uid].qty_owned["farm"] < player[uid].build_lim["farm"])
+        // second priority is to build mine
+        if (player[uid].metal <= 100 && player[uid].metal > 70 && player[uid].qty_owned["mine"] < player[uid].build_lim["mine"])
+        {
+            player[uid] -= building["mine"].cost;
+            player[uid].qty_owned["mine"]++;
+            // continue;
+        }
+        // third priority is to build farm
+        if (player[uid].metal > 20 && player[uid].qty_owned["farm"] < player[uid].build_lim["farm"])
         {
             player[uid] -= building["farm"].cost;
             player[uid].qty_owned["farm"]++;
-            continue;
+            // continue;
         }
-        // third priority is to build recruiting office
-        if (player[uid].metal > 50 && player[uid].qty_owned["recruiting-office"] < player[uid].build_lim["recruiting-office"])
+        // fifth priority is to build recruiting office
+        if (player[uid].metal > 10 && player[uid].qty_owned["recruiting-office"] < player[uid].build_lim["recruiting-office"])
         {
             player[uid] -= building["recruiting-office"].cost;
             player[uid].qty_owned["recruiting-office"]++;
-            continue;
+            // continue;
+        }
+        // fourth priority is to build house
+        if (player[uid].metal > 20 && player[uid].fuel > 20 && player[uid].qty_owned["house"] < player[uid].build_lim["house"])
+        {
+            player[uid] -= building["house"].cost;
+            player[uid].qty_owned["house"]++;
+            // continue;
         }
     }
 }
@@ -191,12 +205,12 @@ void round_result()
             vector<int> cty;
             for (int i = 0; i < 4; i++)
                 if (wldMap[x][y].army[i].soldier || wldMap[x][y].army[i].tank)
-                    cty.push_back(i);
+                    cty.push_back(i); // any country have troops on land will be pushed to cty
             if (cty.empty())
             {
-                wldMap[x][y].owner = "nobody";
+                wldMap[x][y].owner = "nobody"; // if no country have troops on the land, nobody owns the land
             }
-            else if (cty.size() == 1)
+            else if (cty.size() == 1) // if only 1 country have troops on it, land owner is the conutry
             {
                 string ctyList[] = {"Player", "PC1", "PC2", "PC3"};
                 if (wldMap[x][y].owner != ctyList[cty[0]])
@@ -206,9 +220,10 @@ void round_result()
                 // gain land addition
             }
             // war simulation!
-            else if (cty.size() == 2)
+            else if (cty.size() == 2) // if 2 countries have troops on same land
             {
                 // I only made conservative npc, so each land at most 2 different countries
+                // getting army parameters of 2 countries
                 Military_Resouces &A = wldMap[x][y].army[cty[0]];
                 Military_Resouces &B = wldMap[x][y].army[cty[1]];
 
@@ -228,6 +243,7 @@ void round_result()
                         cal(cty[1], B.tank, cty[0], A.tank);
                 }
                 // then if one side still have tank, use tank to destroy the enemy soldier
+                // tank cannot be destroyed by soldier, tank can destroy tank*40 amount of soldier
                 if ((A.tank > 0) ^ (B.tank > 0))
                 {
                     auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose)
@@ -247,7 +263,7 @@ void round_result()
                 // after that calculate the soldier fight
                 if (A.soldier && B.soldier)
                 {
-                    //cout << "before" << A.soldier << ' ' << B.soldier << endl; // test
+                    // cout << "before" << A.soldier << ' ' << B.soldier << endl; // test
 
                     auto cal = [&](int &id1, int &troopWin, int &id2, int &troopLose)
                     {
@@ -261,8 +277,8 @@ void round_result()
                     else
                         cal(cty[1], B.soldier, cty[0], A.soldier);
 
-                    //cout << "after" << A.soldier << ' ' << B.soldier << endl; // test
-                    //cin.get();                                                // test
+                    // cout << "after" << A.soldier << ' ' << B.soldier << endl; // test
+                    // cin.get();                                                // test
                 }
 
                 // cty[0] now marks the winner
@@ -301,11 +317,11 @@ void round_result()
     {
         int x = main_city[i].first;
         int y = main_city[i].second;
-        if (wldMap[x][y].owner != countryList[i])
+        if (wldMap[x][y].owner != countryList[i]) // if country no longer own their initial city, country collapse
         {
             player[i].dead = true;
         }
-        if (starve[i] >= 3)
+        if (starve[i] >= 7)
         {
             player[i].dead = true;
         }
@@ -324,7 +340,7 @@ void round_result()
         //--not enough food will stop producing army and citizens
         bool starvation = (player[i].food < player[i].soldier * 2 + player[i].tank * 2 + player[i].citizen);
         //--food consumption
-        if (starvation)
+        if (starvation) // if starvation flag is true, corresponding starve value increase
         {
             starve[i] += 1;
         }
@@ -332,7 +348,7 @@ void round_result()
         {
             starve[i] = 0;
         }
-        player[i].citizen += player[i].qty_owned["house"];
+        player[i].citizen += player[i].qty_owned["house"] * 50; // calculate resouces for npc countries
         player[i].food = max(0, player[i].food - player[i].soldier * 2);
         player[i].food = max(0, player[i].food - player[i].tank * 2);
         if (player[i].food < player[i].citizen)
@@ -363,7 +379,7 @@ void round_result()
             }
             */
 
-            if (bu != "recruiting-office" && bu != "factory")
+            if (bu != "recruiting-office" && bu != "factory") // add resources to country
             {
                 Resources temp = building[bu].production;
                 player[i] += temp * qty;
@@ -376,7 +392,7 @@ void round_result()
             }
             */
 
-            if (bu == "recruiting-office" && !starvation)
+            if (bu == "recruiting-office" && !starvation) // add soldier and decrease citizen
             {
                 for (int k = 1; k <= qty; k++)
                 {
@@ -391,7 +407,7 @@ void round_result()
                     wldMap[x][y].army[i].soldier += gain;
                 }
             }
-            if (bu == "factory" && !starvation)
+            if (bu == "factory" && !starvation) // add tank and decrease citizen
             {
                 for (int k = 1; k <= qty; k++)
                 {
@@ -468,7 +484,7 @@ std::ostream &operator<<(std::ostream &os, Building const &x)
 void testing()
 {
 }
-void readLine(string &str)
+void readLine(string &str) // readLine function, read until \n
 {
     while (1)
     {
@@ -500,7 +516,7 @@ vector<string> split(string raw_line)
         rt.push_back(cur);
     return rt;
 }
-bool check_res(int id, Resources res)
+bool check_res(int id, Resources res) // check if resources are enough for operations
 {
     return (player[id].food >= res.food && player[id].fuel >= res.fuel && player[id].metal >= res.metal && player[id].citizen >= res.citizen);
 }
@@ -526,31 +542,31 @@ void start_game()
     startScreen.drawAll("start-menu", "center", {"Choose game:", " ", "new", " ", "previous"});
 
     startScreen.divide(1, 1, 100, 29, "intro");
-    const char *introStory = R"(In the last century, the Earth was overdeveloped by human civilization, and the pollution
-storm was unprecedented that its destructive forces have reverted the modern cities back to
-the uncivilized world.        
+    const char *introStory = R"(  In the last century, the Earth was overdeveloped by human civilization, and the pollution
+  storm was unprecedented that its destructive forces have reverted the modern cities back to
+  the uncivilized world.        
 
-The catastrophe not only set back human civilization in terms of technology and resources
-, resulting in desertification, but also brought about a horrific change to the Earth - a   
-black miasma covering the outer atmosphere, and daylight no longer be able to reach.       
+  The catastrophe not only set back human civilization in terms of technology and resources
+  , resulting in desertification, but also brought about a horrific change to the Earth - a   
+  black miasma covering the outer atmosphere, and daylight no longer be able to reach.       
 
-Talents spring up in the turbulent days, your country's rising stars of the future have  
-been put into new energy research - cold fusion technology, and it will be completed soon.      
+  Talents spring up in the turbulent days, your country's rising stars of the future have  
+  been put into new energy research - cold fusion technology, and it will be completed soon.      
 
-The countries are struggling for land, searching for rare raw energy under the region, 
-for the sake of national peace and security, and most importantly, survival.
+  The countries are struggling for land, searching for rare raw energy under the region, 
+  for the sake of national peace and security, and most importantly, survival.
 
-You, as a commander, have to keep your resources intact and hold the border until the
-cold fusion is developed.
-....
-01-Jan-2023
-  Nuclear Department Head: Greetings sir, I have a good news to you.
-  Nuclear Department Head: The testing phase of the cold fusion will be finished soon
-                      You: How many days do you need?
-  Nuclear Department Head: 20 more days before our new era.
-  Nuclear Department Head: Please protect us from the neighbouring threats.
-....
-Can you keep your country alive in the next 20 days?)";
+  You, as a commander, have to keep your resources intact and hold the border until the
+  cold fusion is developed.
+  ....
+  01-Jan-2023
+    Nuclear Department Head: Greetings sir, I have a good news to you.
+    Nuclear Department Head: The testing phase of the cold fusion will be finished soon
+                        You: How many days do you need?
+    Nuclear Department Head: 20 more days before our new era.
+    Nuclear Department Head: Please protect us from the neighbouring threats.
+  ....
+  Can you keep your country alive in the next 20 days?)";
 
     startScreen.drawAll("intro", "left", introStory);
 
@@ -606,7 +622,7 @@ void pick_random_event()
 }
 */
 
-void end_game(string status)
+void end_game(string status) // output different ending
 {
     vector<string> content;
     // cout << "testing";

@@ -6,8 +6,8 @@ void init_interface_2()
     // food, fuel, metal, ppl, tank, soldier, milFac, maxPop;
     building["farm"] = Building();
     building["farm"].name = "farm";
-    building["farm"].requirement = "25 metal";
-    building["farm"].cost.init(0, 0, 25, 0, 0, 0, 0, 0);
+    building["farm"].requirement = "20 metal";
+    building["farm"].cost.init(0, 0, 20, 0, 0, 0, 0, 0);
     building["farm"].description = "add 600 units of food per round.";
     building["farm"].production.init(600, 0, 0, 0, 0, 0, 0, 0);
     building["farm"].effect = "600 food";
